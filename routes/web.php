@@ -50,7 +50,6 @@ Route::post('/dang-xuat', [AuthController::class, 'logout'])->name('logout');
 // Cổng đăng nhập riêng dành cho Quản lý tối cao (Master Password).
 Route::get('/quan-ly-toi-cao/dang-nhap', [AuthController::class, 'showSystemOwnerLoginForm'])->name('system-owner.portal');
 
-Route::get('/dang-ky', [AuthController::class, 'showLoginForm'])->name('register'); // fallback, xem bên dưới
 Route::get('/dang-ky', function () {
     return view('auth.register');
 })->name('register');
@@ -83,6 +82,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('/lich-hen/{booking}/xac-nhan', [App\Http\Controllers\Admin\BookingController::class, 'confirm'])->name('bookings.confirm');
     Route::put('/lich-hen/{booking}/hoan-thanh', [App\Http\Controllers\Admin\BookingController::class, 'complete'])->name('bookings.complete');
     Route::put('/lich-hen/{booking}/huy', [App\Http\Controllers\Admin\BookingController::class, 'cancel'])->name('bookings.cancel');
+
+    Route::middleware('system_owner')->group(function () {
+        Route::get('/system-owner', [App\Http\Controllers\Admin\SystemOwnerController::class, 'index'])->name('system-owner.index');
+        Route::put('/system-owner/users/{user}/role', [App\Http\Controllers\Admin\SystemOwnerController::class, 'updateRole'])->name('system-owner.update-role');
+        Route::post('/system-owner/sub-owners', [App\Http\Controllers\Admin\SystemOwnerController::class, 'addSubOwner'])->name('system-owner.sub-owners.store');
+        Route::delete('/system-owner/sub-owners/{id}', [App\Http\Controllers\Admin\SystemOwnerController::class, 'removeSubOwner'])->name('system-owner.sub-owners.destroy');
+    });
 
     Route::get('/dich-vu', [App\Http\Controllers\Admin\ServiceController::class, 'index'])->name('services.index');
     Route::post('/dich-vu', [App\Http\Controllers\Admin\ServiceController::class, 'store'])->name('services.store');

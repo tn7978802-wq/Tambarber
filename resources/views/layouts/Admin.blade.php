@@ -12,13 +12,28 @@
         <nav>
             <strong>Barbershop Admin</strong>
             |
+            <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+            |
             <a href="{{ route('admin.bookings.index') }}">Lịch hẹn</a>
             |
             <a href="{{ route('admin.services.index') }}">Dịch vụ</a>
             |
             <a href="{{ route('admin.hairstyles.index') }}">Kiểu tóc</a>
+            @auth
+                @if (auth()->user()->isSystemOwner())
+                    |
+                    <a href="{{ route('admin.system-owner.index') }}"><strong>Quản lý tối cao</strong></a>
+                @endif
+            @endauth
             |
             <a href="{{ route('home') }}">Về trang chủ</a>
+            |
+            @auth
+                <form action="{{ route('logout') }}" method="POST" style="display:inline">
+                    @csrf
+                    <button type="submit">Đăng xuất ({{ auth()->user()->fullname }})</button>
+                </form>
+            @endauth
         </nav>
     </header>
 

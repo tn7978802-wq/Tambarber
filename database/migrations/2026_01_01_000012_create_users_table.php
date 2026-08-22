@@ -6,17 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('fullname');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('phone')->nullable()->unique();
+            $table->string('google_id')->nullable();
+            $table->string('avatar')->nullable();
+            $table->string('username')->nullable();
+            // 0 = Guest, 1 = Client (khách hàng), 2 = Admin (nhân viên/barber quản lý),
+            // 3 = Super Admin (chủ tiệm / System Owner).
+            $table->unsignedTinyInteger('admin_role')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });
@@ -37,9 +41,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');

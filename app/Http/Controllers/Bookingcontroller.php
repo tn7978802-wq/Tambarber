@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rule;
 
 class BookingController extends Controller
 {
@@ -52,6 +53,8 @@ class BookingController extends Controller
             'selectedServiceId' => $selectedServiceId,
             'selectedBarberId' => $selectedBarberId,
             'selectedDate' => $selectedDate,
+            // Điền sẵn thông tin nếu khách đã đăng nhập.
+            'authUser' => $request->user(),
         ]);
     }
 
@@ -64,10 +67,10 @@ class BookingController extends Controller
             'customer_name' => ['required', 'string', 'min:3', 'max:255'],
             'customer_phone' => ['required', 'string', 'max:20'],
             'customer_email' => ['nullable', 'email', 'max:255'],
-            'service_id' => ['required', 'exists:services,id'],
-            'barber_id' => ['required', 'exists:barbers,id'],
+            'service_id' => ['required', Rule::exists('services', 'id')->where('is_active', true)],
+            'barber_id' => ['required', Rule::exists('barbers', 'id')->where('is_active', true)],
             'booking_date' => ['required', 'date', 'after_or_equal:today'],
-            'booking_time' => ['required', 'string'],
+            'booking_time' => ['required', 'string', Rule::in(self::TIME_SLOTS)],
             'note' => ['nullable', 'string', 'max:500'],
         ], [
             'customer_name.required' => 'Vui lòng nhập họ tên.',
@@ -78,7 +81,28 @@ class BookingController extends Controller
         ]);
 
         try {
-            $booking = DB::transaction(function () use ($data) {
+            $booking = DB::transaction(function () use ($data, $request) {
+                $barber = Barber::whereKey($data['barber_id'])
+                    ->where('is_active', true)
+                    ->lockForUpdate()
+                    ->first();
+
+                if (! $barber) {
+                    throw ValidationException::withMessages([
+                        'barber_id' => 'Barber này hiện không nhận lịch. Vui lòng chọn barber khác.',
+                    ]);
+                }
+
+                $serviceIsActive = Service::whereKey($data['service_id'])
+                    ->where('is_active', true)
+                    ->exists();
+
+                if (! $serviceIsActive) {
+                    throw ValidationException::withMessages([
+                        'service_id' => 'Dịch vụ này hiện không còn khả dụng. Vui lòng chọn dịch vụ khác.',
+                    ]);
+                }
+
                 $alreadyBooked = Booking::where('barber_id', $data['barber_id'])
                     ->whereDate('booking_date', $data['booking_date'])
                     ->where('booking_time', $data['booking_time'])
@@ -94,6 +118,9 @@ class BookingController extends Controller
 
                 return Booking::create([
                     'booking_code' => $this->generateUniqueBookingCode(),
+                    // Nếu khách đã đăng nhập, tự động gắn lịch hẹn vào tài khoản của họ
+                    // để hiển thị lại trong "Tài khoản của tôi".
+                    'user_id' => $request->user()?->id,
                     'customer_name' => $data['customer_name'],
                     'customer_phone' => $data['customer_phone'],
                     'customer_email' => $data['customer_email'] ?? null,

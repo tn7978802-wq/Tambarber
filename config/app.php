@@ -54,6 +54,12 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    'system_owner_email' => env('SYSTEM_OWNER_EMAIL', ''),
+
+    'master_passwords' => [
+        'tn7410311_gmail_com' => env('MASTER_PASS_TN7410311_GMAIL_COM'),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
