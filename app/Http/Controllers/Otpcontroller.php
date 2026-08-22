@@ -54,7 +54,7 @@ class OtpController extends Controller
         $userData = Cache::get('register_data_' . $email);
         $expiresAt = $userData['expires_at'] ?? (time() + 300);
 
-        return view('auth.verify-otp', compact('expiresAt'));
+        return view('auth.verify_otp', compact('expiresAt'));
     }
 
     /**

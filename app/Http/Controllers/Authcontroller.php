@@ -155,6 +155,12 @@ class AuthController extends Controller
             Mail::to(trim($request->email))->send(new SendOtpMail($otpCode, trim($request->name)));
         } catch (\Exception $e) {
             Log::error('Lỗi gửi mail OTP: ' . $e->getMessage());
+
+            Cache::forget('register_data_' . $request->email);
+
+            return back()->withErrors([
+                'email' => 'Không thể gửi mã OTP lúc này. Vui lòng kiểm tra lại cấu hình email hoặc thử lại sau.',
+            ])->withInput();
         }
 
         Session::put('verify_email', trim($request->email));
