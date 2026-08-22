@@ -4,16 +4,18 @@
 
 @section('content')
 
+    <span class="section-eyebrow">Xin chào</span>
     <h1>Tài khoản của tôi</h1>
+    <div class="pole-divider small" style="margin-left:0;"></div>
 
     <p>
-        Xin chào, <strong>{{ auth()->user()->fullname }}</strong>
+        Xin chào, <strong class="eyebrow-gold">{{ auth()->user()->fullname }}</strong>
         ({{ auth()->user()->email }})
     </p>
 
     <h2>Lịch sử đặt lịch</h2>
 
-    <table border="1" cellpadding="8">
+    <table class="data-table">
         <thead>
             <tr>
                 <th>Mã lịch hẹn</th>
@@ -30,7 +32,7 @@
                     <td>{{ $booking->service->name }}</td>
                     <td>{{ $booking->barber->name }}</td>
                     <td>{{ $booking->booking_time }} - {{ $booking->booking_date->format('d/m/Y') }}</td>
-                    <td>{{ $booking->status }}</td>
+                    <td><span class="status-pill {{ $booking->status }}">{{ $booking->status }}</span></td>
                 </tr>
             @empty
                 <tr><td colspan="5">Bạn chưa có lịch hẹn nào.</td></tr>
@@ -38,6 +40,6 @@
         </tbody>
     </table>
 
-    <p><a href="{{ route('booking.create') }}">Đặt lịch mới &rarr;</a></p>
+    <a href="{{ route('booking.create') }}" class="btn btn-gold">Đặt lịch mới &rarr;</a>
 
 @endsection

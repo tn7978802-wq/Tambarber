@@ -4,10 +4,12 @@
 
 @section('content')
 
+    <span class="section-eyebrow">Quản trị</span>
     <h1>Quản lý Kiểu tóc</h1>
+    <div class="pole-divider small" style="margin-left:0;"></div>
 
     <h2>Thêm kiểu tóc mới</h2>
-    <form action="{{ route('admin.hairstyles.store') }}" method="POST">
+    <form action="{{ route('admin.hairstyles.store') }}" method="POST" class="form-inline">
         @csrf
         <input type="text" name="name" placeholder="Tên kiểu tóc" required>
         <input type="text" name="image" placeholder="Đường dẫn ảnh (vd: /images/fade-cut-closeup.jpg)">
@@ -18,13 +20,11 @@
             <option value="hard">Khó</option>
         </select>
         <input type="number" name="reference_price" placeholder="Giá tham khảo (VND)">
-        <textarea name="description" placeholder="Mô tả"></textarea>
-        <button type="submit">Thêm</button>
+        <textarea name="description" placeholder="Mô tả" style="min-height:42px;"></textarea>
+        <button type="submit" class="btn btn-gold">Thêm</button>
     </form>
 
-    <hr>
-
-    <table border="1" cellpadding="8">
+    <table class="data-table">
         <thead>
             <tr>
                 <th>Ảnh</th>
@@ -44,13 +44,13 @@
                     </td>
                     <td>{{ $hairstyle->name }}</td>
                     <td>{{ $hairstyle->difficulty }}</td>
-                    <td>
+                    <td class="price">
                         {{ $hairstyle->reference_price ? number_format((float) $hairstyle->reference_price, 0, ',', '.') . 'đ' : '—' }}
                     </td>
                     <td>
-                        <form action="{{ route('admin.hairstyles.destroy', $hairstyle) }}" method="POST" style="display:inline" onsubmit="return confirm('Xoá kiểu tóc này?')">
+                        <form action="{{ route('admin.hairstyles.destroy', $hairstyle) }}" method="POST" onsubmit="return confirm('Xoá kiểu tóc này?')">
                             @csrf @method('DELETE')
-                            <button type="submit">Xoá</button>
+                            <button type="submit" class="btn btn-sm btn-danger">Xoá</button>
                         </form>
                     </td>
                 </tr>

@@ -4,35 +4,40 @@
 
 @section('content')
 
+    <span class="section-eyebrow">Khám phá</span>
     <h1>Các kiểu tóc</h1>
+    <div class="pole-divider small" style="margin-left:0;"></div>
 
-    <form action="{{ route('hairstyles.index') }}" method="GET">
-        <input type="text" name="q" value="{{ $search }}" placeholder="Tìm kiểu tóc...">
-        <select name="difficulty">
-            <option value="">Tất cả độ khó</option>
-            <option value="easy" @selected($difficulty === 'easy')>Dễ</option>
-            <option value="medium" @selected($difficulty === 'medium')>Trung bình</option>
-            <option value="hard" @selected($difficulty === 'hard')>Khó</option>
-        </select>
-        <button type="submit">Lọc</button>
+    <form action="{{ route('hairstyles.index') }}" method="GET" style="display:flex; gap:.75rem; flex-wrap:wrap; align-items:flex-end; margin-bottom:2rem;">
+        <label style="flex:1; min-width:220px; margin-bottom:0;">Tìm kiếm
+            <input type="text" name="q" value="{{ $search }}" placeholder="Tìm kiểu tóc...">
+        </label>
+        <label style="margin-bottom:0;">Độ khó
+            <select name="difficulty">
+                <option value="">Tất cả độ khó</option>
+                <option value="easy" @selected($difficulty === 'easy')>Dễ</option>
+                <option value="medium" @selected($difficulty === 'medium')>Trung bình</option>
+                <option value="hard" @selected($difficulty === 'hard')>Khó</option>
+            </select>
+        </label>
+        <button type="submit" class="btn btn-gold">Lọc</button>
     </form>
 
-    <ul>
+    <ul class="card-grid">
         @forelse ($hairstyles as $hairstyle)
-            <li>
+            <li class="card">
                 <a href="{{ route('hairstyles.show', $hairstyle->slug) }}">
-                    <img src="{{ $hairstyle->image ?? '/images/fade-cut-closeup.jpg' }}" alt="{{ $hairstyle->name }}" width="150">
-                    <br>
-                    <strong>{{ $hairstyle->name }}</strong>
+                    <img src="{{ $hairstyle->image ?? '/images/fade-cut-closeup.jpg' }}" alt="{{ $hairstyle->name }}">
+                    <h3>{{ $hairstyle->name }}</h3>
                 </a>
-                <br>{{ \Illuminate\Support\Str::limit($hairstyle->description, 120) }}
-                <br>Độ khó: {{ $hairstyle->difficulty }}
+                <p>{{ \Illuminate\Support\Str::limit($hairstyle->description, 120) }}</p>
+                <p class="meta">Độ khó: {{ $hairstyle->difficulty }}</p>
                 @if ($hairstyle->reference_price)
-                    &middot; Giá tham khảo: {{ number_format((float) $hairstyle->reference_price, 0, ',', '.') }}đ
+                    <p class="price">{{ number_format((float) $hairstyle->reference_price, 0, ',', '.') }}đ</p>
                 @endif
             </li>
         @empty
-            <li>Không tìm thấy kiểu tóc phù hợp.</li>
+            <li class="card">Không tìm thấy kiểu tóc phù hợp.</li>
         @endforelse
     </ul>
 

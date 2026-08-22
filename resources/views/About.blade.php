@@ -4,7 +4,9 @@
 
 @section('content')
 
+    <span class="section-eyebrow">Câu chuyện của chúng tôi</span>
     <h1>Giới thiệu về nghề Barber</h1>
+    <div class="pole-divider small" style="margin-left:0;"></div>
 
     <section>
         <h2>Nghề Barber là gì?</h2>
@@ -36,11 +38,14 @@
 
     <section>
         <h2>Lộ trình từ người mới đến Barber chuyên nghiệp</h2>
-        <ol>
-            @foreach ($careerPath as $stage)
+        <ol class="stage-list">
+            @foreach ($careerPath as $i => $stage)
                 <li>
-                    <strong>{{ $stage['step'] }}</strong>
-                    <br>{{ $stage['description'] }}
+                    <span class="stage-badge">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</span>
+                    <div>
+                        <strong>{{ $stage['step'] }}</strong>
+                        {{ $stage['description'] }}
+                    </div>
                 </li>
             @endforeach
         </ol>
@@ -48,14 +53,13 @@
 
     <section>
         <h2>Đội ngũ Barber của chúng tôi</h2>
-        <ul>
+        <ul class="team-grid">
             @forelse ($barbers as $barber)
-                <li>
-                    <img src="{{ $barber->avatar ?? '/images/shop-working.jpg' }}" alt="{{ $barber->name }}" width="150">
-                    <br>
-                    <strong>{{ $barber->name }}</strong> - {{ $barber->title }}
-                    ({{ $barber->years_experience }} năm kinh nghiệm)
-                    <br>{{ $barber->bio }}
+                <li class="team-card">
+                    <img src="{{ $barber->avatar ?? '/images/shop-working.jpg' }}" alt="{{ $barber->name }}">
+                    <strong>{{ $barber->name }}</strong>
+                    <p class="role">{{ $barber->title }} &middot; {{ $barber->years_experience }} năm kinh nghiệm</p>
+                    <p>{{ $barber->bio }}</p>
                 </li>
             @empty
                 <li>Thông tin đội ngũ đang được cập nhật.</li>

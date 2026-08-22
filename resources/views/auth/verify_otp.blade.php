@@ -4,21 +4,25 @@
 
 @section('content')
 
-    <h1>Xác thực OTP</h1>
+    <div class="auth-shell text-center">
+        <div class="pole-divider small"></div>
+        <h1>Xác thực OTP</h1>
 
-    <p>Vui lòng nhập mã 6 số chúng tôi vừa gửi đến email của bạn.</p>
-    <p>Thời gian còn lại: <span id="countdown">05:00</span></p>
+        <p class="muted">Vui lòng nhập mã 6 số chúng tôi vừa gửi đến email của bạn.</p>
+        <p>Thời gian còn lại: <span id="countdown" class="otp-countdown">05:00</span></p>
 
-    <form action="{{ route('otp.verify') }}" method="POST">
-        @csrf
-        <label>Mã OTP:
-            <input type="text" name="otp" maxlength="6" required autofocus>
-        </label>
-        <br>
-        <button type="submit">Xác thực</button>
-    </form>
+        <form action="{{ route('otp.verify') }}" method="POST">
+            @csrf
+            <label>Mã OTP
+                <input type="text" name="otp" maxlength="6" required autofocus class="otp-input">
+            </label>
+            <button type="submit" class="btn btn-gold btn-block">Xác thực</button>
+        </form>
 
-    <p>Chưa nhận được mã? <a href="{{ route('otp.send') }}">Gửi lại OTP</a></p>
+        <div class="auth-links">
+            Chưa nhận được mã? <a href="{{ route('otp.send') }}" style="display:inline;">Gửi lại OTP</a>
+        </div>
+    </div>
 
     <script>
         (function () {

@@ -4,33 +4,38 @@
 
 @section('content')
 
-    <h1>Đăng nhập</h1>
+    <div class="auth-shell">
+        <div class="pole-divider small"></div>
+        <h1>Đăng nhập</h1>
 
-    <form action="{{ route('login.post') }}" method="POST">
-        @csrf
+        <form action="{{ route('login.post') }}" method="POST">
+            @csrf
 
-        <label>Email hoặc Số điện thoại:
-            <input type="text" name="email" value="{{ old('email') }}" required autofocus>
-        </label>
-        <br>
-        <label>Mật khẩu:
-            <input type="password" name="password" required>
-        </label>
-        <br>
-        <label><input type="checkbox" name="remember"> Ghi nhớ đăng nhập</label>
-        <br>
-        <button type="submit">Đăng nhập</button>
-    </form>
+            <label>Email hoặc Số điện thoại
+                <input type="text" name="email" value="{{ old('email') }}" required autofocus>
+            </label>
+            <label>Mật khẩu
+                <input type="password" name="password" required>
+            </label>
+            <label style="display:flex; align-items:center; gap:.4rem;">
+                <input type="checkbox" name="remember"> Ghi nhớ đăng nhập
+            </label>
 
-    <p><a href="{{ route('password.request') }}">Quên mật khẩu?</a></p>
-    <p>Chưa có tài khoản? <a href="{{ route('register') }}">Đăng ký ngay</a></p>
+            <button type="submit" class="btn btn-gold btn-block">Đăng nhập</button>
+        </form>
 
-    <hr>
+        <div class="auth-links">
+            <a href="{{ route('password.request') }}">Quên mật khẩu?</a>
+            <span>Chưa có tài khoản? <a href="{{ route('register') }}" style="display:inline;">Đăng ký ngay</a></span>
+        </div>
 
-    <p><a href="{{ route('google.login') }}">Đăng nhập bằng Google</a></p>
+        <hr>
 
-    <hr>
+        <a href="{{ route('google.login') }}" class="btn btn-outline btn-block">Đăng nhập bằng Google</a>
 
-    <p><small><a href="{{ route('system-owner.portal') }}">Đăng nhập dành cho Quản lý tối cao &rarr;</a></small></p>
+        <p class="auth-links" style="margin-top:1.5rem;">
+            <a href="{{ route('system-owner.portal') }}">Đăng nhập dành cho Quản lý tối cao &rarr;</a>
+        </p>
+    </div>
 
 @endsection

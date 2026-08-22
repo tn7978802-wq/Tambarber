@@ -4,21 +4,25 @@
 
 @section('content')
 
-    <h1>Khôi phục mật khẩu</h1>
+    <div class="auth-shell">
+        <div class="pole-divider small"></div>
+        <h1>Khôi phục mật khẩu</h1>
 
-    @if (session('status'))
-        <p>{{ session('status') }}</p>
-    @endif
+        @if (session('status'))
+            <p class="page-flash">{{ session('status') }}</p>
+        @endif
 
-    <form action="{{ route('password.email') }}" method="POST">
-        @csrf
-        <label>Email đã đăng ký:
-            <input type="email" name="email" value="{{ old('email') }}" required>
-        </label>
-        <br>
-        <button type="submit">Gửi liên kết đặt lại mật khẩu</button>
-    </form>
+        <form action="{{ route('password.email') }}" method="POST">
+            @csrf
+            <label>Email đã đăng ký
+                <input type="email" name="email" value="{{ old('email') }}" required>
+            </label>
+            <button type="submit" class="btn btn-gold btn-block">Gửi liên kết đặt lại mật khẩu</button>
+        </form>
 
-    <p><a href="{{ route('login') }}">&larr; Quay lại đăng nhập</a></p>
+        <div class="auth-links">
+            <a href="{{ route('login') }}">&larr; Quay lại đăng nhập</a>
+        </div>
+    </div>
 
 @endsection

@@ -4,24 +4,27 @@
 
 @section('content')
 
-    <a href="{{ route('blog.index') }}">&larr; Quay lại Blog</a>
+    <p><a href="{{ route('blog.index') }}">&larr; Quay lại Blog</a></p>
 
+    <span class="section-eyebrow">{{ $post->category }}</span>
     <h1>{{ $post->title }}</h1>
-    <p><small>{{ $post->publish_at?->format('d/m/Y') }} &middot; {{ $post->category }}</small></p>
+    <p class="muted">{{ $post->publish_at?->format('d/m/Y') }}</p>
 
     @if ($post->thumbnail)
-        <img src="{{ $post->thumbnail }}" alt="{{ $post->title }}" width="500">
+        <img src="{{ $post->thumbnail }}" alt="{{ $post->title }}" style="border-radius:4px; margin-bottom:1.5rem;">
     @endif
 
-    <div>{!! nl2br(e($post->content)) !!}</div>
+    <div style="max-width:70ch;">{!! nl2br(e($post->content)) !!}</div>
 
-    <hr>
+    <div class="pole-divider" style="margin-top:2.5rem;"></div>
 
-    <h2>Bài viết liên quan</h2>
-    <ul>
-        @foreach ($related as $item)
-            <li><a href="{{ route('blog.show', $item->slug) }}">{{ $item->title }}</a></li>
-        @endforeach
-    </ul>
+    <section>
+        <h2>Bài viết liên quan</h2>
+        <ul class="card-grid">
+            @foreach ($related as $item)
+                <li class="card"><a href="{{ route('blog.show', $item->slug) }}"><h3>{{ $item->title }}</h3></a></li>
+            @endforeach
+        </ul>
+    </section>
 
 @endsection

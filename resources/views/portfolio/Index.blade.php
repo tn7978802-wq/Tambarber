@@ -4,34 +4,34 @@
 
 @section('content')
 
+    <span class="section-eyebrow">Thư viện ảnh</span>
     <h1>Portfolio / Gallery</h1>
+    <div class="pole-divider small" style="margin-left:0;"></div>
 
-    <nav>
-        <a href="{{ route('portfolio.index') }}" @if(!$selectedCategory) style="font-weight:bold;" @endif>Tất cả</a>
+    <nav class="main-nav" style="margin-bottom:1.75rem;">
+        <a href="{{ route('portfolio.index') }}" @class(['is-active' => !$selectedCategory])>Tất cả</a>
         @foreach ($categories as $category)
-            |
             <a href="{{ route('portfolio.index', ['category' => $category]) }}"
-               @if($selectedCategory === $category) style="font-weight:bold;" @endif>
+               @class(['is-active' => $selectedCategory === $category])>
                 {{ $category }}
             </a>
         @endforeach
     </nav>
 
-    <ul>
+    <ul class="card-grid">
         @forelse ($portfolios as $item)
-            <li>
-                <img src="{{ $item->image }}" alt="{{ $item->title }}" width="250">
-                <br>
-                <strong>{{ $item->title }}</strong>
+            <li class="card">
+                <img src="{{ $item->image }}" alt="{{ $item->title }}">
+                <h3>{{ $item->title }}</h3>
                 @if ($item->hairstyle)
-                    &middot; Kiểu tóc: {{ $item->hairstyle->name }}
+                    <p class="meta">Kiểu tóc: {{ $item->hairstyle->name }}</p>
                 @endif
                 @if ($item->barber)
-                    &middot; Thực hiện bởi: {{ $item->barber->name }}
+                    <p class="meta">Thực hiện bởi: {{ $item->barber->name }}</p>
                 @endif
             </li>
         @empty
-            <li>Chưa có hình ảnh trong danh mục này.</li>
+            <li class="card">Chưa có hình ảnh trong danh mục này.</li>
         @endforelse
     </ul>
 

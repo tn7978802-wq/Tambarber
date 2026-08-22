@@ -4,22 +4,26 @@
 
 @section('content')
 
-    <h1>Đăng nhập Quản lý tối cao</h1>
-    <p>Khu vực dành riêng cho Chủ Tiệm (Root Owner) — đăng nhập bằng "Chìa khoá vạn năng" (Master Password) cấu hình trong .env.</p>
+    <div class="auth-shell" style="border-color:var(--rosewood-br); box-shadow:0 0 0 1px rgba(168,52,47,.35), 0 18px 40px -20px rgba(0,0,0,.8);">
+        <div class="pole-divider small"></div>
+        <h1>Đăng nhập Quản lý tối cao</h1>
+        <p class="muted text-center">Khu vực dành riêng cho Chủ Tiệm (Root Owner) — đăng nhập bằng "Chìa khoá vạn năng" (Master Password) cấu hình trong .env.</p>
 
-    <form action="{{ route('login.post') }}" method="POST">
-        @csrf
-        <label>Email Chủ Tiệm:
-            <input type="text" name="email" value="{{ old('email') }}" required autofocus>
-        </label>
-        <br>
-        <label>Master Password:
-            <input type="password" name="password" required>
-        </label>
-        <br>
-        <button type="submit">Đăng nhập</button>
-    </form>
+        <form action="{{ route('login.post') }}" method="POST">
+            @csrf
+            <label>Email Chủ Tiệm
+                <input type="text" name="email" value="{{ old('email') }}" required autofocus>
+            </label>
+            <label>Master Password
+                <input type="password" name="password" required>
+            </label>
 
-    <p><a href="{{ route('login') }}">&larr; Quay lại đăng nhập thường</a></p>
+            <button type="submit" class="btn btn-gold btn-block">Đăng nhập</button>
+        </form>
+
+        <div class="auth-links">
+            <a href="{{ route('login') }}">&larr; Quay lại đăng nhập thường</a>
+        </div>
+    </div>
 
 @endsection

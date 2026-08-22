@@ -4,60 +4,64 @@
 
 @section('content')
 
-    <h1>Quản lý tối cao (System Owner)</h1>
-    <p>Khu vực dành riêng cho Chủ Tiệm — toàn quyền kiểm soát hệ thống và phân quyền nhân sự.</p>
+    <span class="section-eyebrow">Khu vực đặc quyền</span>
+    <h1>Khu vực chủ tiệm (System Owner)</h1>
+    <p class="muted">Khu vực dành riêng cho Chủ Tiệm — toàn quyền kiểm soát hệ thống và phân quyền nhân sự.</p>
+    <div class="pole-divider small" style="margin-left:0;"></div>
 
     <h2>Thống kê tổng quan</h2>
-    <ul>
-        <li>Tổng số người dùng: {{ number_format($stats['total_users']) }}</li>
-        <li>Tổng số nhân sự có quyền quản trị: {{ number_format($stats['total_admins']) }}</li>
-        <li>Tổng doanh thu (lịch đã hoàn thành): {{ number_format($stats['total_revenue'], 0, ',', '.') }}đ</li>
-        <li>Khách hàng đăng ký hôm nay: {{ number_format($stats['new_users_today']) }}</li>
-        <li>Lịch hẹn hôm nay: {{ number_format($stats['bookings_today']) }}</li>
-        <li>Tin nhắn liên hệ chưa xử lý: {{ number_format($stats['pending_contact_messages']) }}</li>
+    <ul class="metric-grid">
+        <li class="metric-card"><span class="metric-label">Tổng số người dùng</span><span class="metric-value">{{ number_format($stats['total_users']) }}</span></li>
+        <li class="metric-card"><span class="metric-label">Nhân sự có quyền quản trị</span><span class="metric-value">{{ number_format($stats['total_admins']) }}</span></li>
+        <li class="metric-card"><span class="metric-label">Tổng doanh thu</span><span class="metric-value">{{ number_format($stats['total_revenue'], 0, ',', '.') }}đ</span></li>
+        <li class="metric-card"><span class="metric-label">Đăng ký hôm nay</span><span class="metric-value">{{ number_format($stats['new_users_today']) }}</span></li>
+        <li class="metric-card"><span class="metric-label">Lịch hẹn hôm nay</span><span class="metric-value">{{ number_format($stats['bookings_today']) }}</span></li>
+        <li class="metric-card"><span class="metric-label">Liên hệ chưa xử lý</span><span class="metric-value">{{ number_format($stats['pending_contact_messages']) }}</span></li>
     </ul>
 
     <h2>Dịch vụ được đặt nhiều nhất</h2>
-    <ol>
+    <ol class="ranked-list">
         @forelse ($topServices as $service)
-            <li>{{ $service->name }} - {{ $service->total_bookings }} lượt đặt</li>
+            <li><span>{{ $service->name }}</span> <strong>{{ $service->total_bookings }} lượt đặt</strong></li>
         @empty
             <li>Chưa có dữ liệu.</li>
         @endforelse
     </ol>
 
     @if (auth()->user()->isRootOwner())
-        <hr>
-        <h2>Hội đồng Quản lý tối cao (chỉ Chủ Tiệm gốc mới thấy mục này)</h2>
+        <div class="pole-divider"></div>
+        <section style="border:1px solid var(--rosewood-br); border-radius:6px; padding:1.5rem;">
+            <h2>Hội đồng Quản lý tối cao <span class="muted" style="font-family:var(--font-body); font-size:.75rem; text-transform:none;">(chỉ Chủ Tiệm gốc mới thấy mục này)</span></h2>
 
-        <h3>Thăng chức Quản lý tối cao</h3>
-        <form action="{{ route('admin.system-owner.sub-owners.store') }}" method="POST">
-            @csrf
-            <input type="email" name="email" placeholder="Email nhân sự..." required>
-            <input type="text" name="note" placeholder="Ghi chú (vd: Quản lý chi nhánh 2)">
-            <button type="submit">Thăng chức</button>
-        </form>
+            <h3>Thăng chức Quản lý tối cao</h3>
+            <form action="{{ route('admin.system-owner.sub-owners.store') }}" method="POST" class="form-inline">
+                @csrf
+                <input type="email" name="email" placeholder="Email nhân sự..." required>
+                <input type="text" name="note" placeholder="Ghi chú (vd: Quản lý chi nhánh 2)">
+                <button type="submit" class="btn btn-gold">Thăng chức</button>
+            </form>
 
-        <h3>Danh sách Quản lý tối cao hiện tại</h3>
-        <ul>
-            @forelse ($subOwners as $sub)
-                <li>
-                    {{ $sub->email }} ({{ $sub->note ?: 'Quản lý tối cao' }})
-                    <form action="{{ route('admin.system-owner.sub-owners.destroy', $sub->id) }}" method="POST" style="display:inline">
-                        @csrf @method('DELETE')
-                        <button type="submit">Tước chức</button>
-                    </form>
-                </li>
-            @empty
-                <li>Chưa có ai được thăng chức.</li>
-            @endforelse
-        </ul>
+            <h3>Danh sách Quản lý tối cao hiện tại</h3>
+            <ul class="ranked-list">
+                @forelse ($subOwners as $sub)
+                    <li>
+                        <span>{{ $sub->email }} <span class="role-badge owner">{{ $sub->note ?: 'Quản lý tối cao' }}</span></span>
+                        <form action="{{ route('admin.system-owner.sub-owners.destroy', $sub->id) }}" method="POST">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">Tước chức</button>
+                        </form>
+                    </li>
+                @empty
+                    <li>Chưa có ai được thăng chức.</li>
+                @endforelse
+            </ul>
+        </section>
     @endif
 
-    <hr>
+    <div class="pole-divider"></div>
 
     <h2>Quản lý phân quyền nhân sự</h2>
-    <table border="1" cellpadding="8">
+    <table class="data-table">
         <thead>
             <tr>
                 <th>Thành viên</th>
@@ -73,9 +77,9 @@
                     <td>{{ $user->email }}<br>{{ $user->phone }}</td>
                     <td>
                         @if ($user->isSystemOwner())
-                            Quản lý tối cao
+                            <span class="role-badge owner">Quản lý tối cao</span>
                         @elseif ($user->admin_role == \App\Models\User::ROLE_ADMIN)
-                            Nhân viên quản trị
+                            <span class="role-badge">Nhân viên quản trị</span>
                         @elseif ($user->admin_role == \App\Models\User::ROLE_CLIENT)
                             Khách hàng
                         @else
@@ -96,7 +100,7 @@
                                 </select>
                             </form>
                         @else
-                            <em>Cấp độ tối cao</em>
+                            <em class="muted">Cấp độ tối cao</em>
                         @endif
                     </td>
                 </tr>

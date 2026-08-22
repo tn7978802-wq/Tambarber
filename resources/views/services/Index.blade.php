@@ -4,9 +4,11 @@
 
 @section('content')
 
+    <span class="section-eyebrow">Bảng giá dịch vụ</span>
     <h1>Bảng giá dịch vụ</h1>
+    <div class="pole-divider small" style="margin-left:0;"></div>
 
-    <table border="1" cellpadding="8">
+    <table class="price-table">
         <thead>
             <tr>
                 <th>Dịch vụ</th>
@@ -19,11 +21,11 @@
         <tbody>
             @forelse ($services as $service)
                 <tr>
-                    <td>{{ $service->name }}</td>
+                    <td><strong>{{ $service->name }}</strong></td>
                     <td>{{ $service->description }}</td>
                     <td>{{ $service->duration_minutes }} phút</td>
-                    <td>{{ number_format((float) $service->price, 0, ',', '.') }}đ</td>
-                    <td><a href="{{ route('booking.create', ['service_id' => $service->id]) }}">Đặt lịch</a></td>
+                    <td class="price">{{ number_format((float) $service->price, 0, ',', '.') }}đ</td>
+                    <td><a href="{{ route('booking.create', ['service_id' => $service->id]) }}" class="btn btn-outline">Đặt lịch</a></td>
                 </tr>
             @empty
                 <tr>
