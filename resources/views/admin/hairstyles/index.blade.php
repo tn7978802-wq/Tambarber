@@ -1,0 +1,65 @@
+@extends('layouts.admin')
+
+@section('title', 'Quản lý Kiểu tóc')
+
+@section('content')
+
+    <h1>Quản lý Kiểu tóc</h1>
+
+    <h2>Thêm kiểu tóc mới</h2>
+    <form action="{{ route('admin.hairstyles.store') }}" method="POST">
+        @csrf
+        <input type="text" name="name" placeholder="Tên kiểu tóc" required>
+        <input type="text" name="image" placeholder="Đường dẫn ảnh (vd: /images/fade-cut-closeup.jpg)">
+        <input type="text" name="suitable_face_shapes" placeholder="Khuôn mặt phù hợp">
+        <select name="difficulty" required>
+            <option value="easy">Dễ</option>
+            <option value="medium" selected>Trung bình</option>
+            <option value="hard">Khó</option>
+        </select>
+        <input type="number" name="reference_price" placeholder="Giá tham khảo (VND)">
+        <textarea name="description" placeholder="Mô tả"></textarea>
+        <button type="submit">Thêm</button>
+    </form>
+
+    <hr>
+
+    <table border="1" cellpadding="8">
+        <thead>
+            <tr>
+                <th>Ảnh</th>
+                <th>Tên</th>
+                <th>Độ khó</th>
+                <th>Giá tham khảo</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($hairstyles as $hairstyle)
+                <tr>
+                    <td>
+                        @if ($hairstyle->image)
+                            <img src="{{ $hairstyle->image }}" alt="{{ $hairstyle->name }}" width="80">
+                        @endif
+                    </td>
+                    <td>{{ $hairstyle->name }}</td>
+                    <td>{{ $hairstyle->difficulty }}</td>
+                    <td>
+                        {{ $hairstyle->reference_price ? number_format((float) $hairstyle->reference_price, 0, ',', '.') . 'đ' : '—' }}
+                    </td>
+                    <td>
+                        <form action="{{ route('admin.hairstyles.destroy', $hairstyle) }}" method="POST" style="display:inline" onsubmit="return confirm('Xoá kiểu tóc này?')">
+                            @csrf @method('DELETE')
+                            <button type="submit">Xoá</button>
+                        </form>
+                    </td>
+                </tr>
+            @empty
+                <tr><td colspan="5">Chưa có kiểu tóc nào.</td></tr>
+            @endforelse
+        </tbody>
+    </table>
+
+    {{ $hairstyles->links() }}
+
+@endsection
