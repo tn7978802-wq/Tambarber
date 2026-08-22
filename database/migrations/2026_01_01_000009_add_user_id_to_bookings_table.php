@@ -10,6 +10,11 @@ return new class extends Migration
     {
         Schema::table('bookings', function (Blueprint $table) {
             $table->foreignId('user_id')->nullable()->after('id')->constrained('users')->nullOnDelete();
+            $table->id();
+            $table->string('title');
+            $table->text('content')->nullable();
+            $table->timestamp('publish_at')->nullable();
+            $table->timestamps();
         });
     }
 
