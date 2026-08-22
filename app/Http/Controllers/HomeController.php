@@ -27,7 +27,7 @@ class HomeController extends Controller
             report($exception);
         }
 
-        return view('Home', [
+        return view('home', [
             'featuredHairstyles' => $featuredHairstyles,
             'services' => $services,
             'reviews' => $reviews,
