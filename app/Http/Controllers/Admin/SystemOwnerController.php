@@ -49,7 +49,7 @@ class SystemOwnerController extends Controller
     public function addSubOwner(Request $request)
     {
         if (! auth()->user()->isRootOwner()) {
-            return back()->with('error', 'Chỉ Chủ Tiệm gốc (Root Owner) mới có quyền thăng chức Quản lý tối cao!');
+            return back()->with('error', 'Chỉ Chủ Tiệm mới có quyền thăng chức Quản lý tối cao!');
         }
 
         $request->validate([
@@ -62,7 +62,7 @@ class SystemOwnerController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if ($user->isRootOwner()) {
-            return back()->with('error', 'Người này đã là Chủ Tiệm gốc trong .env rồi.');
+            return back()->with('error', 'Người này đã là Chủ Tiệm rồi');
         }
 
         DB::table('sub_owners')->updateOrInsert(
@@ -70,18 +70,18 @@ class SystemOwnerController extends Controller
             ['note' => $request->note, 'created_at' => now(), 'updated_at' => now()]
         );
 
-        return back()->with('success', 'Đã thăng chức Quản lý tối cao cho ' . $request->email);
+        return back()->with('success', 'Đã thăng chức Quản lý ' . $request->email);
     }
 
     public function removeSubOwner($id)
     {
         if (! auth()->user()->isRootOwner()) {
-            return back()->with('error', 'Chỉ Chủ Tiệm gốc mới có quyền tước chức Quản lý tối cao!');
+            return back()->with('error', 'Chỉ Chủ Tiệm gốc mới có quyền tước chức Quản lý!');
         }
 
         DB::table('sub_owners')->where('id', $id)->delete();
 
-        return back()->with('success', 'Đã tước chức Quản lý tối cao thành công!');
+        return back()->with('success', 'Đã tước chức Quản lý thành công!');
     }
 
     public function updateRole(Request $request, User $user)
@@ -99,7 +99,7 @@ class SystemOwnerController extends Controller
 
         // Chỉ Root/Sub Owner mới được cấp quyền Super Admin cho người khác.
         if (! auth()->user()->isRootOwner() && $newRole === User::ROLE_SUPERADMIN) {
-            return back()->with('error', 'Chỉ Chủ Tiệm gốc mới được cấp quyền Quản lý tối cao.');
+            return back()->with('error', 'Chỉ Chủ Tiệm gốc mới được cấp quyền Quản lý.');
         }
 
         $user->admin_role = $newRole;

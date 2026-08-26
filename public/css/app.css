@@ -1,5 +1,5 @@
 /* ==========================================================================
-   TÂM BARBERSHOP — Design tokens & site-wide styles
+TÂM BARBERSHOP — Design tokens & site-wide styles
    Palette: near-black ground, aged-gold foil, barber-pole rosewood red.
    Display face: Bebas Neue (poster-condensed). Body/UI: Jost.
    Signature motif: the diagonal barber-pole stripe, used as a divider and
@@ -9,25 +9,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
 
 :root{
-  --ink:        #0b0805;
-  --ink-2:      #171008;
-  --panel:      #1f160b;
-  --panel-2:    #251b0e;
-  --line:       #3c2c15;
-  --gold:       #cf9f3f;
-  --gold-bright:#f2d788;
-  --gold-deep:  #8a641d;
-  --rosewood:   #7c1f22;
-  --rosewood-br:#a8342f;
-  --cream:      #f4ecd8;
-  --muted:      #a89a7c;
-  --muted-dim:  #6f6248;
-
-  --font-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
-  --font-body: 'Jost', 'Segoe UI', sans-serif;
-
-  --radius: 2px;
-  --shadow-gold: 0 0 0 1px rgba(207,159,63,.35), 0 18px 40px -20px rgba(0,0,0,.8);
+    --ink:        #0b0805;
+    --ink-2:      #171008;
+    --panel:      rgb(80 77 71 / 80%);
+    --panel-2:    #251b0e;
+    --line:       #3c2c15;
+    --gold:       #cf9f3f;
+    --gold-bright:#f2d788;
+    --gold-deep:  #8a641d;
+    --rosewood:   #7c1f22;
+    --rosewood-br:#a8342f;
+    --cream:      #f4ecd8;
+    --muted-dim:  #6f6248;
+    --font-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
+    --font-body: 'Jost', 'Segoe UI', sans-serif;
+    --radius: 2px;
+    --shadow-gold: 0 0 0 1px rgba(207,159,63,.35), 0 18px 40px -20px rgba(0,0,0,.8);
 }
 
 /* ---------- Reset & base ---------- */
@@ -68,7 +65,107 @@ hr{ border:0; height:1px; background:var(--line); margin:2.5rem 0; }
 
 .container{ max-width:1120px; margin:0 auto; padding:0 20px; }
 
-/* ---------- Barber-pole divider (signature element) ---------- */
+
+/* ---------- Thanh điều hướng (site-header / main-nav) ---------- */
+.site-header{
+  position:sticky; top:0; z-index:100;
+  background:linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+  border-bottom:1px solid var(--line);
+  box-shadow:0 2px 10px rgba(0,0,0,.3);
+}
+.nav-container{
+  max-width:max-content; margin:0 auto; padding:0 20px;
+  min-height:76px; display:flex; align-items:center; justify-content:space-between;
+  gap:1.5rem; flex-wrap:wrap; position:relative;
+}
+.brand{
+  font-family:var(--font-display); font-size:1.7rem; letter-spacing:.06em;
+  color:var(--gold-bright); display:flex; align-items:center; gap:.5rem; white-space:nowrap;
+}
+.brand:hover{ color:var(--gold); text-decoration:none; }
+.brand .brand-mark{
+  width:10px; height:28px; border-radius:99px;
+  background:repeating-linear-gradient(-45deg, var(--rosewood) 0 5px, var(--cream) 5px 10px, var(--ink-2) 10px 15px);
+  box-shadow:0 0 0 1px var(--gold-deep);
+}
+
+/* Nút hamburger - chỉ hiện trên màn hình nhỏ */
+.nav-toggle-checkbox{ display:none; }
+.nav-toggle-btn{
+  display:none; color:var(--gold-bright); font-size:1.6rem; line-height:1;
+  padding:4px 8px; cursor:pointer; user-select:none;
+}
+
+.main-nav{
+  background: var(--rosewood-br);
+  display:flex; 
+  flex-wrap:wrap; 
+  align-items:center; 
+  gap:1.1rem; }
+.main-nav a{
+  color:var(--muted); text-transform:uppercase; letter-spacing:.05em; font-weight:500;
+  font-size:.85rem; padding:8px 10px; border-radius:6px; white-space:nowrap;
+  transition:background .15s ease, color .15s ease;
+}
+.main-nav a:hover,
+.main-nav a.is-active{ background:var(--panel); color:var(--gold-bright); }
+.main-nav a.btn-cta:hover{ filter:brightness(1.08); }
+
+.nav-divider{ width:1px; align-self:stretch; background:var(--line); margin:8px 6px; }
+
+.nav-logout-form{ display:inline-flex; }
+.nav-logout-form button{
+  background:none; border:1px solid var(--line); color:var(--muted);
+  padding:7px 10px; border-radius:6px; cursor:pointer; font-size:.85rem;
+  font-family:inherit; text-transform:uppercase; letter-spacing:.05em; white-space:nowrap;
+}
+.nav-logout-form button:hover{ background:var(--panel); color:var(--gold-bright); }
+
+/* ---------- Responsive: gộp thành menu sổ xuống trên điện thoại ---------- */
+@media (max-width: 900px) {
+    .nav-toggle-btn {
+        display: block;
+    }
+
+    .main-nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--ink-2);
+        border-bottom: 1px solid var(--line);
+        flex-direction: column;
+        align-items: stretch;
+        padding: 8px;
+        gap: 2px;
+        box-shadow: 0 10px 18px rgba(0, 0, 0, .35);
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .nav-toggle-checkbox:checked~.main-nav {
+        display: flex;
+    }
+
+    .nav-divider {
+        display: none;
+    }
+
+    .main-nav a,
+    .nav-logout-form {
+        width: 100%;
+    }
+
+    .main-nav a.btn-cta {
+        margin-left: 0;
+        text-align: center;
+    }
+    .nav-logout-form button {
+        width: 100%;
+        text-align: left;
+    }
+}
 .pole-divider{
   height:6px;
   margin:0 0 2.5rem;
@@ -82,35 +179,6 @@ hr{ border:0; height:1px; background:var(--line); margin:2.5rem 0; }
   box-shadow:0 2px 10px rgba(0,0,0,.5);
 }
 .pole-divider.small{ height:4px; width:120px; margin:0 auto 1.5rem; }
-
-/* ---------- Header ---------- */
-.site-header{
-  position:sticky; top:0; z-index:50;
-  background:linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
-  border-bottom:1px solid var(--line);
-}
-.site-header .container{
-  display:flex; align-items:center; justify-content:space-between;
-  min-height:76px; gap:1.5rem; flex-wrap:wrap; padding-top:.5rem; padding-bottom:.5rem;
-}
-.brand{
-  font-family:var(--font-display); font-size:1.7rem; letter-spacing:.06em;
-  color:var(--gold-bright); display:flex; align-items:center; gap:.5rem;
-}
-.brand:hover{ text-decoration:none; color:var(--gold); }
-.brand .brand-mark{
-  width:10px; height:28px; border-radius:99px;
-  background:repeating-linear-gradient(-45deg, var(--rosewood) 0 5px, var(--cream) 5px 10px, var(--ink-2) 10px 15px);
-  box-shadow:0 0 0 1px var(--gold-deep);
-}
-.main-nav{ display:flex; flex-wrap:wrap; align-items:center; gap:1.1rem; font-size:.92rem; }
-.main-nav a{
-  color:var(--muted); text-transform:uppercase; letter-spacing:.05em; font-weight:500;
-}
-.main-nav a:hover, .main-nav a.is-active{ color:var(--gold-bright); text-decoration:none; }
-.main-nav .divider{ color:var(--line); }
-.main-nav form{ display:inline; }
-.main-nav .btn{ padding:.45rem .9rem; font-size:.85rem; }
 
 /* ---------- Buttons ---------- */
 .btn{
@@ -336,6 +404,3 @@ textarea{ min-height:100px; resize:vertical; }
 .text-center{ text-align:center; }
 .eyebrow-gold{ color:var(--gold-bright); }
 .muted{ color:var(--muted); }
-@media (max-width:600px){
-  .site-header .container{ flex-direction:column; align-items:flex-start; }
-}

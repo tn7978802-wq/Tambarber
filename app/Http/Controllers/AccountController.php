@@ -18,10 +18,7 @@ class AccountController extends Controller
         $bookings = $user->bookings()
             ->with(['service', 'barber'])
             ->when($user->phone, function ($query) use ($user) {
-                $query->orWhere(function ($phoneQuery) use ($user) {
-                    $phoneQuery->where('customer_phone', $user->phone)
-                        ->whereNull('user_id');
-                });
+                $query->orWhere('customer_phone', $user->phone);
             })
             ->orderByDesc('booking_date')
             ->get();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Hairstyle;
+use App\Support\Traits\HandlesImageUpload;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -11,6 +12,8 @@ use Illuminate\View\View;
 
 class HairstyleController extends Controller
 {
+    use HandlesImageUpload;
+
     public function index(): View
     {
         $hairstyles = Hairstyle::orderBy('name')->paginate(15);
@@ -31,6 +34,11 @@ class HairstyleController extends Controller
     {
         $data = $this->validated($request);
 
+        // Không chọn ảnh mới thì giữ nguyên ảnh cũ.
+        if (! $data['image']) {
+            unset($data['image']);
+        }
+
         $hairstyle->update($data);
 
         return back()->with('success', 'Đã cập nhật kiểu tóc.');
@@ -47,7 +55,7 @@ class HairstyleController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'image' => ['nullable', 'string', 'max:255'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp,gif', 'max:5120'],
             'description' => ['nullable', 'string'],
             'suitable_face_shapes' => ['nullable', 'string', 'max:255'],
             'difficulty' => ['required', 'in:easy,medium,hard'],
@@ -55,6 +63,7 @@ class HairstyleController extends Controller
         ]);
 
         $data['slug'] = Str::slug($data['name']);
+        $data['image'] = $this->storeUploadedImage($request, 'image', 'uploads/hairstyles');
 
         return $data;
     }

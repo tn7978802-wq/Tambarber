@@ -9,13 +9,50 @@ use App\Models\Portfolio;
 use App\Models\Post;
 use App\Models\Review;
 use App\Models\Service;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // ===================== TÀI KHOẢN MẪU =====================
+        // Chủ tiệm gốc (Root Owner) — email phải trùng với SYSTEM_OWNER_EMAIL trong .env
+        // để tự động có quyền Quản lý tối cao, kể cả khi admin_role trong DB không phải 3.
+        $owner = User::updateOrCreate(
+            ['email' => 'owner@barbershop.vn'],
+            [
+                'fullname' => 'Chủ Tiệm Barbershop',
+                'password' => Hash::make('password'),
+                'phone' => '0900000001',
+                'admin_role' => User::ROLE_SUPERADMIN,
+            ]
+        );
+
+        // Nhân viên quản trị (vào được Dashboard nhưng không vào được Quản lý tối cao).
+        $staff = User::updateOrCreate(
+            ['email' => 'nhanvien@barbershop.vn'],
+            [
+                'fullname' => 'Nhân Viên Quản Trị',
+                'password' => Hash::make('password'),
+                'phone' => '0900000002',
+                'admin_role' => User::ROLE_ADMIN,
+            ]
+        );
+
+        // Khách hàng mẫu (đăng nhập xem lịch sử đặt lịch tại "Tài khoản của tôi").
+        $customer = User::updateOrCreate(
+            ['email' => 'khach@barbershop.vn'],
+            [
+                'fullname' => 'Khách Hàng Demo',
+                'password' => Hash::make('password'),
+                'phone' => '0900000003',
+                'admin_role' => User::ROLE_CLIENT,
+            ]
+        );
+
         // ===================== BARBERS =====================
         $barberTam = Barber::updateOrCreate(
             ['slug' => 'tam-barber'],
@@ -269,9 +306,10 @@ class DatabaseSeeder extends Seeder
             Booking::updateOrCreate(
                 ['booking_code' => 'BAR-DEMO0001'],
                 [
-                    'customer_name' => 'Khách demo',
-                    'customer_phone' => '0900000000',
-                    'customer_email' => null,
+                    'user_id' => $customer->id,
+                    'customer_name' => $customer->fullname,
+                    'customer_phone' => $customer->phone,
+                    'customer_email' => $customer->email,
                     'service_id' => $service->id,
                     'barber_id' => $barberTam->id,
                     'booking_date' => now()->addDay()->toDateString(),

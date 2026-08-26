@@ -4,106 +4,124 @@
 
 @section('content')
 
+{{-- Bố cục 2 cột: nội dung chính bên trái, khung "Trạng thái & Sự kiện" bên phải. --}}
+<div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;">
+
+<div style="flex:3;min-width:280px;">
+
     {{-- 1. HERO SECTION --}}
-    <section class="hero">
-        <div>
-            <span class="section-eyebrow">Đẹp trai hơn &middot; Tự tin hơn &middot; Thành công hơn</span>
-            <h1>Tâm Barbershop<br>Cắt tóc nam chuyên nghiệp</h1>
-            <p>Chuẩn phong cách, đúng tay nghề. Đến với chúng tôi để có kiểu tóc ưng ý mỗi lần ghé thăm.</p>
-            <a href="{{ route('booking.create') }}" class="btn btn-gold">Đặt lịch ngay</a>
-        </div>
-        <img src="/images/fade-cut-closeup.jpg" alt="Barber đang cắt tóc fade cho khách">
+    <section>
+        <img src="/images/fade-cut-closeup.jpg" alt="Barber đang cắt tóc fade cho khách" width="600">
+        <h1>Barbershop - Cắt tóc nam chuyên nghiệp</h1>
+        <p>Chuẩn phong cách, đúng tay nghề. Đến với chúng tôi để có kiểu tóc ưng ý mỗi lần ghé thăm.</p>
+        <a href="{{ route('booking.create') }}"><strong>Đặt lịch ngay</strong></a>
     </section>
 
-    <div class="pole-divider"></div>
+    <hr>
 
     {{-- 2. KIỂU TÓC NỔI BẬT --}}
     <section>
-        <span class="section-eyebrow">Xu hướng</span>
         <h2>Kiểu tóc nổi bật</h2>
-        <ul class="card-grid">
+        <ul>
             @forelse ($featuredHairstyles as $hairstyle)
-                <li class="card">
+                <li>
                     <a href="{{ route('hairstyles.show', $hairstyle->slug) }}">
-                        <img src="{{ $hairstyle->image ?? '/images/fade-cut-closeup.jpg' }}" alt="{{ $hairstyle->name }}">
-                        <h3>{{ $hairstyle->name }}</h3>
+                        <img src="{{ $hairstyle->image ?? '/images/fade-cut-closeup.jpg' }}" alt="{{ $hairstyle->name }}" width="150">
+                        <br>
+                        {{ $hairstyle->name }}
                     </a>
                 </li>
             @empty
-                <li class="card">Danh sách kiểu tóc đang được cập nhật.</li>
+                <li>Danh sách kiểu tóc đang được cập nhật.</li>
             @endforelse
         </ul>
-        <p class="text-center" style="margin-top:1.25rem;">
-            <a href="{{ route('hairstyles.index') }}">Xem tất cả kiểu tóc &rarr;</a>
-        </p>
+        <a href="{{ route('hairstyles.index') }}">Xem tất cả kiểu tóc &rarr;</a>
     </section>
+
+    <hr>
 
     {{-- 3. DỊCH VỤ --}}
     <section>
-        <span class="section-eyebrow">Bảng giá</span>
         <h2>Dịch vụ của chúng tôi</h2>
-        <ul class="card-grid">
+        <ul>
             @forelse ($services as $service)
-                <li class="card">
-                    <h3>{{ $service->name }}</h3>
-                    <p class="price">{{ number_format((float) $service->price, 0, ',', '.') }}đ</p>
-                    <p class="meta">{{ $service->duration_minutes }} phút</p>
-                    <p>{{ $service->description }}</p>
+                <li>
+                    <strong>{{ $service->name }}</strong> -
+                    {{ number_format((float) $service->price, 0, ',', '.') }}đ
+                    ({{ $service->duration_minutes }} phút)
+                    <br>{{ $service->description }}
                 </li>
             @empty
-                <li class="card">Danh sách dịch vụ đang được cập nhật.</li>
+                <li>Danh sách dịch vụ đang được cập nhật.</li>
             @endforelse
         </ul>
-        <p class="text-center" style="margin-top:1.25rem;">
-            <a href="{{ route('services.index') }}">Xem toàn bộ bảng giá &rarr;</a>
-        </p>
+        <a href="{{ route('services.index') }}">Xem toàn bộ bảng giá &rarr;</a>
     </section>
 
-    <div class="pole-divider"></div>
+    <hr>
 
     {{-- 4. ĐÁNH GIÁ KHÁCH HÀNG --}}
     <section>
-        <div style="display:grid; grid-template-columns:1fr auto; gap:2rem; align-items:start;">
-            <div>
-                <span class="section-eyebrow">Cảm nhận</span>
-                <h2>Khách hàng nói gì về chúng tôi</h2>
-                @forelse ($reviews as $review)
-                    <blockquote class="review">
-                        &ldquo;{{ $review->comment }}&rdquo;
-                        <br>
-                        <strong>{{ $review->customer_name }}</strong> &middot;
-                        <span class="stars">{{ $review->rating }}/5 sao</span>
-                    </blockquote>
-                @empty
-                    <p>Chưa có đánh giá nào.</p>
-                @endforelse
-            </div>
-            <div class="seal" aria-hidden="true">
-                SỰ HÀI LÒNG<br><span style="font-size:1.7rem;">100%</span><br>
-                <small>HOẶC HOÀN TIỀN</small>
-            </div>
-        </div>
+        <h2>Khách hàng nói gì về chúng tôi</h2>
+        @forelse ($reviews as $review)
+            <blockquote>
+                "{{ $review->comment }}"
+                <br>
+                <strong>{{ $review->customer_name }}</strong> - {{ $review->rating }}/5 sao
+            </blockquote>
+        @empty
+            <p>Chưa có đánh giá nào.</p>
+        @endforelse
     </section>
 
-    <div class="pole-divider"></div>
+    <hr>
 
     {{-- 5. BÀI VIẾT MỚI --}}
     <section>
-        <span class="section-eyebrow">Cập nhật</span>
         <h2>Kiến thức &amp; Tin tức</h2>
-        <ul class="card-grid">
+        <ul>
             @forelse ($latestPosts as $post)
-                <li class="card">
-                    <a href="{{ route('blog.show', $post->slug) }}"><h3>{{ $post->title }}</h3></a>
-                    <p>{{ $post->excerpt }}</p>
+                <li>
+                    <a href="{{ route('blog.show', $post->slug) }}">{{ $post->title }}</a>
+                    <br>{{ $post->excerpt }}
                 </li>
             @empty
-                <li class="card">Chưa có bài viết nào.</li>
+                <li>Chưa có bài viết nào.</li>
             @endforelse
         </ul>
-        <p class="text-center" style="margin-top:1.25rem;">
-            <a href="{{ route('blog.index') }}">Xem thêm bài viết &rarr;</a>
-        </p>
+        <a href="{{ route('blog.index') }}">Xem thêm bài viết &rarr;</a>
     </section>
 
+</div>
+
+{{-- 6. KHUNG TRẠNG THÁI & SỰ KIỆN - BÊN PHẢI --}}
+<aside style="flex:1;min-width:260px;border:1px solid #ccc;padding:12px;">
+    <h2>Trạng thái &amp; Sự kiện</h2>
+
+    @forelse ($announcements as $announcement)
+        <div style="border-bottom:1px solid #ddd;padding:8px 0;">
+            @if ($announcement->is_pinned)
+                <small>📌 Ghim</small>
+            @endif
+            @if ($announcement->image)
+                <a href="{{ route('announcements.show', $announcement) }}">
+                    <img src="{{ $announcement->image }}" alt="" width="100%">
+                </a>
+            @endif
+            <p>
+                <a href="{{ route('announcements.show', $announcement) }}">
+                    <strong>{{ $announcement->title ?: \Illuminate\Support\Str::limit($announcement->content, 60) }}</strong>
+                </a>
+            </p>
+            @if ($announcement->event_at)
+                <small>🗓️ {{ $announcement->event_at->format('H:i d/m/Y') }}</small><br>
+            @endif
+            <small>{{ $announcement->created_at->diffForHumans() }} &middot; {{ $announcement->comments_count }} bình luận</small>
+        </div>
+    @empty
+        <p><small>Chưa có trạng thái/sự kiện nào.</small></p>
+    @endforelse
+    <a href="{{ route('announcements.index') }}">Xem tất cả &rarr;</a>
+</aside>
+</div>
 @endsection

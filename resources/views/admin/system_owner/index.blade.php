@@ -5,7 +5,7 @@
 @section('content')
 
     <span class="section-eyebrow">Khu vực đặc quyền</span>
-    <h1>Khu vực chủ tiệm (System Owner)</h1>
+    <h1>Khu vực chủ tiệm</h1>
     <p class="muted">Khu vực dành riêng cho Chủ Tiệm — toàn quyền kiểm soát hệ thống và phân quyền nhân sự.</p>
     <div class="pole-divider small" style="margin-left:0;"></div>
 
@@ -31,7 +31,7 @@
     @if (auth()->user()->isRootOwner())
         <div class="pole-divider"></div>
         <section style="border:1px solid var(--rosewood-br); border-radius:6px; padding:1.5rem;">
-            <h2>Hội đồng Quản lý tối cao <span class="muted" style="font-family:var(--font-body); font-size:.75rem; text-transform:none;">(chỉ Chủ Tiệm gốc mới thấy mục này)</span></h2>
+            <h2>Hội đồng Quản lý tối cao <span class="muted" style="font-family:var(--font-body); font-size:.75rem; text-transform:none;">(chỉ Chủ Tiệm mới thấy mục này)</span></h2>
 
             <h3>Thăng chức Quản lý tối cao</h3>
             <form action="{{ route('admin.system-owner.sub-owners.store') }}" method="POST" class="form-inline">

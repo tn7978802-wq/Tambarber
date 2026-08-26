@@ -10,47 +10,47 @@
 </head>
 <body>
 
-    <header>
-        <nav>
-            <a href="{{ route('home') }}"><strong>Barbershop</strong></a>
-            |
-            <a href="{{ route('home') }}">Trang chủ</a>
-            |
-            <a href="{{ route('about') }}">Giới thiệu</a>
-            |
-            <a href="{{ route('hairstyles.index') }}">Kiểu tóc</a>
-            |
-            <a href="{{ route('services.index') }}">Dịch vụ</a>
-            |
-            <a href="{{ route('portfolio.index') }}">Portfolio</a>
-            |
-            <a href="{{ route('blog.index') }}">Blog</a>
-            |
-            <a href="{{ route('booking.create') }}">Đặt lịch</a>
-            |
-            <a href="{{ route('contact.index') }}">Liên hệ</a>
-            |
-            @auth
-                <a href="{{ route('account.index') }}">Tài khoản của tôi</a>
-                @if (auth()->user()->isAdmin())
-                    |
-                    <a href="{{ route('admin.dashboard') }}">Dashboard</a>
-                @endif
-                @if (auth()->user()->isSystemOwner())
-                    |
-                    <a href="{{ route('admin.system-owner.index') }}"><strong>Quản lý tối cao</strong></a>
-                @endif
-                |
-                <form action="{{ route('logout') }}" method="POST" style="display:inline">
-                    @csrf
-                    <button type="submit">Đăng xuất ({{ auth()->user()->fullname }})</button>
-                </form>
-            @else
-                <a href="{{ route('login') }}">Đăng nhập</a>
-                |
-                <a href="{{ route('register') }}">Đăng ký</a>
-            @endauth
-        </nav>
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="{{ route('home') }}" class="brand">✂️ TâmBarbershop</a>
+
+            {{-- Checkbox ẩn dùng để đóng/mở menu trên điện thoại, không cần JS. --}}
+            <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox">
+            <label for="nav-toggle" class="nav-toggle-btn" aria-label="Mở menu">&#9776;</label>
+
+            <nav class="main-nav">
+                <a href="{{ route('home') }}" @class(['is-active' => request()->routeIs('home')])>Trang chủ</a>
+                <a href="{{ route('about') }}" @class(['is-active' => request()->routeIs('about')])>Giới thiệu</a>
+                <a href="{{ route('hairstyles.index') }}" @class(['is-active' => request()->routeIs('hairstyles.*')])>Kiểu tóc</a>
+                <a href="{{ route('services.index') }}" @class(['is-active' => request()->routeIs('services.*')])>Dịch vụ</a>
+                <a href="{{ route('portfolio.index') }}" @class(['is-active' => request()->routeIs('portfolio.*')])>Portfolio</a>
+                <a href="{{ route('blog.index') }}" @class(['is-active' => request()->routeIs('blog.*')])>Blog</a>
+                <a href="{{ route('announcements.index') }}" @class(['is-active' => request()->routeIs('announcements.*')])>Sự kiện</a>
+                <a href="{{ route('contact.index') }}" @class(['is-active' => request()->routeIs('contact.*')])>Liên hệ</a>
+                <a href="{{ route('booking.create') }}" class="btn-cta">Đặt lịch</a>
+
+                <div class="nav-divider"></div>
+
+                @auth
+                    <a href="{{ route('account.index') }}" @class(['is-active' => request()->routeIs('account.*')])>
+                        {{ \Illuminate\Support\Str::limit(auth()->user()->fullname, 14) }}
+                    </a>
+                    @if (auth()->user()->isAdmin())
+                        <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                    @endif
+                    @if (auth()->user()->isSystemOwner())
+                        <a href="{{ route('admin.system-owner.index') }}">Quản lý tối cao</a>
+                    @endif
+                    <form action="{{ route('logout') }}" method="POST" class="nav-logout-form">
+                        @csrf
+                        <button type="submit">Đăng xuất</button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}">Đăng nhập</a>
+                    <a href="{{ route('register') }}">Đăng ký</a>
+                @endauth
+            </nav>
+        </div>
     </header>
 
     <main>

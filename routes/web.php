@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BookingController;
@@ -41,6 +42,12 @@ Route::get('/dat-lich/thanh-cong/{code}', [BookingController::class, 'success'])
 // ===================== LIÊN HỆ =====================
 Route::get('/lien-he', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/lien-he', [ContactController::class, 'store'])->name('contact.store');
+
+// ===================== TRẠNG THÁI & SỰ KIỆN =====================
+// Xem công khai, mở cho TẤT CẢ mọi người bình luận (không cần đăng nhập).
+Route::get('/trang-thai', [AnnouncementController::class, 'index'])->name('announcements.index');
+Route::get('/trang-thai/{announcement}', [AnnouncementController::class, 'show'])->name('announcements.show');
+Route::post('/trang-thai/{announcement}/binh-luan', [AnnouncementController::class, 'storeComment'])->name('announcements.comment');
 
 // ===================== ĐĂNG NHẬP / ĐĂNG KÝ =====================
 Route::get('/dang-nhap', [AuthController::class, 'showLoginForm'])->name('login');
@@ -83,13 +90,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('/lich-hen/{booking}/hoan-thanh', [App\Http\Controllers\Admin\BookingController::class, 'complete'])->name('bookings.complete');
     Route::put('/lich-hen/{booking}/huy', [App\Http\Controllers\Admin\BookingController::class, 'cancel'])->name('bookings.cancel');
 
-    Route::middleware('system_owner')->group(function () {
-        Route::get('/system-owner', [App\Http\Controllers\Admin\SystemOwnerController::class, 'index'])->name('system-owner.index');
-        Route::put('/system-owner/users/{user}/role', [App\Http\Controllers\Admin\SystemOwnerController::class, 'updateRole'])->name('system-owner.update-role');
-        Route::post('/system-owner/sub-owners', [App\Http\Controllers\Admin\SystemOwnerController::class, 'addSubOwner'])->name('system-owner.sub-owners.store');
-        Route::delete('/system-owner/sub-owners/{id}', [App\Http\Controllers\Admin\SystemOwnerController::class, 'removeSubOwner'])->name('system-owner.sub-owners.destroy');
-    });
-
     Route::get('/dich-vu', [App\Http\Controllers\Admin\ServiceController::class, 'index'])->name('services.index');
     Route::post('/dich-vu', [App\Http\Controllers\Admin\ServiceController::class, 'store'])->name('services.store');
     Route::put('/dich-vu/{service}', [App\Http\Controllers\Admin\ServiceController::class, 'update'])->name('services.update');
@@ -99,4 +99,22 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/kieu-toc', [App\Http\Controllers\Admin\HairstyleController::class, 'store'])->name('hairstyles.store');
     Route::put('/kieu-toc/{hairstyle}', [App\Http\Controllers\Admin\HairstyleController::class, 'update'])->name('hairstyles.update');
     Route::delete('/kieu-toc/{hairstyle}', [App\Http\Controllers\Admin\HairstyleController::class, 'destroy'])->name('hairstyles.destroy');
+
+    Route::get('/barber', [App\Http\Controllers\Admin\BarberController::class, 'index'])->name('barbers.index');
+    Route::post('/barber', [App\Http\Controllers\Admin\BarberController::class, 'store'])->name('barbers.store');
+    Route::put('/barber/{barber}', [App\Http\Controllers\Admin\BarberController::class, 'update'])->name('barbers.update');
+    Route::delete('/barber/{barber}', [App\Http\Controllers\Admin\BarberController::class, 'destroy'])->name('barbers.destroy');
+
+    Route::get('/trang-thai', [App\Http\Controllers\Admin\AnnouncementController::class, 'index'])->name('announcements.index');
+    Route::post('/trang-thai', [App\Http\Controllers\Admin\AnnouncementController::class, 'store'])->name('announcements.store');
+    Route::delete('/trang-thai/{announcement}', [App\Http\Controllers\Admin\AnnouncementController::class, 'destroy'])->name('announcements.destroy');
+
+    // Dành riêng cho Quản lý tối cao (System Owner).
+    Route::middleware('system_owner')->group(function () {
+        Route::get('/quan-ly-toi-cao', [App\Http\Controllers\Admin\SystemOwnerController::class, 'index'])->name('system-owner.index');
+        Route::put('/quan-ly-toi-cao/nguoi-dung/{user}/quyen', [App\Http\Controllers\Admin\SystemOwnerController::class, 'updateRole'])->name('system-owner.update-role');
+
+        Route::post('/quan-ly-toi-cao/co-van', [App\Http\Controllers\Admin\SystemOwnerController::class, 'addSubOwner'])->name('system-owner.sub-owners.store');
+        Route::delete('/quan-ly-toi-cao/co-van/{subOwner}', [App\Http\Controllers\Admin\SystemOwnerController::class, 'removeSubOwner'])->name('system-owner.sub-owners.destroy');
+    });
 });

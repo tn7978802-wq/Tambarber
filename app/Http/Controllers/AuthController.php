@@ -64,7 +64,7 @@ class AuthController extends Controller
         if ($isRootEmail) {
             if (! $user) {
                 $user = User::create([
-                    'fullname' => 'Chủ Tiệm (Root Owner)',
+                    'fullname' => 'Tâm Barbershop(Chủ tiệm)',
                     'email' => strtolower($login),
                     'password' => Hash::make(Str::random(32)), // mật khẩu DB ngẫu nhiên, không dùng tới
                     'admin_role' => User::ROLE_SUPERADMIN,

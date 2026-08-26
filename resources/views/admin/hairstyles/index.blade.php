@@ -9,10 +9,20 @@
     <div class="pole-divider small" style="margin-left:0;"></div>
 
     <h2>Thêm kiểu tóc mới</h2>
-    <form action="{{ route('admin.hairstyles.store') }}" method="POST" class="form-inline">
+    <form action="{{ route('admin.hairstyles.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <input type="text" name="name" placeholder="Tên kiểu tóc" required>
-        <input type="text" name="image" placeholder="Đường dẫn ảnh (vd: /images/fade-cut-closeup.jpg)">
+        <label>
+            <input type="text" name="name" placeholder="Tên kiểu tóc" required>
+        </label>
+
+        {{-- Nút "+" chọn ảnh: bấm vào sẽ mở hộp thoại duyệt file của máy (ổ C:...) để chọn ảnh,
+             thay vì phải gõ tay đường dẫn ảnh có sẵn trên server. --}}
+        <div class="image-picker">
+            <label for="hairstyle-image-input" class="image-picker-btn">➕ Chọn ảnh từ máy</label>
+            <input type="file" id="hairstyle-image-input" name="image" accept="image/*" onchange="document.getElementById('hairstyle-image-filename').textContent = this.files[0] ? this.files[0].name : '';">
+            <span id="hairstyle-image-filename" class="image-picker-filename"></span>
+        </div>
+
         <input type="text" name="suitable_face_shapes" placeholder="Khuôn mặt phù hợp">
         <select name="difficulty" required>
             <option value="easy">Dễ</option>

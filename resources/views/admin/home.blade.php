@@ -92,6 +92,8 @@
             </tbody>
         </table>
         <a href="{{ route('admin.bookings.index') }}">Xem toàn bộ lịch hẹn &rarr;</a>
+        <p><a href="{{ route('admin.barbers.index') }}">Quản lý Barber &rarr;</a></p>
+        <p><a href="{{ route('admin.announcements.index') }}">Đăng Trạng thái &amp; Sự kiện &rarr;</a></p>
     </section>
 
 @endsection

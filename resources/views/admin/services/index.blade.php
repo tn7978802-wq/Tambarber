@@ -15,13 +15,24 @@
         <input type="number" name="price" placeholder="Giá (VND)" required>
         <input type="number" name="duration_minutes" placeholder="Thời gian (phút)" required>
         <input type="text" name="description" placeholder="Mô tả">
+
+        {{-- Nút "+" chọn ảnh minh hoạ dịch vụ từ máy. --}}
+        <label for="service-image-input" style="display:inline-block;border:1px dashed #999;padding:10px 16px;cursor:pointer;">
+            ➕ Chọn ảnh từ máy
+        </label>
+        <input type="file" id="service-image-input" name="image" accept="image/*" style="display:none" onchange="document.getElementById('service-image-filename').textContent = this.files[0] ? this.files[0].name : '';">
+        <span id="service-image-filename"></span>
+
         <label><input type="checkbox" name="is_active" value="1" checked> Đang hoạt động</label>
         <button type="submit" class="btn btn-gold">Thêm</button>
     </form>
 
+    <hr>
+
     <table class="data-table">
         <thead>
             <tr>
+                <th>Ảnh</th>
                 <th>Tên</th>
                 <th>Giá</th>
                 <th>Thời gian</th>
@@ -32,6 +43,11 @@
         <tbody>
             @forelse ($services as $service)
                 <tr>
+                    <td>
+                        @if ($service->image)
+                            <img src="{{ $service->image }}" alt="{{ $service->name }}" width="80">
+                        @endif
+                    </td>
                     <td>{{ $service->name }}</td>
                     <td class="price">{{ number_format((float) $service->price, 0, ',', '.') }}đ</td>
                     <td>{{ $service->duration_minutes }} phút</td>

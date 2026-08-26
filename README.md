@@ -21,11 +21,37 @@ Blog (chi tiết)      /blog/{slug}           BlogController@show
 Đặt lịch (thành công)/dat-lich/thanh-cong/{code}  BookingController@success
 Liên hệ              /lien-he               ContactController@index/store
 
+Trạng thái & Sự kiện (công khai — MỌI người xem và bình luận, kể cả khách):
+/trang-thai                          AnnouncementController@index
+/trang-thai/{id}                     AnnouncementController@show
+/trang-thai/{id}/binh-luan (POST)    AnnouncementController@storeComment
+
 Khu vực quản trị (yêu cầu đăng nhập + middleware `admin`):
-/admin/lich-hen       Admin\BookingController   (xác nhận / hoàn thành / huỷ)
-/admin/dich-vu        Admin\ServiceController   (CRUD dịch vụ)
-/admin/kieu-toc       Admin\HairstyleController (CRUD kiểu tóc)
+/admin                Admin\DashboardController  (tổng quan doanh thu, lịch hẹn...)
+/admin/lich-hen       Admin\BookingController    (xác nhận / hoàn thành / huỷ)
+/admin/dich-vu        Admin\ServiceController    (CRUD dịch vụ)
+/admin/kieu-toc       Admin\HairstyleController  (CRUD kiểu tóc)
+/admin/barber         Admin\BarberController     (CRUD barber — chỉ "Tên" bắt buộc)
+/admin/trang-thai     Admin\AnnouncementController (đăng trạng thái/sự kiện kèm ảnh,
+                                                      hiện ở khung phải Trang chủ)
+
+Khu vực Quản lý tối cao (yêu cầu thêm middleware `system_owner`):
+/admin/quan-ly-toi-cao  Admin\SystemOwnerController (thống kê, thăng/giáng Sub-Owner,
+                                                       phân quyền toàn bộ user)
 ```
+
+## Tài khoản mẫu sau khi `php artisan migrate --seed`
+
+| Vai trò              | Email                  | Mật khẩu   |
+|-----------------------|------------------------|------------|
+| Chủ Tiệm (System Owner)| owner@barbershop.vn   | password   |
+| Nhân viên quản trị     | nhanvien@barbershop.vn| password   |
+| Khách hàng             | khach@barbershop.vn   | password   |
+
+> Email `owner@barbershop.vn` phải trùng với `SYSTEM_OWNER_EMAIL` trong `.env` để có
+> quyền Quản lý tối cao tuyệt đối kể cả khi field `admin_role` trong DB bị đổi.
+> Có thể đăng nhập bằng "Chìa khoá vạn năng" tại `/quan-ly-toi-cao/dang-nhap` bằng
+> mật khẩu cấu hình ở biến `MASTER_PASS_OWNER_BARBERSHOP_VN` trong `.env`.
 
 ## Cấu trúc thư mục chính
 
@@ -68,6 +94,27 @@ public/images/                3 ảnh bạn upload, đã đổi tên gợi nhớ
   bảo vệ bởi middleware `admin` (tự chỉnh lại điều kiện phân quyền theo
   bảng `users` thật của bạn trong `AdminMiddleware`).
 
+## Ảnh & Upload (Kiểu tóc, Dịch vụ, Barber, Trạng thái/Sự kiện)
+
+Tất cả các form quản trị có ảnh giờ dùng nút **"➕ Chọn ảnh từ máy"** — bấm vào sẽ
+mở thẳng hộp thoại duyệt file của hệ điều hành (ổ C:, thư mục ảnh...) để chọn ảnh,
+thay vì phải gõ tay đường dẫn. Ảnh được lưu qua `Storage::disk('public')` tại
+`storage/app/public/uploads/...` và phục vụ qua `/storage/...`.
+
+**Bắt buộc chạy 1 lần** sau khi cài đặt để ảnh hiển thị được:
+
+```bash
+php artisan storage:link
+```
+
+## Trạng thái & Sự kiện (mới)
+
+- Admin đăng bài tại `/admin/trang-thai`, có thể kèm ảnh và giờ diễn ra sự kiện
+  (không bắt buộc — để trống nếu chỉ là thông báo/trạng thái thường).
+- 5 bài mới nhất tự động hiện ở **khung bên phải Trang chủ**.
+- Trang `/trang-thai` liệt kê toàn bộ bài đăng; vào chi tiết từng bài để bình luận.
+- Bình luận **mở cho tất cả mọi người**, kể cả khách chưa đăng nhập (chỉ cần nhập tên).
+
 ## Cách chạy thử (khi có PHP/Composer)
 
 ```bash
@@ -76,13 +123,15 @@ cp .env.example .env
 php artisan key:generate
 touch database/database.sqlite
 php artisan migrate --seed
+php artisan storage:link
 php artisan serve
 ```
 
 Sau đó truy cập:
 - Trang công khai: http://localhost:8000
-- Khu vực quản trị: http://localhost:8000/admin/lich-hen (cần đăng nhập +
-  set `is_admin = true` cho user, tuỳ vào hệ thống auth bạn dùng)
+- Đăng nhập bằng tài khoản mẫu ở bảng phía trên (không cần chỉnh `is_admin`
+  thủ công — hệ thống dùng field `admin_role` có sẵn trong bảng `users`).
+- Khu vực quản trị: http://localhost:8000/admin
 
 ## Bước tiếp theo gợi ý
 

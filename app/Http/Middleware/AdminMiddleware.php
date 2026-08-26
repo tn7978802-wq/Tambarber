@@ -8,10 +8,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminMiddleware
 {
+    /**
+     * Chỉ cho phép nhân viên có quyền quản trị (admin_role = ADMIN) hoặc
+     * System Owner (luôn có toàn quyền, không gì ngăn cản được) truy cập /admin/*.
+     */
     public function handle(Request $request, Closure $next): Response
     {
         $user = $request->user();
 
+        // Đặc quyền tối thượng cho System Owner.
         if ($user && $user->isSystemOwner()) {
             return $next($request);
         }

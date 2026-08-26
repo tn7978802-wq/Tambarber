@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Service;
+use App\Support\Traits\HandlesImageUpload;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ServiceController extends Controller
 {
+    use HandlesImageUpload;
+
     public function index(): View
     {
         $services = Service::orderBy('name')->paginate(15);
@@ -30,6 +33,10 @@ class ServiceController extends Controller
     {
         $validated = $this->validated($request);
 
+        if (! $validated['image']) {
+            unset($validated['image']);
+        }
+
         $service->update($validated);
 
         return back()->with('success', 'Đã cập nhật dịch vụ.');
@@ -49,12 +56,13 @@ class ServiceController extends Controller
             'description' => ['nullable', 'string'],
             'price' => ['required', 'numeric', 'min:0'],
             'duration_minutes' => ['required', 'integer', 'min:5'],
-            'image' => ['nullable', 'string', 'max:255'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp,gif', 'max:5120'],
             'is_active' => ['nullable', 'boolean'],
         ]);
 
         $data['slug'] = \Illuminate\Support\Str::slug($data['name']);
         $data['is_active'] = $request->boolean('is_active', true);
+        $data['image'] = $this->storeUploadedImage($request, 'image', 'uploads/services');
 
         return $data;
     }
