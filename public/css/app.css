@@ -68,6 +68,11 @@ hr{ border:0; height:1px; background:var(--line); margin:2.5rem 0; }
 
 /* ---------- Thanh điều hướng (site-header / main-nav) ---------- */
 .site-header{
+  position: absolute; /* hoặc fixed */
+  top: 100%;          /* ngay bên dưới thanh header */
+  left: 0;
+  width: 100%;        /* kéo khít full 100% màn hình */
+  box-sizing: border-box;
   position:sticky; top:0; z-index:100;
   background:linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
   border-bottom:1px solid var(--line);

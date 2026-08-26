@@ -30,6 +30,11 @@ body {
 
 /* ---------- Thanh điều hướng quản trị ---------- */
 .site-header {
+    position: absolute; /* hoặc fixed */
+    top: 100%;          /* ngay bên dưới thanh header */
+    left: 0;
+    width: 100%;        /* kéo khít full 100% màn hình */
+    box-sizing: border-box;
     background: var(--admin-bg);
     position: sticky;
     top: 0;
