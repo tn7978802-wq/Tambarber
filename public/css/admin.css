@@ -4,7 +4,6 @@
    ========================================================================== */
 
 :root {
-    --rosewood-br:#a8342f;
     --admin-bg: #14110d;
     --admin-bg-hover: #262019;
     --admin-text: #cbbfa9;
@@ -30,11 +29,6 @@ body {
 
 /* ---------- Thanh điều hướng quản trị ---------- */
 .site-header {
-    position: absolute; /* hoặc fixed */
-    top: 100%;          /* ngay bên dưới thanh header */
-    left: 0;
-    width: 100%;        /* kéo khít full 100% màn hình */
-    box-sizing: border-box;
     background: var(--admin-bg);
     position: sticky;
     top: 0;
@@ -90,7 +84,6 @@ body {
 }
 
 .main-nav {
-    background: var(--rosewood-br);
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -392,22 +385,14 @@ button[type="submit"]:hover {
     filter: brightness(1.06);
 }
 
-.btn-danger {
-    color: #a4291f;
-    border-color: #f0c3bd;
-    background: #fdecea;
-}
-
-.btn-danger:hover {
-    background: #f9d9d4;
-}
-
+.btn-danger,
 button[type="submit"].btn-danger {
-    background: #fdecea;
-    border-color: #f0c3bd;
     color: #a4291f;
+    border-color: #f0c3bd;
+    background: #fdecea;
 }
 
+.btn-danger:hover,
 button[type="submit"].btn-danger:hover {
     background: #f9d9d4;
     filter: none;
@@ -442,4 +427,95 @@ button[type="submit"].btn-danger:hover {
 .status-cancelled {
     background: #fbe1df;
     color: #8a2119;
+}
+
+/* ==========================================================================
+   Cải thiện cho màn hình nhỏ (điện thoại): bảng cuộn ngang, vùng chạm to hơn,
+   form xếp dọc. Lưu ý: .site-header đang là "sticky" (nằm trong dòng chảy
+   layout), KHÔNG phải "fixed", nên không cần padding-top bù cho main.
+   ========================================================================== */
+@media (max-width: 720px) {
+    .nav-container {
+        min-height: 62px;
+        padding: 8px 12px;
+    }
+
+    .nav-toggle-btn {
+        font-size: 1.35rem;
+        padding: 6px 8px;
+    }
+
+    .main-nav a {
+        padding: 12px 14px;
+        font-size: 1rem;
+    }
+
+    .main-nav {
+        max-height: 62vh;
+        padding: 8px 10px;
+    }
+
+    /* Bảng: cho phép cuộn ngang thay vì ép cột co lại quá nhỏ.
+       Không đụng tới display của thead/tbody/tr - để trình duyệt tự lo,
+       ép chúng về "table-row" sẽ làm bảng render sai trên một số trình duyệt. */
+    table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 10px;
+    }
+
+    table th,
+    table td {
+        padding: 12px 14px;
+        font-size: .95rem;
+    }
+
+    /* Ảnh thu nhỏ trong bảng có kích thước đều nhau cho hàng cân đối */
+    table img {
+        width: 64px;
+        height: 64px;
+        object-fit: cover;
+        border-radius: 6px;
+    }
+
+    table td:last-child {
+        text-align: center;
+        min-width: 96px;
+        vertical-align: middle;
+    }
+
+    /* Form xếp dọc cho màn hình hẹp */
+    .admin-container form:not(.nav-logout-form) {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+
+    .admin-container form label {
+        width: 100%;
+    }
+
+    .image-picker,
+    .image-picker-btn {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    /* Chỉ tăng kích thước preview khi nó đang hiện (do JS bật lên lúc chọn ảnh) -
+       không ép display để tránh phá logic ẩn/hiện ban đầu (display:none). */
+    .image-picker-preview {
+        max-height: 64px;
+    }
+
+    button,
+    .btn {
+        padding: 10px 14px;
+        font-size: .95rem;
+    }
+
+    .site-header {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, .22);
+    }
 }
