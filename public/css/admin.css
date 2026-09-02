@@ -443,3 +443,110 @@ button[type="submit"].btn-danger:hover {
     background: #fbe1df;
     color: #8a2119;
 }
+
+/* ---------------- Mobile improvements (responsive balance & harmony) ----------------
+   - Ensure sticky header doesn't cover content on small screens
+   - Make tables scrollable and images consistent size so rows align better
+   - Improve form stacking and button alignment for narrow viewports
+------------------------------------------------------------------------------------- */
+@media (max-width: 720px) {
+    /* Give the header a stable height and ensure main content is pushed below it */
+    .nav-container {
+        min-height: 62px; /* slightly taller for touch targets */
+        padding: 8px 12px;
+    }
+
+    /* Add top padding so content isn't hidden behind the sticky header */
+    main {
+        padding-top: 84px; /* nav height (62) + comfortable spacing */
+    }
+
+    /* Make the mobile nav easier to tap and visually lighter when open */
+    .nav-toggle-btn {
+        font-size: 1.35rem;
+        padding: 6px 8px;
+    }
+
+    .main-nav a {
+        padding: 12px 14px;
+        font-size: 1rem;
+    }
+
+    .main-nav {
+        max-height: 62vh;
+        padding: 8px 10px;
+    }
+
+    /* Table: allow horizontal scroll rather than squashing columns */
+    table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 10px;
+    }
+
+    table thead,
+    table tbody,
+    table tr {
+        display: table-row; /* preserve table semantics but keep scroll container */
+    }
+
+    table th,
+    table td {
+        white-space: normal; /* allow wrapping for long cells */
+        padding: 12px 14px;
+        font-size: .95rem;
+    }
+
+    /* Make thumbnail images consistent size so rows look balanced */
+    table img {
+        width: 64px;
+        height: 64px;
+        object-fit: cover;
+        border-radius: 6px;
+        display: block;
+    }
+
+    /* Center the action column buttons and give them room */
+    table td:last-child {
+        text-align: center;
+        min-width: 96px;
+        vertical-align: middle;
+    }
+
+    /* Stack form controls vertically for narrow screens */
+    .admin-container form:not(.nav-logout-form) {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+
+    .admin-container form label {
+        width: 100%;
+    }
+
+    /* Ensure file picker and image preview don't overflow */
+    .image-picker,
+    .image-picker-btn {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .image-picker-preview {
+        display: inline-block;
+        max-height: 64px;
+    }
+
+    /* Make action buttons easier to tap and avoid wrapping */
+    button,
+    .btn {
+        padding: 10px 14px;
+        font-size: .95rem;
+    }
+
+    /* Slightly reduce the header shadow so it feels lighter on mobile */
+    .site-header {
+        box-shadow: 0 4px 12px rgba(0,0,0,.22);
+    }
+}
