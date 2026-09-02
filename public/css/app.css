@@ -161,11 +161,6 @@ hr{ border:0; height:1px; background:var(--line); margin:2.5rem 0; }
     .nav-logout-form {
         width: 100%;
     }
-
-    .main-nav a.btn-cta {
-        margin-left: 0;
-        text-align: center;
-    }
     .nav-logout-form button {
         width: 100%;
         text-align: left;
@@ -314,7 +309,7 @@ input[type="text"], input[type="email"], input[type="password"], input[type="tel
   color:var(--cream); padding:.65rem .8rem; border-radius:var(--radius); font-family:var(--font-body); font-size:.95rem;
 }
 input:focus, textarea:focus, select:focus{ border-color:var(--gold-deep); }
-input[type="checkbox"]{ width:auto; display:inline-block; margin-right:.4rem; }
+input[type="checkbox"]{ width:auto; margin-right:.4rem; }
 textarea{ min-height:100px; resize:vertical; }
 .radio-slot{ display:inline-flex; align-items:center; gap:.4rem; background:var(--ink-2); border:1px solid var(--line);
   border-radius:var(--radius); padding:.5rem .8rem; margin:0 .4rem .5rem 0; font-size:.88rem; }
