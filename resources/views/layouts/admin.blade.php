@@ -40,7 +40,7 @@
             @auth
                 <form action="{{ route('logout') }}" method="POST" class="nav-logout-form">
                     @csrf
-                    <button type="submit">Đăng xuất ({{ \Illuminate\Support\Str::limit(auth()->user()->fullname, 14) }})</button>
+                    <button type="submit">Đăng xuất</button>
                 </form>
             @endauth
         </div>
