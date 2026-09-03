@@ -59,7 +59,12 @@
                 <span class="font-['Bebas_Neue'] text-3xl tracking-wider text-[#f2d788]">Tâm <span class="text-[#f4ecd8]">Barbershop</span></span>
             </a>
 
-            <!-- NAVIGATION TOOLBAR -->
+            <!-- NÚT 3 GẠCH CHO ĐIỆN THOẠI (CHỈ HIỂN THỊ TRÊN MÀN HÌNH MÁY TÍNH BẢNG / ĐIỆN THOẠI) -->
+            <button id="mobileMenuBtn" type="button" class="lg:hidden p-2 text-[#f2d788] hover:text-white focus:outline-none" onclick="toggleMobileMenu()">
+                <i id="mobileMenuIcon" class="fa-solid fa-bars text-2xl"></i>
+            </button>
+
+            <!-- NAVIGATION TOOLBAR (MÁY TÍNH - DESKTOP) -->
             <nav class="hidden lg:flex items-center gap-5 text-xs font-bold uppercase tracking-wider">
                 <a href="{{ route('home') }}" class="transition-colors hover:text-[#f2d788] {{ request()->routeIs('home') ? 'text-[#f2d788] border-b-2 border-[#8a641d] pb-1' : 'text-[#f4ecd8]' }}">Trang chủ</a>
                 <a href="{{ route('about') }}" class="transition-colors hover:text-[#f2d788] {{ request()->routeIs('about') ? 'text-[#f2d788] border-b-2 border-[#8a641d] pb-1' : 'text-[#f4ecd8]' }}">Giới thiệu</a>
@@ -78,7 +83,6 @@
                     <!-- TÀI KHOẢN KHÁCH HÀNG / NGƯỜI DÙNG -->
                     <div class="flex items-center gap-3">
                         <a href="{{ route('account.index') }}" class="flex items-center gap-2 group">
-                            <!-- AVATAR TỰ ĐỘNG CẬP NHẬT -->
                             <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=251b0e&color=f2d788' }}" 
                                  alt="{{ auth()->user()->name }}" 
                                  class="h-7 w-7 rounded-full border border-[#8a641d] object-cover transition-transform group-hover:scale-105">
@@ -88,10 +92,9 @@
                             </span>
                         </a>
 
-                        <!-- NÚT BÁNH RĂNG CÀI ĐẶT TÀI KHOẢN -->
                         <a href="{{ route('settings') }}" 
                            title="Cài đặt tài khoản"
-                           class="relative inline-flex h-7 w-7 items-center justify-center rounded-[2px] border border-[#3c2c15] bg-[#251b0e] text-[#f2d788] transition-all hover:border-[#8a641d] hover:bg-[#8a641d] hover:text-[#0b0805] group {{ request()->routeIs('account.settings*') ? 'border-[#8a641d] bg-[#8a641d] text-[#0b0805]' : '' }}">
+                           class="relative inline-flex h-7 w-7 items-center justify-center rounded-[2px] border border-[#3c2c15] bg-[#251b0e] text-[#f2d788] transition-all hover:border-[#8a641d] hover:bg-[#8a641d] hover:text-[#0b0805] group {{ request()->routeIs('settings*') ? 'border-[#8a641d] bg-[#8a641d] text-[#0b0805]' : '' }}">
                             <i class="fa-solid fa-gear text-xs transition-transform duration-500 group-hover:rotate-180"></i>
                         </a>
 
@@ -121,6 +124,59 @@
             </nav>
 
         </div>
+
+        <!-- MENU THẢ XUỐNG DÀNH CHO MOBILE -->
+        <div id="mobileMenu" class="hidden lg:hidden border-t border-[#3c2c15] bg-[#171008] px-4 pt-3 pb-6 space-y-3 font-bold uppercase text-xs tracking-wider">
+            <a href="{{ route('home') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('home') ? 'text-[#f2d788]' : '' }}">Trang chủ</a>
+            <a href="{{ route('about') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('about') ? 'text-[#f2d788]' : '' }}">Giới thiệu</a>
+            <a href="{{ route('hairstyles.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('hairstyles.*') ? 'text-[#f2d788]' : '' }}">Kiểu tóc</a>
+            <a href="{{ route('services.index') }}" class="block py-2 rounded bg-[#251b0e] px-3 py-2 text-[#f2d788] {{ request()->routeIs('services.*') ? 'text-[#f2d788]' : '' }}">Dịch vụ</a>
+            <a href="{{ route('portfolio.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('portfolio.*') ? 'text-[#f2d788]' : '' }}">Portfolio</a>
+            <a href="{{ route('blog.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('blog.*') ? 'text-[#f2d788]' : '' }}">Blog</a>
+            <a href="{{ route('announcements.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('announcements.*') ? 'text-[#f2d788]' : '' }}">Sự kiện</a>
+            <a href="{{ route('contact.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('contact.*') ? 'text-[#f2d788]' : '' }}">Liên hệ</a>
+
+            <div class="pt-2 border-t border-[#3c2c15]/60 space-y-3">
+                <a href="{{ route('booking.create') }}" class="block text-center rounded-[2px] border border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] py-2.5 text-[#0b0805]">
+                    Đặt lịch ngay
+                </a>
+
+                @auth
+                    <a href="{{ route('account.index') }}" class="flex items-center gap-3 py-2 text-[#f2d788]">
+                        <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=251b0e&color=f2d788' }}" 
+                             alt="{{ auth()->user()->name }}" 
+                             class="h-8 w-8 rounded-full border border-[#8a641d] object-cover">
+                        <span>Tài khoản: {{ auth()->user()->fullname ?? auth()->user()->name }}</span>
+                    </a>
+
+                    <a href="{{ route('settings') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788]">
+                        <i class="fa-solid fa-gear mr-2 text-[#f2d788]"></i> Cài đặt tài khoản
+                    </a>
+
+                    @if (auth()->user()->isAdmin())
+                        <a href="{{ route('admin.dashboard') }}" class="block py-2 text-[#8a641d] hover:text-[#f2d788]">
+                            <i class="fa-solid fa-user-shield mr-2"></i> Trang quản trị Admin
+                        </a>
+                    @endif
+
+                    @if (auth()->user()->isSystemOwner())
+                        <a href="{{ route('admin.system-owner.index') }}" class="block py-2 text-[#a8342f] hover:text-red-400">
+                            <i class="fa-solid fa-crown mr-2"></i> Trang Quản lý tối cao
+                        </a>
+                    @endif
+
+                    <form action="{{ route('logout') }}" method="POST" class="pt-1">
+                        @csrf
+                        <button type="submit" class="w-full text-left py-2 text-red-400 hover:text-red-300 flex items-center gap-2">
+                            <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+                        </button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="block py-2 text-center text-[#f4ecd8] hover:text-[#f2d788]">Đăng nhập</a>
+                    <a href="{{ route('register') }}" class="block text-center rounded-[2px] border border-[#3c2c15] bg-[#251b0e] py-2 text-[#f2d788]">Đăng ký</a>
+                @endauth
+            </div>
+        </div>
     </header>
 
     <!-- BARBER POLE SEPARATOR -->
@@ -135,6 +191,24 @@
     <footer class="border-t border-[#3c2c15] bg-[#171008] py-8 text-center text-xs text-[#6f6248]">
         <p>&copy; {{ date('Y') }} Tâm Barbershop. All rights reserved.</p>
     </footer>
+
+    <!-- SCRIPT XỬ LÝ ĐÓNG/MỞ MENU MOBILE -->
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('mobileMenuIcon');
+            
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                menu.classList.add('hidden');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        }
+    </script>
 
     @yield('scripts')
 </body>
