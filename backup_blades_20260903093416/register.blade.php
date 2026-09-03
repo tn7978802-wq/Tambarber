@@ -12,19 +12,19 @@
             @csrf
 
             <label>Họ và tên
-                <input class="px-3 py-2 border rounded text-sm w-full" type="text" name="name" value="{{ old('name') }}" required>
+                <input type="text" name="name" value="{{ old('name') }}" required>
             </label>
             <label>Email
-                <input class="px-3 py-2 border rounded text-sm w-full" type="email" name="email" value="{{ old('email') }}" required>
+                <input type="email" name="email" value="{{ old('email') }}" required>
             </label>
             <label>Số điện thoại (không bắt buộc)
-                <input class="px-3 py-2 border rounded text-sm w-full" type="text" name="phone" value="{{ old('phone') }}">
+                <input type="text" name="phone" value="{{ old('phone') }}">
             </label>
             <label>Mật khẩu
-                <input class="px-3 py-2 border rounded text-sm w-full" type="password" name="password" required>
+                <input type="password" name="password" required>
             </label>
             <label>Xác nhận mật khẩu
-                <input class="px-3 py-2 border rounded text-sm w-full" type="password" name="password_confirmation" required>
+                <input type="password" name="password_confirmation" required>
             </label>
 
             <button type="submit" class="btn btn-gold btn-block">Đăng ký</button>

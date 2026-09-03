@@ -12,29 +12,29 @@
     <form action="{{ route('admin.hairstyles.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <label>
-            <input type="text" name="name" placeholder="Tên kiểu tóc" required>
+            <input class="px-3 py-2 border rounded text-sm w-full" type="text" name="name" placeholder="Tên kiểu tóc" required>
         </label>
 
         {{-- Nút "+" chọn ảnh: bấm vào sẽ mở hộp thoại duyệt file của máy (ổ C:...) để chọn ảnh,
              thay vì phải gõ tay đường dẫn ảnh có sẵn trên server. --}}
         <div class="image-picker">
             <label for="hairstyle-image-input" class="image-picker-btn">➕ Chọn ảnh từ máy</label>
-            <input type="file" id="hairstyle-image-input" name="image" accept="image/*" onchange="document.getElementById('hairstyle-image-filename').textContent = this.files[0] ? this.files[0].name : '';">
+            <input class="px-3 py-2 border rounded text-sm w-full" type="file" id="hairstyle-image-input" name="image" accept="image/*" onchange="document.getElementById('hairstyle-image-filename').textContent = this.files[0] ? this.files[0].name : '';">
             <span id="hairstyle-image-filename" class="image-picker-filename"></span>
         </div>
 
-        <input type="text" name="suitable_face_shapes" placeholder="Khuôn mặt phù hợp">
-        <select name="difficulty" required>
+        <input class="px-3 py-2 border rounded text-sm w-full" type="text" name="suitable_face_shapes" placeholder="Khuôn mặt phù hợp">
+        <select class="px-3 py-2 border rounded text-sm w-full" name="difficulty" required>
             <option value="easy">Dễ</option>
             <option value="medium" selected>Trung bình</option>
             <option value="hard">Khó</option>
         </select>
-        <input type="number" name="reference_price" placeholder="Giá tham khảo (VND)">
-        <textarea name="description" placeholder="Mô tả" style="min-height:42px;"></textarea>
+        <input class="px-3 py-2 border rounded text-sm w-full" type="number" name="reference_price" placeholder="Giá tham khảo (VND)">
+        <textarea class="px-3 py-2 border rounded text-sm w-full" name="description" placeholder="Mô tả" style="min-height:42px;"></textarea>
         <button type="submit" class="btn btn-gold">Thêm</button>
     </form>
 
-    <table class="data-table">
+    <table class="data-table w-full bg-white rounded-lg overflow-hidden mb-4">
         <thead>
             <tr>
                 <th>Ảnh</th>

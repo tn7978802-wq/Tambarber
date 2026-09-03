@@ -12,13 +12,13 @@
             @csrf
 
             <label>Email hoặc Số điện thoại
-                <input class="px-3 py-2 border rounded text-sm w-full" type="text" name="email" value="{{ old('email') }}" required autofocus>
+                <input type="text" name="email" value="{{ old('email') }}" required autofocus>
             </label>
             <label>Mật khẩu
-                <input class="px-3 py-2 border rounded text-sm w-full" type="password" name="password" required>
+                <input type="password" name="password" required>
             </label>
             <label style="display:flex; align-items:center; gap:.4rem;">
-                <input class="px-3 py-2 border rounded text-sm w-full" type="checkbox" name="remember"> Ghi nhớ đăng nhập
+                <input type="checkbox" name="remember"> Ghi nhớ đăng nhập
             </label>
 
             <button type="submit" class="btn btn-gold btn-block">Đăng nhập</button>

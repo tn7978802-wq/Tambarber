@@ -10,7 +10,7 @@ class Barber extends Model
     protected $fillable = [
         'name',
         'slug',
-        'title',        // ví dụ: "Barber trưởng", "Thợ chính"
+        'title',
         'bio',
         'avatar',
         'years_experience',

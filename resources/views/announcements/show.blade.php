@@ -34,17 +34,17 @@
 
         @guest
             <label>Tên của bạn:
-                <input type="text" name="guest_name" value="{{ old('guest_name') }}" required>
+                <input class="px-3 py-2 border rounded text-sm w-full" type="text" name="guest_name" value="{{ old('guest_name') }}" required>
             </label>
             <br>
         @endguest
 
         <label>Bình luận:
             <br>
-            <textarea name="content" rows="3" cols="50" required>{{ old('content') }}</textarea>
+            <textarea class="px-3 py-2 border rounded text-sm w-full" name="content" rows="3" cols="50" required>{{ old('content') }}</textarea>
         </label>
         <br>
-        <button type="submit">Gửi bình luận</button>
+        <button class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700" type="submit">Gửi bình luận</button>
     </form>
 
    <div class="comment-section">
@@ -60,7 +60,7 @@
                 <!-- NÚT TRẢ LỜI & PHẢN HỒI -->
                 <div class="comment-actions" style="margin-left: 20px;">
                     <!-- Nút bấm ẩn/hiện form -->
-                    <button type="button" 
+                    <button class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700" type="button" 
                         onclick="document.getElementById('reply-form-{{ $comment->id }}').style.display = 'block'" 
                         style="background: transparent; border: none; color: #ddd; font-size: 13px; cursor: pointer; text-decoration: underline; padding: 0;">
                         Trả lời
@@ -70,24 +70,24 @@
                     <div id="reply-form-{{ $comment->id }}" style="display: none; margin-top: 10px; border-left: 2px solid #555; padding-left: 10px;">
                         <form action="{{ route('announcements.comment', $announcement) }}" method="POST">
                             @csrf
-                            <input type="hidden" name="parent_id" value="{{ $comment->id }}">
+                            <input class="px-3 py-2 border rounded text-sm w-full" type="hidden" name="parent_id" value="{{ $comment->id }}">
                             
                             @guest
                                 <div style="margin-bottom: 8px;">
                                     <label style="color: #ddd; font-size: 13px;">Tên của bạn:
-                                        <input type="text" name="guest_name" required style="background: #222; border: 1px solid #444; color: #fff; padding: 4px;">
+                                        <input class="px-3 py-2 border rounded text-sm w-full" type="text" name="guest_name" required style="background: #222; border: 1px solid #444; color: #fff; padding: 4px;">
                                     </label>
                                 </div>
                             @endguest
 
                             <div style="margin-bottom: 8px;">
-                                <textarea name="content" rows="2" placeholder="Viết phản hồi của bạn..." required 
+                                <textarea class="px-3 py-2 border rounded text-sm w-full" name="content" rows="2" placeholder="Viết phản hồi của bạn..." required 
                                     style="width: 100%; background: #222; border: 1px solid #444; color: #fff; padding: 8px; box-sizing: border-box;"></textarea>
                             </div>
                             
                             <div class="form-actions">
-                                <button type="submit" style="background: #ffc107; color: #000; border: none; padding: 5px 10px; cursor: pointer;">Gửi trả lời</button>
-                                <button type="button" 
+                                <button class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700" type="submit" style="background: #ffc107; color: #000; border: none; padding: 5px 10px; cursor: pointer;">Gửi trả lời</button>
+                                <button class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700" type="button" 
                                     onclick="document.getElementById('reply-form-{{ $comment->id }}').style.display = 'none'"
                                     style="background: transparent; color: #aaa; border: none; padding: 5px 10px; cursor: pointer; text-decoration: underline;">
                                     Hủy
@@ -118,3 +118,4 @@
     </div>
 
 @endsection
+

@@ -12,7 +12,7 @@ class Portfolio extends Model
     protected $fillable = [
         'title',
         'image',
-        'category',     // vd: fade, tao-kieu, cao-rau, tre-em...
+        'category',
         'hairstyle_id',
         'barber_id',
         'is_featured',

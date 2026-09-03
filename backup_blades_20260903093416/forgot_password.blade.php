@@ -15,7 +15,7 @@
         <form action="{{ route('password.email') }}" method="POST">
             @csrf
             <label>Email đã đăng ký
-                <input class="px-3 py-2 border rounded text-sm w-full" type="email" name="email" value="{{ old('email') }}" required>
+                <input type="email" name="email" value="{{ old('email') }}" required>
             </label>
             <button type="submit" class="btn btn-gold btn-block">Gửi liên kết đặt lại mật khẩu</button>
         </form>

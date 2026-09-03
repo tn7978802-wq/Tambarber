@@ -24,7 +24,7 @@ class SendOtpMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Xác Thực Tài Khoản Barbershop Của Bạn',
+            subject: 'Xác Thực Tài Khoản Của Bạn',
         );
     }
 

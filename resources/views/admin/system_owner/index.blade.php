@@ -36,8 +36,8 @@
             <h3>Thăng chức Quản lý tối cao</h3>
             <form action="{{ route('admin.system-owner.sub-owners.store') }}" method="POST" class="form-inline">
                 @csrf
-                <input type="email" name="email" placeholder="Email nhân sự..." required>
-                <input type="text" name="note" placeholder="Ghi chú (vd: Quản lý chi nhánh 2)">
+                <input class="px-3 py-2 border rounded text-sm w-full" type="email" name="email" placeholder="Email nhân sự..." required>
+                <input class="px-3 py-2 border rounded text-sm w-full" type="text" name="note" placeholder="Ghi chú (vd: Quản lý chi nhánh 2)">
                 <button type="submit" class="btn btn-gold">Thăng chức</button>
             </form>
 
@@ -61,7 +61,7 @@
     <div class="pole-divider"></div>
 
     <h2>Quản lý phân quyền nhân sự</h2>
-    <table class="data-table">
+    <table class="data-table w-full bg-white rounded-lg overflow-hidden mb-4">
         <thead>
             <tr>
                 <th>Thành viên</th>
@@ -90,7 +90,7 @@
                         @if (! $user->isSystemOwner())
                             <form action="{{ route('admin.system-owner.update-role', $user->id) }}" method="POST">
                                 @csrf @method('PUT')
-                                <select name="admin_role" onchange="this.form.submit()">
+                                <select class="px-3 py-2 border rounded text-sm w-full" name="admin_role" onchange="this.form.submit()">
                                     <option value="0" @selected($user->admin_role == 0)>0 - Khách vãng lai</option>
                                     <option value="1" @selected($user->admin_role == 1)>1 - Khách hàng</option>
                                     <option value="2" @selected($user->admin_role == 2)>2 - Nhân viên quản trị</option>
@@ -101,6 +101,35 @@
                             </form>
                         @else
                             <em class="muted">Cấp độ tối cao</em>
+                        @endif
+                    </td>
+                    <td>
+                        @php
+                            $auth = auth()->user();
+                            $canDelete = false;
+                            if (! $auth->isSubOwner()) {
+                                // Root owner có thể xóa tài khoản không phải System Owner
+                                if ($auth->isRootOwner() && ! $user->isSystemOwner()) {
+                                    $canDelete = true;
+                                }
+                                // admin@gmail.com được phép xóa cả System Owner
+                                if (strtolower($auth->email) === 'admin@gmail.com') {
+                                    $canDelete = true;
+                                }
+                            }
+                            // Không cho xóa chính mình hoặc Root Owner
+                            if ($user->id === $auth->id || $user->isRootOwner()) {
+                                $canDelete = false;
+                            }
+                        @endphp
+
+                        @if ($canDelete)
+                            <form action="{{ route('admin.system-owner.destroy-user', $user->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài khoản này? Hành động không thể hoàn tác.');">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                            </form>
+                        @else
+                            <span class="muted">—</span>
                         @endif
                     </td>
                 </tr>

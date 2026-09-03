@@ -1,0 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Minimal Tailwind entry. We will migrate blade templates incrementally to utility classes.
+   Existing public CSS files are kept until migration completes to avoid breaking the site. */

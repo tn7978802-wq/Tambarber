@@ -9,17 +9,17 @@
     <div class="pole-divider small" style="margin-left:0;"></div>
 
     <form method="GET" action="{{ route('admin.bookings.index') }}" class="filter-bar">
-        <select name="status">
+        <select class="px-3 py-2 border rounded text-sm w-full" name="status">
             <option value="">Tất cả trạng thái</option>
             @foreach (['pending' => 'Chờ xác nhận', 'confirmed' => 'Đã xác nhận', 'completed' => 'Hoàn thành', 'cancelled' => 'Đã huỷ'] as $value => $label)
                 <option value="{{ $value }}" @selected(($filters['status'] ?? '') === $value)>{{ $label }}</option>
             @endforeach
         </select>
-        <input type="date" name="date" value="{{ $filters['date'] ?? '' }}">
+        <input class="px-3 py-2 border rounded text-sm w-full" type="date" name="date" value="{{ $filters['date'] ?? '' }}">
         <button type="submit" class="btn btn-gold">Lọc</button>
     </form>
 
-    <table class="data-table">
+    <table class="data-table w-full bg-white rounded-lg overflow-hidden mb-4">
         <thead>
             <tr>
                 <th>Mã</th>

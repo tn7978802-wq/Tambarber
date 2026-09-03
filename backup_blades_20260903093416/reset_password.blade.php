@@ -10,16 +10,16 @@
 
         <form action="{{ route('password.update') }}" method="POST">
             @csrf
-            <input class="px-3 py-2 border rounded text-sm w-full" type="hidden" name="token" value="{{ $token }}">
+            <input type="hidden" name="token" value="{{ $token }}">
 
             <label>Email
-                <input class="px-3 py-2 border rounded text-sm w-full" type="email" name="email" value="{{ $email ?? old('email') }}" required readonly>
+                <input type="email" name="email" value="{{ $email ?? old('email') }}" required readonly>
             </label>
             <label>Mật khẩu mới
-                <input class="px-3 py-2 border rounded text-sm w-full" type="password" name="password" required>
+                <input type="password" name="password" required>
             </label>
             <label>Xác nhận mật khẩu mới
-                <input class="px-3 py-2 border rounded text-sm w-full" type="password" name="password_confirmation" required>
+                <input type="password" name="password_confirmation" required>
             </label>
 
             <button type="submit" class="btn btn-gold btn-block">Cập nhật mật khẩu</button>

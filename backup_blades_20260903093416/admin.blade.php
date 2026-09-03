@@ -5,22 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Quản trị') - Barbershop Admin</title>
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
     @vite(['resources/css/tailwind-base.css', 'resources/js/app.js'])
     <link rel="icon" type="image/png" href="{{ asset('images/barber.png') }}">
 </head>
 <body>
 
-    <header class="bg-white shadow sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-            <a href="{{ route('admin.dashboard') }}" class="text-xl font-semibold text-gray-800 flex items-center gap-2">
-                ✂️ Tâm Barbershop <span class="text-sm text-gray-500">Admin</span>
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="{{ route('admin.dashboard') }}" class="brand">
+                ✂️ Tâm Barbershop <span class="brand-tag">Admin</span>
             </a>
 
             {{-- Checkbox ẩn dùng để đóng/mở menu trên điện thoại, không cần JS. --}}
-            <input type="checkbox" id="nav-toggle" class="hidden peer">
-            <label for="nav-toggle" class="block lg:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100" aria-label="Mở menu">&#9776;</label>
+            <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox">
+            <label for="nav-toggle" class="nav-toggle-btn" aria-label="Mở menu">&#9776;</label>
 
-            <nav class="hidden lg:flex lg:items-center lg:space-x-4 space-y-2 lg:space-y-0" aria-label="Chính">
+            <nav class="main-nav">
                 <a href="{{ route('admin.dashboard') }}" @class(['is-active' => request()->routeIs('admin.dashboard')])>Dashboard</a>
                 <a href="{{ route('admin.bookings.index') }}" @class(['is-active' => request()->routeIs('admin.bookings.*')])>Lịch hẹn</a>
                 <a href="{{ route('admin.services.index') }}" @class(['is-active' => request()->routeIs('admin.services.*')])>Dịch vụ</a>
@@ -40,7 +41,7 @@
             @auth
                 <form action="{{ route('logout') }}" method="POST" class="nav-logout-form">
                     @csrf
-                    <button class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700" type="submit">Đăng xuất</button>
+                    <button type="submit">Đăng xuất</button>
                 </form>
             @endauth
         </div>

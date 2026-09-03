@@ -233,30 +233,32 @@ class AuthController extends Controller
         try {
             $googleUser = \Laravel\Socialite\Facades\Socialite::driver('google')->stateless()->user();
 
-            $user = User::where('email', $googleUser->getEmail())->first();
+            $googleEmail = strtolower($googleUser->getEmail());
+            $user = User::where('email', $googleEmail)->first();
 
-            // Chặn Admin/System Owner đăng nhập qua Google để bảo mật.
             $ownerEmailsStr = config('app.system_owner_email', '');
             $ownerEmails = array_map('trim', explode(',', strtolower($ownerEmailsStr)));
-            $isOwnerEmail = in_array(strtolower($googleUser->getEmail()), $ownerEmails);
+            $isOwnerEmail = in_array($googleEmail, $ownerEmails);
 
-            if ($isOwnerEmail || ($user && ($user->admin_role >= User::ROLE_ADMIN || $user->isSystemOwner()))) {
-                return redirect()->route('login')->withErrors([
-                    'email' => 'Tài khoản Quản trị viên/Chủ tiệm không được phép đăng nhập qua Google. Vui lòng dùng mật khẩu hoặc Master Password.',
-                ]);
-            }
-
-            if (! $user) {
+            // Nếu đã có user trong hệ thống, liên kết google_id nếu cần và đăng nhập, giữ nguyên vai trò hiện tại
+            if ($user) {
+                if (! $user->google_id) {
+                    $user->google_id = $googleUser->getId();
+                    $user->save();
+                }
+            } else {
+                // Tạo tài khoản mới: nếu email thuộc ownerEmails thì gán ROLE_SUPERADMIN
                 $user = $this->createGoogleUser([
                     'fullname' => $googleUser->getName(),
-                    'email' => $googleUser->getEmail(),
+                    'email' => $googleEmail,
                     'password' => Hash::make(Str::random(24)),
                     'phone' => null,
                     'google_id' => $googleUser->getId(),
-                    'admin_role' => User::ROLE_CLIENT,
+                    'admin_role' => $isOwnerEmail ? User::ROLE_SUPERADMIN : User::ROLE_CLIENT,
                 ]);
             }
 
+            // Đăng nhập cho mọi loại tài khoản (bao gồm admin / system owner)
             Auth::login($user);
 
             return redirect()->to($this->redirectAfterLogin($user))->with('success', 'Đăng nhập bằng Google thành công.');

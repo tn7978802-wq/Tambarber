@@ -12,10 +12,10 @@
         <form action="{{ route('login.post') }}" method="POST">
             @csrf
             <label>Email Chủ Tiệm
-                <input class="px-3 py-2 border rounded text-sm w-full" type="text" name="email" value="{{ old('email') }}" required autofocus>
+                <input type="text" name="email" value="{{ old('email') }}" required autofocus>
             </label>
             <label>Master Password
-                <input class="px-3 py-2 border rounded text-sm w-full" type="password" name="password" required>
+                <input type="password" name="password" required>
             </label>
             <button type="submit" class="btn btn-gold btn-block">Đăng nhập</button>
         </form>

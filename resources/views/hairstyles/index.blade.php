@@ -10,10 +10,10 @@
 
     <form action="{{ route('hairstyles.index') }}" method="GET" style="display:flex; gap:.75rem; flex-wrap:wrap; align-items:flex-end; margin-bottom:2rem;">
         <label style="flex:1; min-width:220px; margin-bottom:0;">Tìm kiếm
-            <input type="text" name="q" value="{{ $search }}" placeholder="Tìm kiểu tóc...">
+            <input class="px-3 py-2 border rounded text-sm w-full" type="text" name="q" value="{{ $search }}" placeholder="Tìm kiểu tóc...">
         </label>
         <label style="margin-bottom:0;">Độ khó
-            <select name="difficulty">
+            <select class="px-3 py-2 border rounded text-sm w-full" name="difficulty">
                 <option value="">Tất cả độ khó</option>
                 <option value="easy" @selected($difficulty === 'easy')>Dễ</option>
                 <option value="medium" @selected($difficulty === 'medium')>Trung bình</option>

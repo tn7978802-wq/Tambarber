@@ -13,7 +13,7 @@
         <fieldset>
             <legend><span class="stage-badge" style="width:1.9rem;height:1.9rem;font-size:.95rem;display:inline-flex;vertical-align:middle;margin-right:.4rem;">01</span>Chọn Barber &amp; Ngày (để xem giờ còn trống)</legend>
             <div style="display:flex; gap:1rem; flex-wrap:wrap;">
-                <select class="px-3 py-2 border rounded text-sm w-full" name="barber_id" onchange="this.form.submit()" style="flex:1; min-width:220px;">
+                <select name="barber_id" onchange="this.form.submit()" style="flex:1; min-width:220px;">
                     <option value="">-- Chọn barber --</option>
                     @foreach ($barbers as $barber)
                         <option value="{{ $barber->id }}" @selected((string) $selectedBarberId === (string) $barber->id)>
@@ -21,8 +21,8 @@
                         </option>
                     @endforeach
                 </select>
-                <input class="px-3 py-2 border rounded text-sm w-full" type="date" name="date" value="{{ $selectedDate }}" min="{{ now()->toDateString() }}" onchange="this.form.submit()" style="flex:1; min-width:180px;">
-                <input class="px-3 py-2 border rounded text-sm w-full" type="hidden" name="service_id" value="{{ $selectedServiceId }}">
+                <input type="date" name="date" value="{{ $selectedDate }}" min="{{ now()->toDateString() }}" onchange="this.form.submit()" style="flex:1; min-width:180px;">
+                <input type="hidden" name="service_id" value="{{ $selectedServiceId }}">
                 <noscript><button type="submit" class="btn btn-outline">Cập nhật</button></noscript>
             </div>
         </fieldset>
@@ -34,7 +34,7 @@
 
         <fieldset>
             <legend><span class="stage-badge" style="width:1.9rem;height:1.9rem;font-size:.95rem;display:inline-flex;vertical-align:middle;margin-right:.4rem;">02</span>Chọn dịch vụ</legend>
-            <select class="px-3 py-2 border rounded text-sm w-full" name="service_id" required>
+            <select name="service_id" required>
                 <option value="">-- Chọn dịch vụ --</option>
                 @foreach ($services as $service)
                     <option value="{{ $service->id }}" @selected((string) $selectedServiceId === (string) $service->id)>
@@ -46,8 +46,8 @@
 
         <fieldset>
             <legend><span class="stage-badge" style="width:1.9rem;height:1.9rem;font-size:.95rem;display:inline-flex;vertical-align:middle;margin-right:.4rem;">03</span>Barber &amp; ngày đã chọn</legend>
-            <input class="px-3 py-2 border rounded text-sm w-full" type="hidden" name="barber_id" value="{{ $selectedBarberId }}">
-            <input class="px-3 py-2 border rounded text-sm w-full" type="hidden" name="booking_date" value="{{ $selectedDate }}">
+            <input type="hidden" name="barber_id" value="{{ $selectedBarberId }}">
+            <input type="hidden" name="booking_date" value="{{ $selectedDate }}">
             <p>
                 Barber: <strong class="eyebrow-gold">{{ optional($barbers->firstWhere('id', (int) $selectedBarberId))->name ?? 'Chưa chọn (vui lòng chọn ở bước 1)' }}</strong>
                 &middot; Ngày: <strong class="eyebrow-gold">{{ $selectedDate }}</strong>
@@ -59,7 +59,7 @@
             @foreach ($timeSlots as $slot)
                 @php $isTaken = in_array($slot, $bookedSlots, true); @endphp
                 <label class="radio-slot">
-                    <input class="px-3 py-2 border rounded text-sm w-full" type="radio" name="booking_time" value="{{ $slot }}" @disabled($isTaken) required>
+                    <input type="radio" name="booking_time" value="{{ $slot }}" @disabled($isTaken) required>
                     <span>{{ $slot }} @if($isTaken) (đã kín) @endif</span>
                 </label>
             @endforeach
@@ -68,16 +68,16 @@
         <fieldset>
             <legend><span class="stage-badge" style="width:1.9rem;height:1.9rem;font-size:.95rem;display:inline-flex;vertical-align:middle;margin-right:.4rem;">05</span>Thông tin liên hệ</legend>
             <label>Họ tên
-                <input class="px-3 py-2 border rounded text-sm w-full" type="text" name="customer_name" value="{{ old('customer_name') }}" required>
+                <input type="text" name="customer_name" value="{{ old('customer_name') }}" required>
             </label>
             <label>Số điện thoại
-                <input class="px-3 py-2 border rounded text-sm w-full" type="text" name="customer_phone" value="{{ old('customer_phone') }}" required>
+                <input type="text" name="customer_phone" value="{{ old('customer_phone') }}" required>
             </label>
             <label>Email (không bắt buộc)
-                <input class="px-3 py-2 border rounded text-sm w-full" type="email" name="customer_email" value="{{ old('customer_email') }}">
+                <input type="email" name="customer_email" value="{{ old('customer_email') }}">
             </label>
             <label>Ghi chú
-                <textarea class="px-3 py-2 border rounded text-sm w-full" name="note">{{ old('note') }}</textarea>
+                <textarea name="note">{{ old('note') }}</textarea>
             </label>
         </fieldset>
 

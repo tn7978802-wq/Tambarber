@@ -11,25 +11,25 @@
     <h2>Thêm dịch vụ mới</h2>
     <form action="{{ route('admin.services.store') }}" method="POST" class="form-inline">
         @csrf
-        <input type="text" name="name" placeholder="Tên dịch vụ" required>
-        <input type="number" name="price" placeholder="Giá (VND)" required>
-        <input type="number" name="duration_minutes" placeholder="Thời gian (phút)" required>
-        <input type="text" name="description" placeholder="Mô tả">
+        <input class="px-3 py-2 border rounded text-sm w-full" type="text" name="name" placeholder="Tên dịch vụ" required>
+        <input class="px-3 py-2 border rounded text-sm w-full" type="number" name="price" placeholder="Giá (VND)" required>
+        <input class="px-3 py-2 border rounded text-sm w-full" type="number" name="duration_minutes" placeholder="Thời gian (phút)" required>
+        <input class="px-3 py-2 border rounded text-sm w-full" type="text" name="description" placeholder="Mô tả">
 
         {{-- Nút "+" chọn ảnh minh hoạ dịch vụ từ máy. --}}
         <label for="service-image-input" style="display:inline-block;border:1px dashed #999;padding:10px 16px;cursor:pointer;">
             ➕ Chọn ảnh từ máy
         </label>
-        <input type="file" id="service-image-input" name="image" accept="image/*" style="display:none" onchange="document.getElementById('service-image-filename').textContent = this.files[0] ? this.files[0].name : '';">
+        <input class="px-3 py-2 border rounded text-sm w-full" type="file" id="service-image-input" name="image" accept="image/*" style="display:none" onchange="document.getElementById('service-image-filename').textContent = this.files[0] ? this.files[0].name : '';">
         <span id="service-image-filename"></span>
 
-        <label><input type="checkbox" name="is_active" value="1" checked> Đang hoạt động</label>
+        <label><input class="px-3 py-2 border rounded text-sm w-full" type="checkbox" name="is_active" value="1" checked> Đang hoạt động</label>
         <button type="submit" class="btn btn-gold">Thêm</button>
     </form>
 
     <hr>
 
-    <table class="data-table">
+    <table class="data-table w-full bg-white rounded-lg overflow-hidden mb-4">
         <thead>
             <tr>
                 <th>Ảnh</th>

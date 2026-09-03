@@ -5,20 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'TâmBarbershop')</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @vite(['resources/css/tailwind-base.css', 'resources/js/app.js'])
     <link rel="icon" type="image/png" href="{{ asset('images/barber.png') }}">
 </head>
 <body>
 
-    <header class="bg-white shadow">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-            <a href="{{ route('home') }}" class="text-lg font-semibold text-gray-800 flex items-center gap-2">✂️ TâmBarbershop</a>
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="{{ route('home') }}" class="brand">✂️ TâmBarbershop</a>
 
             {{-- Checkbox ẩn dùng để đóng/mở menu trên điện thoại, không cần JS. --}}
-            <input type="checkbox" id="nav-toggle" class="hidden peer">
-            <label for="nav-toggle" class="block lg:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100" aria-label="Mở menu">&#9776;</label>
+            <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox">
+            <label for="nav-toggle" class="nav-toggle-btn" aria-label="Mở menu">&#9776;</label>
 
-            <nav class="hidden lg:flex lg:items-center lg:space-x-4 space-y-2 lg:space-y-0" aria-label="Chính">
+            <nav class="main-nav">
                 <a href="{{ route('home') }}" @class(['is-active' => request()->routeIs('home')])>Trang chủ</a>
                 <a href="{{ route('about') }}" @class(['is-active' => request()->routeIs('about')])>Giới thiệu</a>
                 <a href="{{ route('hairstyles.index') }}" @class(['is-active' => request()->routeIs('hairstyles.*')])>Kiểu tóc</a>
@@ -43,7 +44,7 @@
                     @endif
                     <form action="{{ route('logout') }}" method="POST" class="nav-logout-form">
                         @csrf
-                        <button class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700" type="submit">Đăng xuất</button>
+                        <button type="submit">Đăng xuất</button>
                     </form>
                 @else
                     <a href="{{ route('login') }}">Đăng nhập</a>

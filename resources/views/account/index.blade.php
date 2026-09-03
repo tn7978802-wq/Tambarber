@@ -15,7 +15,7 @@
 
     <h2>Lịch sử đặt lịch</h2>
 
-    <table class="data-table">
+    <table class="data-table w-full bg-white rounded-lg overflow-hidden mb-4">
         <thead>
             <tr>
                 <th>Mã lịch hẹn</th>

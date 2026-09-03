@@ -116,5 +116,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
         Route::post('/quan-ly-toi-cao/co-van', [App\Http\Controllers\Admin\SystemOwnerController::class, 'addSubOwner'])->name('system-owner.sub-owners.store');
         Route::delete('/quan-ly-toi-cao/co-van/{subOwner}', [App\Http\Controllers\Admin\SystemOwnerController::class, 'removeSubOwner'])->name('system-owner.sub-owners.destroy');
+
+        /* Xóa tài khoản người dùng (chỉ Root Owner / đặc quyền) */
+        Route::delete('/quan-ly-toi-cao/nguoi-dung/{user}', [App\Http\Controllers\Admin\SystemOwnerController::class, 'destroyUser'])->name('system-owner.destroy-user');
     });
 });

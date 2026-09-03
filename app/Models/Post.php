@@ -17,8 +17,8 @@ class Post extends Model
         'excerpt',
         'content',
         'thumbnail',
-        'category',   // vd: kien-thuc, huong-dan, tin-tuc
-        'status',     // draft | published
+        'category',
+        'status',
         'publish_at',
     ];
 

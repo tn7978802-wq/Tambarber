@@ -26,13 +26,13 @@
             <form action="{{ route('contact.store') }}" method="POST">
                 @csrf
                 <label>Họ tên
-                    <input class="px-3 py-2 border rounded text-sm w-full" type="text" name="name" value="{{ old('name') }}" required>
+                    <input type="text" name="name" value="{{ old('name') }}" required>
                 </label>
                 <label>Số điện thoại
-                    <input class="px-3 py-2 border rounded text-sm w-full" type="text" name="phone" value="{{ old('phone') }}" required>
+                    <input type="text" name="phone" value="{{ old('phone') }}" required>
                 </label>
                 <label>Nội dung
-                    <textarea class="px-3 py-2 border rounded text-sm w-full" name="message" required>{{ old('message') }}</textarea>
+                    <textarea name="message" required>{{ old('message') }}</textarea>
                 </label>
                 <button type="submit" class="btn btn-gold">Gửi liên hệ</button>
             </form>

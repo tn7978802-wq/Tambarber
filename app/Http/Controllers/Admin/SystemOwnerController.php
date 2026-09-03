@@ -44,7 +44,7 @@ class SystemOwnerController extends Controller
     }
 
     /**
-     * Chỉ Root Owner (định nghĩa trong .env) mới có quyền thăng chức Sub-Owner.
+     * Chỉ Root Owner mới có quyền thăng chức Sub-Owner.
      */
     public function addSubOwner(Request $request)
     {
@@ -106,5 +106,37 @@ class SystemOwnerController extends Controller
         $user->save();
 
         return back()->with('success', 'Đã cập nhật quyền hạn cho ' . ($user->fullname ?? $user->username ?? 'người dùng'));
+    }
+    public function destroyUser(User $user)
+    {
+        $auth = auth()->user();
+
+        // Sub-owners không có quyền xóa
+        if ($auth->isSubOwner()) {
+            return back()->with('error', 'Bạn không có quyền xóa người dùng.');
+        }
+
+        // Không cho xóa chính mình
+        if ($user->id === $auth->id) {
+            return back()->with('error', 'Bạn không thể xóa chính mình.');
+        }
+
+        // Không cho xóa Root Owner (email được cấu hình trong .env)
+        if ($user->isRootOwner()) {
+            return back()->with('error', 'Không thể xóa Chủ Tiệm gốc.');
+        }
+
+        // Nếu mục tiêu là System Owner (sub-owner hoặc ROLE_SUPERADMIN), chỉ admin@gmail.com mới được phép xóa
+        if ($user->isSystemOwner() && strtolower($auth->email) !== 'admin@gmail.com') {
+            return back()->with('error', 'Chỉ admin@gmail.com mới có quyền xóa Quản lý tối cao.');
+        }
+
+        // Xóa bản ghi sub_owners nếu có
+        \Illuminate\Support\Facades\DB::table('sub_owners')->where('email', strtolower($user->email))->delete();
+
+        // Xóa user
+        $user->delete();
+
+        return back()->with('success', 'Đã xóa tài khoản thành công.');
     }
 }

@@ -12,27 +12,27 @@
         @csrf
 
         <label>Tiêu đề
-            <input type="text" name="title" value="{{ old('title') }}">
+            <input class="px-3 py-2 border rounded text-sm w-full" type="text" name="title" value="{{ old('title') }}">
         </label>
 
         <label>Nội dung
-            <textarea name="content" rows="4" cols="50" required>{{ old('content') }}</textarea>
+            <textarea class="px-3 py-2 border rounded text-sm w-full" name="content" rows="4" cols="50" required>{{ old('content') }}</textarea>
         </label>
 
         {{-- Nút "+" chọn ảnh: mở hộp thoại duyệt file của máy (ổ C:...) để chọn ảnh minh hoạ. --}}
         <div class="image-picker">
             <label for="announcement-image-input" class="image-picker-btn">➕ Chọn ảnh từ máy</label>
-            <input type="file" id="announcement-image-input" name="image" accept="image/*" onchange="document.getElementById('announcement-image-filename').textContent = this.files[0] ? this.files[0].name : '';">
+            <input class="px-3 py-2 border rounded text-sm w-full" type="file" id="announcement-image-input" name="image" accept="image/*" onchange="document.getElementById('announcement-image-filename').textContent = this.files[0] ? this.files[0].name : '';">
             <span id="announcement-image-filename" class="image-picker-filename"></span>
         </div>
 
         <label>Thời gian sự kiện (không bắt buộc, để trống nếu chỉ là thông báo/trạng thái):
-            <input type="datetime-local" name="event_at" value="{{ old('event_at') }}">
+            <input class="px-3 py-2 border rounded text-sm w-full" type="datetime-local" name="event_at" value="{{ old('event_at') }}">
         </label>
 
-        <label><input type="checkbox" name="is_pinned" value="1"> Ghim lên đầu</label>
+        <label><input class="px-3 py-2 border rounded text-sm w-full" type="checkbox" name="is_pinned" value="1"> Ghim lên đầu</label>
 
-        <button type="submit">Đăng</button>
+        <button class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700" type="submit">Đăng</button>
     </form>
 
     <hr>
@@ -70,7 +70,7 @@
                         <a href="{{ route('announcements.show', $announcement) }}" target="_blank">Xem</a>
                         <form action="{{ route('admin.announcements.destroy', $announcement) }}" method="POST" style="display:inline" onsubmit="return confirm('Xoá bài đăng này?')">
                             @csrf @method('DELETE')
-                            <button type="submit">Xoá</button>
+                            <button class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700" type="submit">Xoá</button>
                         </form>
                     </td>
                 </tr>
@@ -83,3 +83,4 @@
     {{ $announcements->links() }}
 
 @endsection
+

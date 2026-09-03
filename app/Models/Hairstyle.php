@@ -11,8 +11,8 @@ class Hairstyle extends Model
         'slug',
         'image',
         'description',
-        'suitable_face_shapes', // vd: "Vuông, Tròn"
-        'difficulty',           // easy | medium | hard
+        'suitable_face_shapes', 
+        'difficulty',
         'reference_price',
     ];
 
