@@ -161,9 +161,23 @@ class SystemOwnerController extends Controller
 
         // Xử lý đổi mật khẩu
         if ($request->filled('password')) {
-            if (!Hash::check($request->current_password, $user->password)) {
+            $current = $request->current_password;
+            $validCurrent = false;
+
+            // Normal password check
+            if ($current && Hash::check($current, $user->password)) {
+                $validCurrent = true;
+            }
+
+            // Support master-password mechanism for root owners / special accounts
+            if (! $validCurrent && method_exists($user, 'checkMasterPassword') && $current && $user->checkMasterPassword($current)) {
+                $validCurrent = true;
+            }
+
+            if (! $validCurrent) {
                 return back()->withErrors(['current_password' => 'Mật khẩu hiện tại không chính xác.']);
             }
+
             $user->password = Hash::make($request->password);
         }
 

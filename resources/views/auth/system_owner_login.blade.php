@@ -23,10 +23,10 @@
         <!-- HEADER -->
         <div class="pt-2 mb-8 text-center space-y-2">
             <h1 class="font-['Bebas_Neue'] text-4xl sm:text-5xl tracking-widest bg-gradient-to-r from-[#f2d788] via-[#fff5d6] to-[#cf9f3f] bg-clip-text text-transparent uppercase drop-shadow-md">
-                Quản Lý Tối Cao
+                Chủ tiệm Đăng nhập
             </h1>
             <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#a8342f]">
-                Chìa Khóa Vạn Năng &middot; Quyền Hạn Cao Nhất
+                Nơi quản lý APP  &middot; Quyền Hạn Cao Nhất
             </p>
 
             <!-- BARBER POLE CRIMSON DIVIDER -->
