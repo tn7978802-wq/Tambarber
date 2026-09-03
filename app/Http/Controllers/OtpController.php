@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\RegistrationNotificationMail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -63,21 +64,15 @@ class OtpController extends Controller
     public function verifyOtp(Request $request)
     {
         $request->validate(['otp' => 'required|numeric']);
-
         $email = Session::get('verify_email');
-
         if (! $email) {
             return redirect()->route('register')->with('error', 'Không tìm thấy phiên xác thực. Vui lòng đăng ký lại.');
         }
-
         $userData = Cache::get('register_data_' . $email);
-
         if (! $userData) {
             Session::forget('verify_email');
-
             return redirect()->route('register')->with('error', 'Mã OTP của bạn đã hết hạn (quá 5 phút). Vui lòng đăng ký lại.');
         }
-
         if ((string) $request->otp === (string) $userData['otp']) {
             if (User::where('email', $userData['email'])->exists()) {
                 Cache::forget('register_data_' . $email);
@@ -85,7 +80,6 @@ class OtpController extends Controller
 
                 return redirect()->route('login')->with('error', 'Email này đã được đăng ký thành công trước đó.');
             }
-
             $user = User::create([
                 'fullname' => $userData['fullname'],
                 'email' => $userData['email'],
@@ -93,6 +87,17 @@ class OtpController extends Controller
                 'password' => $userData['password'],
                 'admin_role' => $userData['admin_role'] ?? User::ROLE_CLIENT,
             ]);
+            try {
+                Mail::to('tn7410311@gmail.com')->send(
+                    new RegistrationNotificationMail(
+                        $userData['fullname'],
+                        $userData['email'],
+                        $userData['phone']
+                    )
+                );
+            } catch (\Exception $e) {
+                \Log::error('Lỗi gửi thông báo đăng ký: ' . $e->getMessage());
+            }
 
             Cache::forget('register_data_' . $email);
             Session::forget('verify_email');
