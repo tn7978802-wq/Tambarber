@@ -58,9 +58,7 @@
                     <i class="fa-solid fa-scissors text-lg"></i>
                 </div>
                 <div class="flex flex-col">
-                    <span class="font-['Bebas_Neue'] text-3xl tracking-wider text-[#f2d788] leading-none">
-                        Tâm <span class="text-[#f4ecd8]">Admin</span>
-                    </span>
+                    <span class="font-['Bebas_Neue'] text-3xl tracking-wider text-[#f2d788] leading-none"><span class="text-[#f4ecd8]">Admin</span></span>
                     @auth
                         @if (auth()->user()->isSystemOwner())
                             <span class="text-[9px] font-bold uppercase tracking-[0.25em] text-[#a8342f] flex items-center gap-1 mt-0.5">
