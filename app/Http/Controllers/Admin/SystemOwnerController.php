@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class SystemOwnerController extends Controller
 {
@@ -138,5 +140,46 @@ class SystemOwnerController extends Controller
         $user->delete();
 
         return back()->with('success', 'Đã xóa tài khoản thành công.');
+    }
+    public function settings()
+    {
+        return view('auth.settings');
+    }
+
+    public function updateSettings(Request $request)
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'phone' => 'nullable|string|max:20',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'current_password' => 'nullable|required_with:password',
+            'password' => 'nullable|min:8|confirmed',
+        ]);
+
+        // Xử lý đổi mật khẩu
+        if ($request->filled('password')) {
+            if (!Hash::check($request->current_password, $user->password)) {
+                return back()->withErrors(['current_password' => 'Mật khẩu hiện tại không chính xác.']);
+            }
+            $user->password = Hash::make($request->password);
+        }
+
+        // Xử lý upload avatar
+        if ($request->hasFile('avatar')) {
+            if ($user->avatar) {
+                Storage::disk('public')->delete($user->avatar);
+            }
+            $user->avatar = $request->file('avatar')->store('avatars', 'public');
+        }
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->save();
+
+        return back()->with('success', 'Cập nhật cài đặt tài khoản thành công!');
     }
 }

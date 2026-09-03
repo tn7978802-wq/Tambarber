@@ -15,19 +15,26 @@
         </div>
 
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
-            <div class="flex items-center gap-4">
-                <!-- User Avatar Badge -->
-                <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 border-[#8a641d] bg-[#0b0805] text-[#f2d788] shadow-md">
-                    <i class="fa-solid fa-user text-2xl"></i>
+            <div class="flex items-center gap-4 mb-6">
+                <!-- KHU VỰC HIỂN THỊ AVATAR -->
+                <div class="relative h-20 w-20 shrink-0">
+                    @if (auth()->user()->avatar)
+                        <img src="{{ asset('storage/' . auth()->user()->avatar) }}" 
+                            alt="{{ auth()->user()->name }}" 
+                            class="h-20 w-20 rounded-full border-2 border-[#8a641d] object-cover shadow-[0_0_15px_rgba(207,159,63,0.3)]">
+                    @else
+                        <div class="flex h-20 w-20 items-center justify-center rounded-full border-2 border-[#8a641d] bg-[#251b0e] text-[#f2d788]">
+                            <i class="fa-solid fa-user text-3xl"></i>
+                        </div>
+                    @endif
                 </div>
+
                 <div>
-                    <span class="text-[11px] font-bold uppercase tracking-widest text-[#6f6248]">Tài khoản khách hàng</span>
-                    <h1 class="font-['Bebas_Neue'] text-3xl tracking-wide text-[#f2d788] leading-tight">
-                        {{ auth()->user()->fullname }}
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-[#8a641d]">Tài khoản khách hàng</span>
+                    <h1 class="font-['Bebas_Neue'] text-3xl tracking-wider text-[#f2d788]">
+                        {{ auth()->user()->fullname ?? auth()->user()->name }}
                     </h1>
-                    <p class="text-xs text-[#f4ecd8]/80 flex items-center gap-2 mt-0.5">
-                        <i class="fa-regular fa-envelope text-[#8a641d]"></i> {{ auth()->user()->email }}
-                    </p>
+                    <p class="text-xs text-[#6f6248]"><i class="fa-regular fa-envelope mr-1"></i>{{ auth()->user()->email }}</p>
                 </div>
             </div>
 

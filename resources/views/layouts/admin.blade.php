@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Tailwind config + CDN; load app JS via Vite -->
+    <!-- Tailwind config + CDN -->
     <script>
         tailwind = tailwind || {};
         tailwind.config = {
@@ -84,11 +84,20 @@
                 @auth
                     @if (auth()->user()->isSystemOwner())
                         <div class="h-4 w-[1px] bg-[#3c2c15]"></div>
-                        <a href="{{ route('admin.system-owner.index') }}" 
-                           class="relative group inline-flex items-center gap-1.5 rounded-[2px] border border-[#a8342f] bg-gradient-to-r from-[#7c1f22] via-[#251b0e] to-[#7c1f22] px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-widest text-[#f2d788] shadow-[0_0_15px_rgba(168,52,47,0.4)] transition-all hover:brightness-125 hover:shadow-[0_0_20px_rgba(242,215,136,0.6)] {{ request()->routeIs('admin.system-owner.*') ? 'ring-1 ring-[#f2d788] border-[#f2d788]' : '' }}">
-                            <i class="fa-solid fa-crown text-xs text-[#f2d788] animate-pulse"></i>
-                            <span>Khu Vực Chủ Tiệm</span>
-                        </a>
+                        <div class="flex items-center gap-2">
+                            <a href="{{ route('admin.system-owner.index') }}" 
+                               class="relative group inline-flex items-center gap-1.5 rounded-[2px] border border-[#a8342f] bg-gradient-to-r from-[#7c1f22] via-[#251b0e] to-[#7c1f22] px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-widest text-[#f2d788] shadow-[0_0_15px_rgba(168,52,47,0.4)] transition-all hover:brightness-125 hover:shadow-[0_0_20px_rgba(242,215,136,0.6)] {{ request()->routeIs('admin.system-owner.index') ? 'ring-1 ring-[#f2d788] border-[#f2d788]' : '' }}">
+                                <i class="fa-solid fa-crown text-xs text-[#f2d788]"></i>
+                                <span>Khu Vực Chủ Tiệm</span>
+                            </a>
+
+                            <!-- NÚT BÁNH RĂNG CÀI ĐẶT -->
+                            <a href="{{ route('settings') }}" 
+                               title="Cài đặt tài khoản Quản lý tối cao"
+                               class="relative inline-flex h-8 w-8 items-center justify-center rounded-[2px] border border-[#8a641d] bg-[#251b0e] text-[#f2d788] shadow transition-all hover:border-[#f2d788] hover:bg-[#7c1f22] hover:text-white group {{ request()->routeIs('admin.system-owner.settings*') ? 'bg-[#7c1f22] border-[#f2d788] text-white' : '' }}">
+                                <i class="fa-solid fa-gear text-sm transition-transform duration-500 group-hover:rotate-180"></i>
+                            </a>
+                        </div>
                     @endif
                 @endauth
 

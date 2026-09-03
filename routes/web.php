@@ -12,6 +12,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OtpController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\Admin\SystemOwnerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -52,6 +53,8 @@ Route::post('/otp/xac-thuc', [OtpController::class, 'verifyOtp'])->name('otp.ver
 // ===================== TÀI KHOẢN CỦA TÔI (khách hàng đã đăng nhập) =====================
 Route::middleware('auth')->group(function () {
     Route::get('/tai-khoan', [AccountController::class, 'index'])->name('account.index');
+    Route::get('/cai-dat', [SystemOwnerController::class, 'settings'])->name('settings');
+    Route::put('/cai-dat', [SystemOwnerController::class, 'updateSettings'])->name('settings.update');
 });
 // ===================== KHU VỰC QUẢN TRỊ (ADMIN) =====================
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -80,6 +83,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/trang-thai', [App\Http\Controllers\Admin\AnnouncementController::class, 'index'])->name('announcements.index');
     Route::post('/trang-thai', [App\Http\Controllers\Admin\AnnouncementController::class, 'store'])->name('announcements.store');
     Route::delete('/trang-thai/{announcement}', [App\Http\Controllers\Admin\AnnouncementController::class, 'destroy'])->name('announcements.destroy');
+    Route::get('/cai-dat', [App\Http\Controllers\Admin\SystemOwnerController::class, 'settings'])->name('settings');
+    Route::put('/cai-dat', [App\Http\Controllers\Admin\SystemOwnerController::class, 'updateSettings'])->name('settings.update');
 
     // Dành riêng cho Quản lý tối cao (System Owner).
     Route::middleware('system_owner')->group(function () {

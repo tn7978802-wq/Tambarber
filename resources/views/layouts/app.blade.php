@@ -75,19 +75,45 @@
                 <div class="h-4 w-[1px] bg-[#3c2c15]"></div>
 
                 @auth
-                    <a href="{{ route('account.index') }}" class="text-[#f2d788] hover:underline {{ request()->routeIs('account.*') ? 'font-black' : '' }}">
-                        {{ \Illuminate\Support\Str::limit(auth()->user()->fullname ?? auth()->user()->name, 14) }}
-                    </a>
-                    @if (auth()->user()->isAdmin())
-                        <a href="{{ route('admin.dashboard') }}" class="text-[#8a641d] hover:text-[#f2d788]">Dashboard</a>
-                    @endif
-                    @if (auth()->user()->isSystemOwner())
-                        <a href="{{ route('admin.system-owner.index') }}" class="text-[#7c1f22] hover:text-red-400">Quản lý tối cao</a>
-                    @endif
-                    <form action="{{ route('logout') }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="text-[#6f6248] hover:text-red-400 transition-colors">Đăng xuất</button>
-                    </form>
+                    <!-- TÀI KHOẢN KHÁCH HÀNG / NGƯỜI DÙNG -->
+                    <div class="flex items-center gap-3">
+                        <a href="{{ route('account.index') }}" class="flex items-center gap-2 group">
+                            <!-- AVATAR TỰ ĐỘNG CẬP NHẬT -->
+                            <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=251b0e&color=f2d788' }}" 
+                                 alt="{{ auth()->user()->name }}" 
+                                 class="h-7 w-7 rounded-full border border-[#8a641d] object-cover transition-transform group-hover:scale-105">
+                            
+                            <span class="text-[#f2d788] group-hover:underline {{ request()->routeIs('account.index') ? 'font-black' : '' }}">
+                                {{ \Illuminate\Support\Str::limit(auth()->user()->fullname ?? auth()->user()->name, 12) }}
+                            </span>
+                        </a>
+
+                        <!-- NÚT BÁNH RĂNG CÀI ĐẶT TÀI KHOẢN -->
+                        <a href="{{ route('settings') }}" 
+                           title="Cài đặt tài khoản"
+                           class="relative inline-flex h-7 w-7 items-center justify-center rounded-[2px] border border-[#3c2c15] bg-[#251b0e] text-[#f2d788] transition-all hover:border-[#8a641d] hover:bg-[#8a641d] hover:text-[#0b0805] group {{ request()->routeIs('account.settings*') ? 'border-[#8a641d] bg-[#8a641d] text-[#0b0805]' : '' }}">
+                            <i class="fa-solid fa-gear text-xs transition-transform duration-500 group-hover:rotate-180"></i>
+                        </a>
+
+                        @if (auth()->user()->isAdmin())
+                            <a href="{{ route('admin.dashboard') }}" class="text-[#8a641d] hover:text-[#f2d788]" title="Bảng quản trị Admin">
+                                <i class="fa-solid fa-user-shield text-sm"></i>
+                            </a>
+                        @endif
+                        
+                        @if (auth()->user()->isSystemOwner())
+                            <a href="{{ route('admin.system-owner.index') }}" class="text-[#a8342f] hover:text-red-400" title="Quản lý tối cao">
+                                <i class="fa-solid fa-crown text-sm"></i>
+                            </a>
+                        @endif
+
+                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" class="text-[#6f6248] hover:text-red-400 transition-colors ml-1" title="Đăng xuất">
+                                <i class="fa-solid fa-right-from-bracket text-sm"></i>
+                            </button>
+                        </form>
+                    </div>
                 @else
                     <a href="{{ route('login') }}" class="text-[#f4ecd8] hover:text-[#f2d788]">Đăng nhập</a>
                     <a href="{{ route('register') }}" class="rounded-[2px] border border-[#3c2c15] bg-[#251b0e] px-3 py-1 text-[#f2d788] hover:border-[#8a641d]">Đăng ký</a>
