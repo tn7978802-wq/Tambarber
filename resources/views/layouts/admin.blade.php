@@ -71,7 +71,12 @@
                 </div>
             </a>
 
-            <!-- NAVIGATION LINKS -->
+            <!-- NÚT 3 GẠCH TRÊN ĐIỆN THOẠI -->
+            <button id="adminMobileMenuBtn" type="button" class="lg:hidden p-2 text-[#f2d788] hover:text-white focus:outline-none" onclick="toggleAdminMobileMenu()">
+                <i id="adminMobileMenuIcon" class="fa-solid fa-bars text-2xl"></i>
+            </button>
+
+            <!-- NAVIGATION LINKS (MÁY TÍNH - DESKTOP) -->
             <nav class="hidden lg:flex items-center gap-5 text-xs font-bold uppercase tracking-wider">
                 <a href="{{ route('admin.dashboard') }}" class="transition-colors hover:text-[#f2d788] {{ request()->routeIs('admin.dashboard') ? 'text-[#f2d788] border-b-2 border-[#8a641d] pb-1' : 'text-[#f4ecd8]' }}">Dashboard</a>
                 <a href="{{ route('admin.bookings.index') }}" class="transition-colors hover:text-[#f2d788] {{ request()->routeIs('admin.bookings.*') ? 'text-[#f2d788] border-b-2 border-[#8a641d] pb-1' : 'text-[#f4ecd8]' }}">Lịch hẹn</a>
@@ -94,7 +99,7 @@
                             <!-- NÚT BÁNH RĂNG CÀI ĐẶT -->
                             <a href="{{ route('settings') }}" 
                                title="Cài đặt tài khoản Quản lý tối cao"
-                               class="relative inline-flex h-8 w-8 items-center justify-center rounded-[2px] border border-[#8a641d] bg-[#251b0e] text-[#f2d788] shadow transition-all hover:border-[#f2d788] hover:bg-[#7c1f22] hover:text-white group {{ request()->routeIs('admin.system-owner.settings*') ? 'bg-[#7c1f22] border-[#f2d788] text-white' : '' }}">
+                               class="relative inline-flex h-8 w-8 items-center justify-center rounded-[2px] border border-[#8a641d] bg-[#251b0e] text-[#f2d788] shadow transition-all hover:border-[#f2d788] hover:bg-[#7c1f22] hover:text-white group {{ request()->routeIs('settings*') ? 'bg-[#7c1f22] border-[#f2d788] text-white' : '' }}">
                                 <i class="fa-solid fa-gear text-sm transition-transform duration-500 group-hover:rotate-180"></i>
                             </a>
                         </div>
@@ -118,6 +123,54 @@
                 @endauth
             </nav>
 
+        </div>
+
+        <!-- MENU THẢ XUỐNG DÀNH CHO MOBILE -->
+        <div id="adminMobileMenu" class="hidden lg:hidden border-t border-[#3c2c15] bg-[#171008] px-4 pt-3 pb-6 space-y-2 font-bold uppercase text-xs tracking-wider">
+            <a href="{{ route('admin.dashboard') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('admin.dashboard') ? 'text-[#f2d788]' : '' }}">
+                <i class="fa-solid fa-chart-line mr-2 text-[#8a641d]"></i> Dashboard
+            </a>
+            <a href="{{ route('admin.bookings.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('admin.bookings.*') ? 'text-[#f2d788]' : '' }}">
+                <i class="fa-solid fa-calendar-check mr-2 text-[#8a641d]"></i> Lịch hẹn
+            </a>
+            <a href="{{ route('admin.services.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('admin.services.*') ? 'text-[#f2d788]' : '' }}">
+                <i class="fa-solid fa-concierge-bell mr-2 text-[#8a641d]"></i> Dịch vụ
+            </a>
+            <a href="{{ route('admin.hairstyles.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('admin.hairstyles.*') ? 'text-[#f2d788]' : '' }}">
+                <i class="fa-solid fa-scissors mr-2 text-[#8a641d]"></i> Kiểu tóc
+            </a>
+            <a href="{{ route('admin.barbers.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('admin.barbers.*') ? 'text-[#f2d788]' : '' }}">
+                <i class="fa-solid fa-user-tie mr-2 text-[#8a641d]"></i> Barber
+            </a>
+            <a href="{{ route('admin.announcements.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('admin.announcements.*') ? 'text-[#f2d788]' : '' }}">
+                <i class="fa-solid fa-bullhorn mr-2 text-[#8a641d]"></i> Sự kiện
+            </a>
+
+            @auth
+                @if (auth()->user()->isSystemOwner())
+                    <div class="pt-2 border-t border-[#3c2c15]">
+                        <a href="{{ route('admin.system-owner.index') }}" class="block rounded bg-gradient-to-r from-[#7c1f22] to-[#251b0e] p-2.5 text-[#f2d788] font-black border border-[#a8342f] text-center my-1">
+                            <i class="fa-solid fa-crown mr-1.5 text-[#f2d788]"></i> Khu Vực Chủ Tiệm
+                        </a>
+                        <a href="{{ route('settings') }}" class="block py-2 text-[#f2d788] hover:text-white">
+                            <i class="fa-solid fa-gear mr-2 text-[#8a641d]"></i> Cài đặt tài khoản
+                        </a>
+                    </div>
+                @endif
+
+                <div class="pt-2 border-t border-[#3c2c15] space-y-2">
+                    <a href="{{ route('home') }}" class="block py-2 text-[#f2d788] hover:text-white">
+                        <i class="fa-solid fa-house mr-2"></i> Quay về Trang chủ
+                    </a>
+
+                    <form action="{{ route('logout') }}" method="POST" class="pt-1">
+                        @csrf
+                        <button type="submit" class="w-full text-center rounded-[2px] border border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] py-2.5 text-[#0b0805] font-extrabold uppercase">
+                            Đăng xuất
+                        </button>
+                    </form>
+                </div>
+            @endauth
         </div>
     </header>
 
@@ -155,6 +208,24 @@
     <footer class="border-t border-[#3c2c15] bg-[#171008] py-6 text-center text-xs text-[#6f6248]">
         <p>&copy; {{ date('Y') }} Tâm Barbershop Admin Panel.</p>
     </footer>
+
+    <!-- SCRIPT ĐÓNG/MỞ MENU MOBILE -->
+    <script>
+        function toggleAdminMobileMenu() {
+            const menu = document.getElementById('adminMobileMenu');
+            const icon = document.getElementById('adminMobileMenuIcon');
+            
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                menu.classList.add('hidden');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        }
+    </script>
 
     @yield('scripts')
 </body>
