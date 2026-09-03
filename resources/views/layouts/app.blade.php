@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     @vite(['resources/css/tailwind-base.css', 'resources/js/app.js'])
-    <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Flatpickr Datepicker Theme Tối Barbershop -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -89,11 +88,11 @@
             <div class="flex h-[80px] shrink-0 items-center border-b border-[#3c2c15] px-6 bg-[#0b0805]/50">
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 group">
                     <div class="flex h-11 w-11 items-center justify-center rounded-[2px] border border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] text-[#0b0805] shadow-[0_4px_12px_rgba(207,159,63,0.3)]">
-                        <i class="fa-solid fa-[#scissors] fa-scissors text-lg"></i>
+                        <i class="fa-solid fa-scissors text-lg"></i>
                     </div>
                     <div>
                         <div class="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#6f6248]">{{ __('ui.admin_panel') }}</div>
-                        <div class="font-['Bebas_Neue'] text-2xl tracking-[0.05em] text-[#f2d788] group-hover:text-[#cf9f3f] transition-colors leading-none">
+                        <div class="text-2xl tracking-[0.05em] text-[#f2d788] group-hover:text-[#cf9f3f] transition-colors leading-none" style="font-family: 'Bebas Neue', sans-serif;">
                             Tâm <span class="text-[#f4ecd8]">Barbershop</span>
                         </div>
                     </div>
@@ -199,7 +198,7 @@
                         </a>
                         <div class="min-w-0">
                             <div class="hidden text-[10px] font-semibold uppercase tracking-[0.2em] text-[#6f6248] sm:block">Tâm Barbershop Admin</div>
-                            <h1 class="truncate font-['Bebas_Neue'] text-2xl sm:text-3xl font-normal tracking-[0.03em] text-[#f2d788] leading-none">@yield('page-title', 'Dashboard')</h1>
+                            <h1 class="truncate text-2xl sm:text-3xl font-normal tracking-[0.03em] text-[#f2d788] leading-none" style="font-family: 'Bebas Neue', sans-serif;">@yield('page-title', 'Dashboard')</h1>
                         </div>
                     </div>
 
