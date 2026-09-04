@@ -20,7 +20,7 @@ class OtpController extends Controller
         $email = Session::get('verify_email');
 
         if (! $email || ! Cache::has('register_data_' . $email)) {
-            return redirect()->route('register')->with('error', 'Phiên đăng ký đã hết hạn hoặc không tồn tại. Vui lòng đăng ký lại.');
+            return redirect()->route('register')->with('error', 'Phiên xác thực đã hết hạn. Vui lòng đăng ký lại.');
         }
 
         $userData = Cache::get('register_data_' . $email);
@@ -47,7 +47,7 @@ class OtpController extends Controller
         $email = Session::get('verify_email');
 
         if (! $email || ! Cache::has('register_data_' . $email)) {
-            return redirect()->route('register')->with('error', 'Phiên xác thực đã hết hạn. Vui lòng đăng ký lại từ đầu.');
+            return redirect()->route('register')->with('error', 'Phiên xác thực đã hết hạn. Vui lòng đăng ký lại.');
         }
 
         $userData = Cache::get('register_data_' . $email);
@@ -64,12 +64,12 @@ class OtpController extends Controller
         $request->validate(['otp' => 'required|numeric']);
         $email = Session::get('verify_email');
         if (! $email) {
-            return redirect()->route('register')->with('error', 'Không tìm thấy phiên xác thực. Vui lòng đăng ký lại.');
+            return redirect()->route('register')->with('error', 'Phiên xác thực đã hết hạn. Vui lòng đăng ký lại.');
         }
         $userData = Cache::get('register_data_' . $email);
         if (! $userData) {
             Session::forget('verify_email');
-            return redirect()->route('register')->with('error', 'Mã OTP của bạn đã hết hạn (quá 5 phút). Vui lòng đăng ký lại.');
+            return redirect()->route('register')->with('error', 'Phiên xác thực đã hết hạn. Vui lòng đăng ký lại.');
         }
         if ((string) $request->otp === (string) $userData['otp']) {
             if (User::where('email', $userData['email'])->exists()) {
@@ -103,7 +103,7 @@ class OtpController extends Controller
             Auth::login($user);
 
             return redirect()->to($user->isAdmin() ? route('admin.dashboard') : route('account.index'))
-                ->with('success', 'Đăng ký và xác thực thành công! Chào mừng bạn đến với Barbershop.');
+                ->with('success', 'Đăng ký và xác thực thành công! Chào mừng bạn đến với TâmBarbershop.');
         }
 
         return back()->with('error', 'Mã OTP không chính xác. Vui lòng kiểm tra lại.');
