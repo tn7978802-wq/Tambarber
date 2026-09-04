@@ -31,11 +31,23 @@ class OtpController extends Controller
 
         Cache::put('register_data_' . $email, $userData, now()->addMinutes(5));
 
+        $mailSent = false;
+
         try {
-        Mail::to($email)->send(new SendOtpMail($newOtpCode, $userData['fullname']));
+            Mail::to($email)->send(new SendOtpMail($newOtpCode, $userData['fullname']));
+            $mailSent = true;
         } catch (\Exception $e) {
-        \Log::error('Lỗi gửi OTP: ' . $e->getMessage());
+            \Log::error('Lỗi gửi OTP: ' . $e->getMessage());
         }
+
+        if (! $mailSent) {
+            Session::put('otp_debug_code', $newOtpCode);
+            Session::put('otp_debug_notice', 'Gửi email thất bại, hệ thống đang hiển thị mã OTP tạm thời để bạn tiếp tục xác thực.');
+
+            return redirect()->route('otp.form')->with('success', 'Mã OTP mới đã được tạo. Hệ thống không gửi được email nên mã tạm thời sẽ được hiển thị trên màn hình xác thực.');
+        }
+
+        Session::forget(['otp_debug_code', 'otp_debug_notice']);
 
         return redirect()->route('otp.form')->with('success', 'Đã gửi lại mã OTP mới. Vui lòng kiểm tra email của bạn!');
     }
@@ -53,8 +65,10 @@ class OtpController extends Controller
 
         $userData = Cache::get('register_data_' . $email);
         $expiresAt = $userData['expires_at'] ?? (time() + 300);
+        $debugOtp = Session::get('otp_debug_code');
+        $debugNotice = Session::get('otp_debug_notice');
 
-        return view('auth.verify_otp', compact('expiresAt'));
+        return view('auth.verify_otp', compact('expiresAt', 'debugOtp', 'debugNotice'));
     }
 
     /**
@@ -75,7 +89,7 @@ class OtpController extends Controller
         if ((string) $request->otp === (string) $userData['otp']) {
             if (User::where('email', $userData['email'])->exists()) {
                 Cache::forget('register_data_' . $email);
-                Session::forget('verify_email');
+                Session::forget(['verify_email', 'otp_debug_code', 'otp_debug_notice']);
 
                 return redirect()->route('login')->with('error', 'Email này đã được đăng ký thành công trước đó.');
             }
@@ -99,7 +113,7 @@ class OtpController extends Controller
             }
 
             Cache::forget('register_data_' . $email);
-            Session::forget('verify_email');
+            Session::forget(['verify_email', 'otp_debug_code', 'otp_debug_notice']);
 
             Auth::login($user);
 

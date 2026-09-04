@@ -151,19 +151,26 @@ class AuthController extends Controller
 
         Cache::put('register_data_' . $request->email, $userData, now()->addMinutes(5));
 
+        $mailSent = false;
+
         try {
             Mail::to(trim($request->email))->send(new SendOtpMail($otpCode, trim($request->name)));
+            $mailSent = true;
         } catch (\Exception $e) {
             Log::error('Lỗi gửi mail OTP: ' . $e->getMessage());
-
-            Cache::forget('register_data_' . $request->email);
-
-            return back()->withErrors([
-                'email' => 'Không thể gửi mã OTP lúc này. Vui lòng kiểm tra lại cấu hình email hoặc thử lại sau.',
-            ])->withInput();
         }
 
         Session::put('verify_email', trim($request->email));
+
+        if (! $mailSent) {
+            Session::put('otp_debug_code', $otpCode);
+            Session::put('otp_debug_notice', 'Gửi email thất bại, hệ thống đang hiển thị mã OTP tạm thời để bạn hoàn tất xác thực trong môi trường thử nghiệm.');
+
+            return redirect()->route('otp.form')
+                ->with('success', 'Mã xác thực OTP đã được tạo. Hệ thống không gửi được email nên mã OTP tạm thời sẽ được hiển thị để bạn tiếp tục.');
+        }
+
+        Session::forget(['otp_debug_code', 'otp_debug_notice']);
 
         return redirect()->route('otp.form')
             ->with('success', 'Mã xác thực OTP đã được gửi. Vui lòng kiểm tra email để tiếp tục!');

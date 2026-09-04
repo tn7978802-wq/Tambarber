@@ -31,6 +31,16 @@
             </div>
         @endif
 
+        @if (!empty($debugOtp))
+            <div class="mb-4 rounded-[2px] border border-[#8a641d] bg-[#8a641d]/10 p-3 text-left">
+                <p class="text-[11px] font-bold uppercase tracking-wider text-[#f2d788]">Mã OTP tạm thời</p>
+                <p class="mt-2 font-['Bebas_Neue'] text-3xl tracking-[0.35em] text-[#f4ecd8]">{{ $debugOtp }}</p>
+                @if (!empty($debugNotice))
+                    <p class="mt-2 text-[11px] leading-relaxed text-[#f0c9c9]">{{ $debugNotice }}</p>
+                @endif
+            </div>
+        @endif
+
         <!-- Countdown Timer -->
         <div class="mb-6 flex flex-col items-center justify-center gap-1 rounded-[2px] border border-[#3c2c15] bg-[#0b0805] py-3">
             <span class="text-[11px] font-semibold uppercase tracking-wider text-[#6f6248]">Thời gian còn lại</span>
