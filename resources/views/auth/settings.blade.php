@@ -68,10 +68,10 @@
             </div>
         </div>
 
-        <!-- SECTION 2: ĐỔI MẬT KHẨU TỐI CAO (MASTER PASSWORD) -->
+        <!-- SECTION 2: ĐỔI MẬT KHẨU -->
         <div class="rounded-[2px] border border-[#3c2c15] bg-[#171008] p-6 shadow-gold-panel">
             <h2 class="font-['Bebas_Neue'] text-2xl text-[#a8342f] mb-6 border-b border-[#3c2c15] pb-2 flex items-center gap-2">
-                <i class="fa-solid fa-key text-sm text-[#a8342f]"></i> Thay Đổi Mật Khẩu (Master Password)
+                <i class="fa-solid fa-key text-sm text-[#a8342f]"></i> Thay Đổi Mật Khẩu
             </h2>
 
             <div class="space-y-4 max-w-xl">
