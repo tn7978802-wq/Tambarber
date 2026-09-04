@@ -31,11 +31,9 @@ class OtpController extends Controller
         Cache::put('register_data_' . $email, $userData, now()->addMinutes(5));
 
         try {
-            Mail::send('emails.otp', ['otp' => $newOtpCode, 'userName' => $userData['fullname']], function ($message) use ($email) {
-                $message->to($email)->subject('Mã Xác Thực OTP Của Bạn');
-            });
+        Mail::to($email)->send(new SendOtpMail($newOtpCode, $userData['fullname']));
         } catch (\Exception $e) {
-            // bỏ qua lỗi mail, khách vẫn có thể xin gửi lại sau
+        \Log::error('Lỗi gửi OTP: ' . $e->getMessage());
         }
 
         return redirect()->route('otp.form')->with('success', 'Đã gửi lại mã OTP mới. Vui lòng kiểm tra email của bạn!');
