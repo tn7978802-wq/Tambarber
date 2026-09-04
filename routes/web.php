@@ -85,6 +85,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/trang-thai/{announcement}', [App\Http\Controllers\Admin\AnnouncementController::class, 'destroy'])->name('announcements.destroy');
     Route::get('/cai-dat', [App\Http\Controllers\Admin\SystemOwnerController::class, 'settings'])->name('settings');
     Route::put('/cai-dat', [App\Http\Controllers\Admin\SystemOwnerController::class, 'updateSettings'])->name('settings.update');
+    Route::get('/lien-he', [App\Http\Controllers\Admin\ContactMessageController::class, 'index'])->name('contact.index');
+    Route::get('/lien-he/{message}', [App\Http\Controllers\Admin\ContactMessageController::class, 'show'])->name('contact.show');
+    Route::delete('/lien-he/{message}', [App\Http\Controllers\Admin\ContactMessageController::class, 'destroy'])->name('contact.destroy');
 
     // Dành riêng cho Quản lý tối cao (System Owner).
     Route::middleware('system_owner')->group(function () {

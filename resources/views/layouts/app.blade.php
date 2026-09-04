@@ -13,38 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Tailwind config + CDN -->
-    <script>
-        tailwind = tailwind || {};
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        ink: '#0b0805',
-                        'ink-2': '#171008',
-                        panel: '#504d47',
-                        'panel-2': '#251b0e',
-                        line: '#3c2c15',
-                        gold: '#cf9f3f',
-                        'gold-bright': '#f2d788',
-                        'gold-deep': '#8a641d',
-                        rosewood: '#7c1f22',
-                        'rosewood-br': '#a8342f',
-                        cream: '#f4ecd8'
-                    },
-                    fontFamily: {
-                        display: ['"Bebas Neue"', 'Arial Narrow', 'sans-serif'],
-                        body: ['Plus Jakarta Sans', 'Jost', 'ui-sans-serif', 'system-ui']
-                    },
-                    boxShadow: {
-                        'gold-panel': '0 0 0 1px rgba(207,159,63,.35), 0 18px 40px -20px rgba(0,0,0,.8)'
-                    }
-                }
-            }
-        }
-    </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    @vite(['resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-[#0b0805] text-[#f4ecd8] font-sans antialiased flex flex-col justify-between selection:bg-[#8a641d] selection:text-white">
 

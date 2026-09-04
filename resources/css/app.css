@@ -1,102 +1,36 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* Compatibility layer: map previous project class names to Tailwind utilities using @apply.
-   This preserves existing Blade markup while migrating to utility-first styling. */
+:root {
+   color-scheme: dark;
+}
 
-@layer components {
-  .site-header {
-    position: sticky;
-    top: 0;
-    left: 0;
-    @apply w-full shadow-md; 
-    background-color: #14110d;
-  }
+html {
+   scroll-behavior: smooth;
+}
 
-  .nav-container {
-    @apply mx-auto px-4 md:px-6 flex items-center justify-between relative;
-    max-width: 1300px;
-    min-height: 58px;
-  }
+body {
+   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+   background: #0b0805;
+}
 
-  .brand {
-    @apply text-adminTextStrong font-bold text-lg flex items-center gap-2 whitespace-nowrap;
-  }
+@theme {
+   --color-ink: #0b0805;
+   --color-ink-2: #171008;
+   --color-panel: #504d47;
+   --color-panel-2: #251b0e;
+   --color-line: #3c2c15;
+   --color-gold: #cf9f3f;
+   --color-gold-bright: #f2d788;
+   --color-gold-deep: #8a641d;
+   --color-rosewood: #7c1f22;
+   --color-rosewood-br: #a8342f;
+   --color-cream: #f4ecd8;
+   --font-display: "Bebas Neue", "Arial Narrow", sans-serif;
+   --font-body: "Plus Jakarta Sans", "Jost", ui-sans-serif, system-ui, sans-serif;
+}
 
-  .brand-tag {
-    @apply text-xs font-semibold px-2 py-0.5 rounded-full tracking-wider uppercase;
-    color: #1a1305;
-    background-color: #d9a441;
-  }
-
-  .nav-toggle-checkbox { @apply hidden; }
-
-  .nav-toggle-btn { @apply md:hidden text-2xl p-1 cursor-pointer; 
-    color: #ffffff; }
-
-  .main-nav { @apply hidden md:flex items-center gap-2; 
-    background-color: #a8342f; }
-  .main-nav a { @apply no-underline text-sm px-2 py-2 rounded; 
-    color: #cbbfa9; }
-  .main-nav a:hover, .main-nav a.is-active { @apply ;
-    background-color: #262019; 
-    color: #ffffff; }
-  .main-nav .btn-cta { @apply text-[#1a1305] px-3 py-2 rounded; 
-    background-color: #d9a441; }
-
-  .nav-divider { @apply hidden md:block w-px h-6 bg-[#3a3225] mx-2; }
-
-  .nav-logout-form { @apply inline-flex; }
-  .nav-logout-form button { @apply bg-transparent border text-admin-text px-3 py-2 rounded text-sm; 
-    border-color: #3a3225; }
-  .nav-logout-form button:hover { @apply ;
-    background-color: #262019;
-    color: #ffffff; }
-
-  main { @apply pt-4 pb-12 px-4 md:px-6; }
-
-  .admin-container { @apply mx-auto max-w-[1300px]; }
-  .admin-container h1 { @apply m-0 mb-2 text-2xl; }
-  .admin-container h2 { @apply text-lg mt-7 mb-2; }
-  .admin-container h3 { @apply text-base mt-4 mb-2; }
-
-  .alert { @apply p-3 rounded-md mb-4 text-sm; }
-  .alert-success { @apply bg-green-50 text-green-800 border border-green-200; }
-  .alert-error { @apply bg-red-50 text-red-800 border border-red-200; }
-
-  table.data-table { @apply w-full border-collapse bg-white rounded-lg overflow-hidden mb-4; 
-    border: 1px solid #e4dfd6; }
-  table.data-table th, table.data-table td { @apply px-3 py-3 text-left align-middle text-sm; 
-    border-bottom: 1px solid #e4dfd6; }
-  table.data-table thead th { @apply bg-[#efe9dd] font-semibold text-admin-ink; }
-  table.data-table img { @apply rounded-md block; }
-
-  form { @apply mb-3; }
-  .admin-container form:not(.nav-logout-form) { @apply bg-white border border-admin-border rounded-lg p-4 flex flex-wrap gap-3 items-center mb-5; }
-  .image-picker-btn { @apply inline-flex items-center gap-2 px-3 py-2 border-2 border-dashed rounded text-[#8a6a1c] bg-[#fbf3e2] cursor-pointer; 
-    border-color: #d9a441; }
-  .image-picker-preview { @apply max-h-12 rounded; }
-
-  .btn, button { @apply inline-flex items-center gap-2 px-3 py-2 rounded bg-white text-sm cursor-pointer; 
-    border: 1px solid #e4dfd6; 
-    color: #2b241a; }
-  .btn:hover, button:hover { @apply bg-[#f2eee5]; }
-  button[type="submit"] { @apply font-semibold; 
-    background-color: #d9a441; 
-    border: 1px solid #d9a441; 
-    color: #1a1305; }
-  .btn-danger { @apply text-[#a4291f] border-[#f0c3bd] bg-[#fdecea]; }
-
-  .status-pill { @apply inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider; }
-  .status-pending { @apply bg-[#fff3d6] text-[#8a6a1c]; }
-  .status-confirmed { @apply bg-[#dcefff] text-[#1b5183]; }
-  .status-completed { @apply bg-[#e1f5e1] text-[#1b5e20]; }
-  .status-cancelled { @apply bg-[#fbe1df] text-[#8a2119]; }
-
-  /* Utility helpers used in blades */
-  .muted { @apply text-gray-500; }
-  .pole-divider { @apply border-t my-4; 
-    border-color: #e4dfd6; }
-  .pole-divider.small { @apply mt-2 mb-4; }
+@layer utilities {
+   .font-display {
+       font-family: "Bebas Neue", "Arial Narrow", sans-serif;
+   }
 }
