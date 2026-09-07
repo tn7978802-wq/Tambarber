@@ -181,12 +181,13 @@ class SystemOwnerController extends Controller
             $user->password = Hash::make($request->password);
         }
 
-        // Xử lý upload avatar
+        // Xử lý upload avatar lên Cloudinary
         if ($request->hasFile('avatar')) {
-            if ($user->avatar) {
-                Storage::disk('public')->delete($user->avatar);
-            }
-            $user->avatar = $request->file('avatar')->store('avatars', 'public');
+            // Tải ảnh trực tiếp lên Cloudinary vào thư mục 'avatars'
+            $path = $request->file('avatar')->store('avatars', 'cloudinary');
+            
+            // Lấy đường dẫn URL tuyệt đối của Cloudinary và lưu vào CSDL
+            $user->avatar = Storage::disk('cloudinary')->url($path);
         }
 
         $user->name = $request->name;
