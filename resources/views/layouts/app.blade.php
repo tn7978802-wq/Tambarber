@@ -53,7 +53,7 @@
                     <!-- TÀI KHOẢN KHÁCH HÀNG / NGƯỜI DÙNG -->
                     <div class="flex items-center gap-3">
                         <a href="{{ route('account.index') }}" class="flex items-center gap-2 group">
-                            <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=251b0e&color=f2d788' }}" 
+                            <img src="{{ auth()->user()->avatar ? (str_starts_with(auth()->user()->avatar, 'http') ? auth()->user()->avatar : asset('storage/' . auth()->user()->avatar)) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=251b0e&color=f2d788' }}" 
                                  alt="{{ auth()->user()->name }}" 
                                  class="h-7 w-7 rounded-full border border-[#8a641d] object-cover transition-transform group-hover:scale-105">
                             
@@ -113,7 +113,7 @@
 
                 @auth
                     <a href="{{ route('account.index') }}" class="flex items-center gap-3 py-2 text-[#f2d788]">
-                        <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=251b0e&color=f2d788' }}" 
+                        <img src="{{ auth()->user()->avatar ? (str_starts_with(auth()->user()->avatar, 'http') ? auth()->user()->avatar : asset('storage/' . auth()->user()->avatar)) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=251b0e&color=f2d788' }}" 
                              alt="{{ auth()->user()->name }}" 
                              class="h-8 w-8 rounded-full border border-[#8a641d] object-cover">
                         <span>Tài khoản: {{ auth()->user()->fullname ?? auth()->user()->name }}</span>

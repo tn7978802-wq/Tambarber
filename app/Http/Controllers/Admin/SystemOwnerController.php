@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Support\Traits\HandlesImageUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 class SystemOwnerController extends Controller
 {
+    use HandlesImageUpload;
+
     public function index()
     {
         $stats = [
@@ -181,13 +183,12 @@ class SystemOwnerController extends Controller
             $user->password = Hash::make($request->password);
         }
 
-        // Xử lý upload avatar lên Cloudinary
         if ($request->hasFile('avatar')) {
-            // Tải ảnh trực tiếp lên Cloudinary vào thư mục 'avatars'
-            $path = $request->file('avatar')->store('avatars', 'cloudinary');
-            
-            // Lấy đường dẫn URL tuyệt đối của Cloudinary và lưu vào CSDL
-            $user->avatar = Storage::disk('cloudinary')->url($path);
+            $avatarPath = $this->storeUploadedImage($request, 'avatar', 'avatars');
+
+            if ($avatarPath) {
+                $user->avatar = $avatarPath;
+            }
         }
 
         $user->name = $request->name;

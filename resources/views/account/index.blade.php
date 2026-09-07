@@ -19,7 +19,7 @@
                 <!-- KHU VỰC HIỂN THỊ AVATAR -->
                 <div class="relative h-20 w-20 shrink-0">
                     @if (auth()->user()->avatar)
-                        <img src="{{ asset('storage/' . auth()->user()->avatar) }}" 
+                        <img src="{{ str_starts_with(auth()->user()->avatar, 'http') ? auth()->user()->avatar : asset('storage/' . auth()->user()->avatar) }}" 
                             alt="{{ auth()->user()->name }}" 
                             class="h-20 w-20 rounded-full border-2 border-[#8a641d] object-cover shadow-[0_0_15px_rgba(207,159,63,0.3)]">
                     @else

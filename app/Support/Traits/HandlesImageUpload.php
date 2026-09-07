@@ -29,14 +29,29 @@ trait HandlesImageUpload
             return null;
         }
 
-        // Tạo tên file an toàn (giữ nguyên extension bao gồm cả .gif, .png, .jpg, .webp)
         $filename = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
             . '-' . time() . '.' . $file->getClientOriginalExtension();
 
-        // Tải file (Ảnh / GIF) trực tiếp lên Cloudinary
-        $path = $file->storeAs($folder, $filename, 'cloudinary');
+        $hasCloudinaryConfig = ! empty(config('filesystems.disks.cloudinary.cloud'))
+            || ! empty(config('filesystems.disks.cloudinary.url'))
+            || ! empty(env('CLOUDINARY_CLOUD_NAME'))
+            || ! empty(env('CLOUDINARY_URL'));
 
-        // Trả về đường dẫn URL tuyệt đối từ Cloudinary
-        return Storage::disk('cloudinary')->url($path);
+        if ($hasCloudinaryConfig) {
+            try {
+                $path = $file->storeAs($folder, $filename, 'cloudinary');
+                $url = Storage::disk('cloudinary')->url($path);
+
+                if (is_string($url) && filter_var($url, FILTER_VALIDATE_URL)) {
+                    return $url;
+                }
+            } catch (\Throwable $e) {
+                \Log::warning('Upload ảnh thất bại trên Cloudinary, chuyển sang local storage: ' . $e->getMessage());
+            }
+        }
+
+        $path = $file->storeAs($folder, $filename, 'public');
+
+        return str_replace('public/', '', $path);
     }
 }

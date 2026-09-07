@@ -34,7 +34,7 @@
                 <div class="flex flex-col items-center justify-center space-y-3">
                     <div class="relative group">
                         <img id="avatarPreview" 
-                             src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=7c1f22&color=f2d788' }}" 
+                             src="{{ auth()->user()->avatar ? (str_starts_with(auth()->user()->avatar, 'http') ? auth()->user()->avatar : asset('storage/' . auth()->user()->avatar)) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=7c1f22&color=f2d788' }}" 
                              alt="Avatar" 
                              class="h-32 w-32 rounded-full border-2 border-[#8a641d] object-cover shadow-[0_0_20px_rgba(207,159,63,0.3)]">
                         <label for="avatar" class="absolute inset-0 flex items-center justify-center rounded-full bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
