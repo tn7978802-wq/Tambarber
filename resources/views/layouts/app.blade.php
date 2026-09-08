@@ -80,7 +80,7 @@
                             </a>
                         @endif
 
-                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                        <form action="{{ route('logout', [], false) }}" method="POST" class="inline">
                             @csrf
                             <button type="submit" class="text-[#6f6248] hover:text-red-400 transition-colors ml-1" title="Đăng xuất">
                                 <i class="fa-solid fa-right-from-bracket text-sm"></i>
@@ -135,7 +135,7 @@
                         </a>
                     @endif
 
-                    <form action="{{ route('logout') }}" method="POST" class="pt-1">
+                    <form action="{{ route('logout', [], false) }}" method="POST" class="pt-1">
                         @csrf
                         <button type="submit" class="w-full text-left py-2 text-red-400 hover:text-red-300 flex items-center gap-2">
                             <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất

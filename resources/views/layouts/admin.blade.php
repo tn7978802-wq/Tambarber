@@ -82,7 +82,7 @@
                 </a>
 
                 @auth
-                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                    <form action="{{ route('logout', [], false) }}" method="POST" class="inline">
                         @csrf
                         <button type="submit" class="rounded-[2px] border border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] px-3.5 py-1.5 text-[#0b0805] font-bold shadow transition-all hover:brightness-110 active:scale-95">
                             Đăng xuất
