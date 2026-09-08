@@ -21,14 +21,20 @@
 
     <!-- CATEGORY FILTER NAV -->
     <div class="mb-8 flex items-center justify-center flex-wrap gap-2">
-        <a href="{{ route('portfolio.index') }}" 
-           class="rounded-[2px] border px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all {{ !$selectedCategory ? 'border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] text-[#0b0805] shadow-md' : 'border-[#3c2c15] bg-[#171008] text-[#f4ecd8] hover:border-[#8a641d] hover:text-[#f2d788]' }}">
+        <a href="{{ route('portfolio.index') }}" @class([
+            'rounded-[2px] border px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all',
+            'border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] text-[#0b0805] shadow-md' => empty($selectedCategory),
+            'border-[#3c2c15] bg-[#171008] text-[#f4ecd8] hover:border-[#8a641d] hover:text-[#f2d788]' => !empty($selectedCategory),
+        ])>
             Tất cả
         </a>
 
         @foreach ($categories as $category)
-            <a href="{{ route('portfolio.index', ['category' => $category]) }}"
-               class="rounded-[2px] border px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all {{ $selectedCategory === $category ? 'border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] text-[#0b0805] shadow-md' : 'border-[#3c2c15] bg-[#171008] text-[#f4ecd8] hover:border-[#8a641d] hover:text-[#f2d788]' }}">
+            <a href="{{ route('portfolio.index', ['category' => $category]) }}" @class([
+                'rounded-[2px] border px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all',
+                'border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] text-[#0b0805] shadow-md' => ($selectedCategory === $category),
+                'border-[#3c2c15] bg-[#171008] text-[#f4ecd8] hover:border-[#8a641d] hover:text-[#f2d788]' => ($selectedCategory !== $category),
+            ])>
                 {{ $category }}
             </a>
         @endforeach
