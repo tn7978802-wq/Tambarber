@@ -20,7 +20,7 @@
     <div class="space-y-6">
 
         <!-- BƯỚC 1: LỌC BARBER & NGÀY (FORM GET) -->
-        <form action="{{ route('booking.create') }}" method="GET" class="rounded-[2px] border border-[#3c2c15] bg-[#171008] p-5 shadow-xl"
+        <form action="{{ route('booking.create', [], false) }}" method="GET" class="rounded-[2px] border border-[#3c2c15] bg-[#171008] p-5 shadow-xl"
               style="box-shadow: 0 0 0 1px rgba(138,100,29,.2), 0 10px 25px -10px rgba(0,0,0,.8);">
             
             <div class="flex items-center gap-2 mb-4">
@@ -66,7 +66,7 @@
         </form>
 
         <!-- FORM CHÍNH: ĐẶT LỊCH (FORM POST) -->
-        <form action="{{ route('booking.store') }}" method="POST" class="space-y-6">
+        <form action="{{ route('booking.store', [], false) }}" method="POST" class="space-y-6">
             @csrf
 
             <!-- Hidden Inputs giữ state -->
