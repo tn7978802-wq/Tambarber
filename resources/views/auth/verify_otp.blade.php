@@ -48,7 +48,7 @@
         </div>
 
         <!-- OTP Form -->
-        <form action="{{ route('otp.verify') }}" method="POST" class="space-y-5">
+        <form action="{{ route('otp.verify', [], false) }}" method="POST" class="space-y-5">
             @csrf
             
             <div>
