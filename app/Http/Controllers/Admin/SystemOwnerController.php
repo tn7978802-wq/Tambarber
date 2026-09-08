@@ -145,6 +145,12 @@ class SystemOwnerController extends Controller
     }
     public function settings()
     {
+        // If the user is not authenticated, send them to the public user login page
+        // (so clicking "Cài đặt" while guest opens the user login, not the admin portal).
+        if (! auth()->check()) {
+            return redirect()->guest(route('login'));
+        }
+
         return view('auth.settings');
     }
 

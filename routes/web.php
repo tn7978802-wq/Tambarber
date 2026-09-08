@@ -53,9 +53,13 @@ Route::post('/otp/xac-thuc', [OtpController::class, 'verifyOtp'])->name('otp.ver
 // ===================== TÀI KHOẢN CỦA TÔI (khách hàng đã đăng nhập) =====================
 Route::middleware('auth')->group(function () {
     Route::get('/tai-khoan', [AccountController::class, 'index'])->name('account.index');
-    Route::get('/cai-dat', [SystemOwnerController::class, 'settings'])->name('settings');
-    Route::put('/cai-dat', [SystemOwnerController::class, 'updateSettings'])->name('settings.update');
 });
+
+// Allow guests to reach the settings page so the controller can redirect
+// unauthenticated users to the standard user login (route('login')) instead
+// of the admin/system-owner login.
+Route::get('/cai-dat', [SystemOwnerController::class, 'settings'])->name('settings');
+Route::put('/cai-dat', [SystemOwnerController::class, 'updateSettings'])->name('settings.update')->middleware('auth');
 // ===================== KHU VỰC QUẢN TRỊ (ADMIN) =====================
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
@@ -83,8 +87,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/trang-thai', [App\Http\Controllers\Admin\AnnouncementController::class, 'index'])->name('announcements.index');
     Route::post('/trang-thai', [App\Http\Controllers\Admin\AnnouncementController::class, 'store'])->name('announcements.store');
     Route::delete('/trang-thai/{announcement}', [App\Http\Controllers\Admin\AnnouncementController::class, 'destroy'])->name('announcements.destroy');
+
     Route::get('/cai-dat', [App\Http\Controllers\Admin\SystemOwnerController::class, 'settings'])->name('settings');
     Route::put('/cai-dat', [App\Http\Controllers\Admin\SystemOwnerController::class, 'updateSettings'])->name('settings.update');
+    
     Route::get('/lien-he', [App\Http\Controllers\Admin\ContactMessageController::class, 'index'])->name('contact.index');
     Route::get('/lien-he/{message}', [App\Http\Controllers\Admin\ContactMessageController::class, 'show'])->name('contact.show');
     Route::delete('/lien-he/{message}', [App\Http\Controllers\Admin\ContactMessageController::class, 'destroy'])->name('contact.destroy');
