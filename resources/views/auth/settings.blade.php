@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('title', 'Cài đặt Tài khoản Quản lý Tối cao')
 
