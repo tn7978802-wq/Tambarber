@@ -50,6 +50,7 @@
                 <a href="{{ route('admin.services.index') }}" class="transition-colors hover:text-[#f2d788] {{ request()->routeIs('admin.services.*') ? 'text-[#f2d788] border-b-2 border-[#8a641d] pb-1' : 'text-[#f4ecd8]' }}">Dịch vụ</a>
                 <a href="{{ route('admin.hairstyles.index') }}" class="transition-colors hover:text-[#f2d788] {{ request()->routeIs('admin.hairstyles.*') ? 'text-[#f2d788] border-b-2 border-[#8a641d] pb-1' : 'text-[#f4ecd8]' }}">Kiểu tóc</a>
                 <a href="{{ route('admin.barbers.index') }}" class="transition-colors hover:text-[#f2d788] {{ request()->routeIs('admin.barbers.*') ? 'text-[#f2d788] border-b-2 border-[#8a641d] pb-1' : 'text-[#f4ecd8]' }}">Barber</a>
+                <a href="{{ route('admin.portfolio.index') }}" class="transition-colors hover:text-[#f2d788] {{ request()->routeIs('admin.portfolio.*') ? 'text-[#f2d788] border-b-2 border-[#8a641d] pb-1' : 'text-[#f4ecd8]' }}">Thư viện</a>
                 <a href="{{ route('admin.announcements.index') }}" class="transition-colors hover:text-[#f2d788] {{ request()->routeIs('admin.announcements.*') ? 'text-[#f2d788] border-b-2 border-[#8a641d] pb-1' : 'text-[#f4ecd8]' }}">Sự kiện</a>
                 <a href="{{ route('admin.contact.index') }}" class="transition-colors hover:text-[#f2d788] {{ request()->routeIs('admin.contact.*') ? 'text-[#f2d788] border-b-2 border-[#8a641d] pb-1' : 'text-[#f4ecd8]' }}">Liên hệ</a>
 
