@@ -24,7 +24,7 @@
             </div>
         @endif
 
-        <form action="{{ route('register.post') }}" method="POST" class="space-y-4">
+        <form action="{{ route('register.post', [], false) }}" method="POST" class="space-y-4">
             @csrf
 
             <!-- Họ và tên -->
