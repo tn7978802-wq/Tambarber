@@ -3,6 +3,10 @@
 @section('title', 'Thư viện tác phẩm - Tâm Barbershop Admin')
 
 @section('content')
+@php
+    // Ensure selected category variable exists (comes from query param 'danh-muc')
+    $selectedCategory = request()->query('danh-muc') ?? null;
+@endphp
 <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
 
     <!-- HEADER / TIÊU ĐỀ -->
@@ -25,8 +29,8 @@
         <div class="flex items-center justify-center flex-wrap gap-2">
             <a href="{{ route('admin.portfolio.index') }}" @class([
                 'rounded-[2px] border px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all',
-                'border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] text-[#0b0805] shadow-md' => empty($selectedCategory),
-                'border-[#3c2c15] bg-[#171008] text-[#f4ecd8] hover:border-[#8a641d] hover:text-[#f2d788]' => !empty($selectedCategory),
+                'border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] text-[#0b0805] shadow-md' => !request('danh-muc'),
+                'border-[#3c2c15] bg-[#171008] text-[#f4ecd8] hover:border-[#8a641d] hover:text-[#f2d788]' => request('danh-muc'),
             ])>
                 Tất cả
             </a>
@@ -34,8 +38,8 @@
             @foreach ($categories as $key => $name)
                 <a href="{{ route('admin.portfolio.index', ['danh-muc' => $key]) }}" @class([
                     'rounded-[2px] border px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all',
-                    'border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] text-[#0b0805] shadow-md' => ($selectedCategory === $key),
-                    'border-[#3c2c15] bg-[#171008] text-[#f4ecd8] hover:border-[#8a641d] hover:text-[#f2d788]' => ($selectedCategory !== $key),
+                    'border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] text-[#0b0805] shadow-md' => (request('danh-muc') === (string)$key),
+                    'border-[#3c2c15] bg-[#171008] text-[#f4ecd8] hover:border-[#8a641d] hover:text-[#f2d788]' => (request('danh-muc') !== (string)$key),
                 ])>
                     {{ $name }}
                 </a>
@@ -52,20 +56,20 @@
 
     <!-- PORTFOLIO GRID (DANH SÁCH QUẢN LÝ) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        @forelse ($portfolios as $item)
+        @forelse ($items as $item)
             <div class="group rounded-[2px] border border-[#3c2c15] bg-[#171008] overflow-hidden shadow-xl transition-all duration-300 hover:border-[#8a641d] flex flex-col justify-between"
                  style="box-shadow: 0 0 0 1px rgba(138,100,29,.15), 0 10px 25px -10px rgba(0,0,0,.8);">
                 
                 <div>
                     <!-- Image Card -->
                     <div class="relative overflow-hidden aspect-square bg-[#0b0805]">
-                        <img src="{{ $item->image }}" alt="{{ $item->title }}" 
+                        <img src="{{ $item->image_after ? asset('storage/' . $item->image_after) : ($item->image_before ? asset('storage/' . $item->image_before) : 'https://picsum.photos/800/800') }}" alt="{{ $item->title }}" 
                              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#171008] via-transparent to-transparent opacity-80"></div>
                         
                         <!-- Badge Category -->
                         <span class="absolute top-2 left-2 bg-[#0b0805]/80 text-[#f2d788] border border-[#3c2c15] px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">
-                            {{ $item->category }}
+                            {{ $item->categoryLabel() }}
                         </span>
                     </div>
 
@@ -122,7 +126,7 @@
                     + Thêm tác phẩm mới ngay
                 </a>
             </div>
-        @endempty
+        @endforelse
     </div>
 
 </div>
