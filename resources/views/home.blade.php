@@ -4,14 +4,13 @@
 
 @section('content')
 
-{{-- Bố cục 2 cột: Nội dung chính bên trái, Khung Trạng thái & Sự kiện bên phải --}}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 items-start">
 
     <!-- CỘT TRÁI - NỘI DUNG CHÍNH -->
     <div class="w-full lg:w-3/4 space-y-10">
 
         {{-- 1. HERO SECTION --}}
-        <section class="rounded-[2px] border border-[#3c2c15] bg-[#171008] p-6 sm:p-8 shadow-2xl relative overflow-hidden grid lg:grid-cols-2 gap-8 items-center"
+        <section class="rounded-[2px] border border-[#3c2c15] bg-[#171008] p-6 sm:p-8 shadow-2xl relative grid lg:grid-cols-2 gap-8 items-center z-10"
                  style="box-shadow: 0 0 0 1px rgba(138,100,29,.25), 0 20px 40px -20px rgba(0,0,0,.9);">
             
             <div class="relative group overflow-hidden rounded-[2px] border border-[#3c2c15]">
@@ -189,7 +188,7 @@
     </div>
 
     <!-- CỘT PHẢI - SIDEBAR SỰ KIỆN -->
-    <aside class="w-full lg:w-1/4 shrink-0 rounded-[2px] border border-[#3c2c15] bg-[#171008] p-5 shadow-2xl space-y-4 sticky top-24"
+    <aside class="w-full lg:w-1/4 shrink-0 rounded-[2px] border border-[#3c2c15] bg-[#171008] p-5 shadow-2xl space-y-4 sticky top-24 z-10"
            style="box-shadow: 0 0 0 1px rgba(138,100,29,.2), 0 10px 25px -10px rgba(0,0,0,.8);">
         
         <div class="border-b border-[#3c2c15] pb-2.5 flex items-center justify-between">

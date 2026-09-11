@@ -19,7 +19,7 @@
 
     <!-- ADMIN HEADER NAVBAR -->
     <header class="sticky top-0 z-50 border-b border-[#3c2c15] bg-[#171008]/95 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div class="max mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
             
             <!-- LOGO -->
             <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 shrink-0">

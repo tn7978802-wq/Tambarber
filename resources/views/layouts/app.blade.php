@@ -19,14 +19,23 @@
 
     <!-- HEADER & MAIN PUBLIC NAV -->
     <header class="sticky top-0 z-50 border-b border-[#3c2c15] bg-[#171008]/95 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div class="max mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
             
             <!-- LOGO -->
             <a href="{{ route('home') }}" class="flex items-center gap-3 shrink-0">
                 <div class="flex h-10 w-10 items-center justify-center rounded-[2px] border border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] text-[#0b0805]">
                     <i class="fa-solid fa-scissors text-lg"></i>
                 </div>
-                <span class="font-['Bebas_Neue'] text-3xl tracking-wider text-[#f2d788]">Tâm <span class="text-[#f4ecd8]">Barbershop</span></span>
+                <div class="flex flex-col justify-center leading-none mt-1.5">
+        <!-- Dòng 1: Chữ TÂM -->
+        <span class="font-['Bebas_Neue'] text-xl tracking-wider text-[#f2d788] uppercase">
+            Tâm
+        </span>
+        <!-- Dòng 2: Chữ BARBERSHOP -->
+        <span class="font-['Bebas_Neue'] text-base tracking-widest text-[#f4ecd8] uppercase -mt-2">
+            Barbershop
+        </span>
+    </div>
             </a>
 
             <!-- NÚT 3 GẠCH CHO ĐIỆN THOẠI (CHỈ HIỂN THỊ TRÊN MÀN HÌNH MÁY TÍNH BẢNG / ĐIỆN THOẠI) -->
@@ -154,6 +163,30 @@
 
     <!-- MAIN CONTENT -->
     <main class="flex-1">
+        @if (session('success'))
+            <div class="max-w-6xl mx-auto px-4 pt-6">
+                <div class="rounded-[2px] border border-emerald-600/50 bg-emerald-950/40 p-4 text-emerald-300 text-sm shadow-lg flex items-center gap-3">
+                    <i class="fa-solid fa-circle-check text-base"></i>
+                    <span>{{ session('success') }}</span>
+                </div>
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="max-w-6xl mx-auto px-4 pt-6">
+                <div class="rounded-[2px] border border-rose-600/50 bg-rose-950/40 p-4 text-rose-300 text-sm shadow-lg">
+                    <strong class="block mb-2 font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-triangle-exclamation text-base text-rose-400"></i> Đã có lỗi xảy ra:
+                    </strong>
+                    <ul class="list-disc pl-5 space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        @endif
+
         @yield('content')
     </main>
 

@@ -26,12 +26,17 @@ class ContactMessageSubmissionTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->from('/lien-he')->post('/lien-he', [
+        $response = $this->actingAs($user)->from('/lien-he')->post('/lien-he', [
             'phone' => '0909090909',
             'message' => 'Muốn hỏi về lịch cắt tóc cho tuần sau.',
         ]);
 
         $response->assertRedirect();
+        $response->assertSessionHas('success', 'Cảm ơn bạn đã liên hệ! Tiệm sẽ phản hồi sớm nhất có thể.');
+
+        $this->get('/lien-he')
+            ->assertOk()
+            ->assertSee('Cảm ơn bạn đã liên hệ! Tiệm sẽ phản hồi sớm nhất có thể.');
 
         $this->assertDatabaseHas('contact_messages', [
             'name' => 'Nguyễn Văn A',

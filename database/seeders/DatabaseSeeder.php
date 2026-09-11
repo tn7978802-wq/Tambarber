@@ -18,61 +18,23 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // ===================== TÀI KHOẢN MẪU =====================
-        // Chủ tiệm gốc (Root Owner) — email phải trùng với SYSTEM_OWNER_EMAIL trong .env
-        // để tự động có quyền Quản lý tối cao, kể cả khi admin_role trong DB không phải 3.
-        $owner = User::updateOrCreate(
-            ['email' => 'owner@barbershop.vn'],
-            [
-                'fullname' => 'Chủ Tiệm Barbershop',
-                'password' => Hash::make('password'),
-                'phone' => '0900000001',
-                'admin_role' => User::ROLE_SUPERADMIN,
-            ]
-        );
-
-        // Nhân viên quản trị (vào được Dashboard nhưng không vào được Quản lý tối cao).
-        $staff = User::updateOrCreate(
-            ['email' => 'nhanvien@barbershop.vn'],
-            [
-                'fullname' => 'Nhân Viên Quản Trị',
-                'password' => Hash::make('password'),
-                'phone' => '0900000002',
-                'admin_role' => User::ROLE_ADMIN,
-            ]
-        );
-
-        // Khách hàng mẫu (đăng nhập xem lịch sử đặt lịch tại "Tài khoản của tôi").
         $customer = User::updateOrCreate(
             ['email' => 'khach@barbershop.vn'],
             [
-                'fullname' => 'Khách Hàng Demo',
+                'fullname' => 'KH1',
                 'password' => Hash::make('password'),
                 'phone' => '0900000003',
                 'admin_role' => User::ROLE_CLIENT,
             ]
         );
-
         // ===================== BARBERS =====================
         $barberTam = Barber::updateOrCreate(
-            ['slug' => 'tam-barber'],
+            ['slug' => 'Tâm'],
             [
                 'name' => 'Tâm',
-                'title' => 'Barber trưởng',
-                'bio' => 'Hơn 8 năm kinh nghiệm, chuyên fade và tạo kiểu nam hiện đại.',
+                'title' => 'Barber chuyên nghiệp',
+                'bio' => 'Hơn 4 năm kinh nghiệm, chuyên fade và tạo kiểu nam hiện đại.',
                 'avatar' => '/images/shop-working.jpg',
-                'years_experience' => 8,
-                'is_active' => true,
-            ]
-        );
-
-        $barberAn = Barber::updateOrCreate(
-            ['slug' => 'an-barber'],
-            [
-                'name' => 'An',
-                'title' => 'Thợ chính',
-                'bio' => 'Chuyên cạo râu truyền thống và các kiểu tóc classic.',
-                'avatar' => '/images/shop-interior.jpg',
                 'years_experience' => 4,
                 'is_active' => true,
             ]
@@ -80,11 +42,6 @@ class DatabaseSeeder extends Seeder
 
         // ===================== SERVICES =====================
         $servicesData = [
-            ['name' => 'Cắt tóc', 'description' => 'Cắt và tạo kiểu theo yêu cầu.', 'price' => 80000, 'duration_minutes' => 30],
-            ['name' => 'Cạo râu', 'description' => 'Cạo râu truyền thống bằng dao cạo.', 'price' => 50000, 'duration_minutes' => 20],
-            ['name' => 'Gội đầu', 'description' => 'Gội đầu kết hợp massage thư giãn.', 'price' => 40000, 'duration_minutes' => 20],
-            ['name' => 'Tạo kiểu', 'description' => 'Sấy tạo kiểu, vuốt keo/wax hoàn thiện.', 'price' => 30000, 'duration_minutes' => 15],
-            ['name' => 'Combo cắt + gội + tạo kiểu', 'description' => 'Trọn gói cắt, gội và tạo kiểu.', 'price' => 130000, 'duration_minutes' => 60],
         ];
 
         foreach ($servicesData as $service) {
@@ -223,55 +180,13 @@ class DatabaseSeeder extends Seeder
                 'image' => '/images/shop-working.jpg',
                 'category' => 'cao-rau',
                 'hairstyle_id' => null,
-                'barber_id' => $barberAn->id,
+                'barber_id' => $barberTam->id,
                 'is_featured' => false,
             ]
         );
 
         // ===================== BLOG POSTS =====================
         $postsData = [
-            [
-                'title' => '10 kiểu tóc nam đẹp năm 2026',
-                'excerpt' => 'Tổng hợp những kiểu tóc nam được yêu thích nhất trong năm nay.',
-                'content' => 'Nội dung chi tiết về các kiểu tóc nam thịnh hành năm 2026, cách chọn kiểu phù hợp với khuôn mặt và phong cách sống...',
-                'category' => 'kien-thuc',
-            ],
-            [
-                'title' => 'Cách chọn kiểu tóc theo khuôn mặt',
-                'excerpt' => 'Hướng dẫn xác định khuôn mặt và gợi ý kiểu tóc phù hợp.',
-                'content' => 'Mỗi khuôn mặt (tròn, vuông, trái xoan, dài...) sẽ hợp với những kiểu tóc khác nhau. Bài viết hướng dẫn cách nhận biết khuôn mặt và chọn kiểu tóc tôn dáng...',
-                'category' => 'huong-dan',
-            ],
-            [
-                'title' => 'Fade là gì? Phân biệt Low, Mid, High Fade',
-                'excerpt' => 'Giải thích khái niệm fade và sự khác nhau giữa các loại fade phổ biến.',
-                'content' => 'Fade là kỹ thuật cắt tóc mờ dần độ dài từ chân tóc lên trên. Bài viết phân tích chi tiết Low Fade, Mid Fade, High Fade và cách chọn loại phù hợp...',
-                'category' => 'kien-thuc',
-            ],
-            [
-                'title' => 'Bao lâu nên cắt tóc một lần?',
-                'excerpt' => 'Giải đáp thắc mắc về tần suất cắt tóc lý tưởng cho từng kiểu tóc.',
-                'content' => 'Tần suất cắt tóc phụ thuộc vào kiểu tóc, tốc độ mọc tóc và nhu cầu giữ dáng. Thông thường nên cắt lại sau 3-5 tuần...',
-                'category' => 'kien-thuc',
-            ],
-            [
-                'title' => 'Cách chăm sóc tóc nam đúng cách',
-                'excerpt' => 'Bí quyết giữ tóc khoẻ và kiểu tóc lâu đẹp giữa các lần cắt.',
-                'content' => 'Chăm sóc tóc đúng cách giúp tóc chắc khoẻ và giữ nếp lâu hơn. Bài viết chia sẻ các bước gội đầu, dưỡng tóc và tạo kiểu hàng ngày...',
-                'category' => 'huong-dan',
-            ],
-            [
-                'title' => 'Những dụng cụ barber cần có',
-                'excerpt' => 'Danh sách dụng cụ cơ bản cho người mới học nghề barber.',
-                'content' => 'Tông đơ, kéo cắt, kéo tỉa, dao cạo, lược, khăn quấn cổ... là những dụng cụ không thể thiếu với một barber. Bài viết giới thiệu công dụng từng loại...',
-                'category' => 'huong-dan',
-            ],
-            [
-                'title' => 'Học nghề barber mất bao lâu?',
-                'excerpt' => 'Lộ trình học nghề từ người mới đến khi trở thành barber chuyên nghiệp.',
-                'content' => 'Thời gian học nghề barber phụ thuộc vào năng lực và mức độ luyện tập, thường mất từ 6 tháng đến 2 năm để thành thạo...',
-                'category' => 'tin-tuc',
-            ],
         ];
 
         foreach ($postsData as $post) {
