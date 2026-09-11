@@ -58,6 +58,7 @@
             </div>
 
             <input type="hidden" name="service_id" value="{{ $selectedServiceId }}">
+            <input type="hidden" name="hairstyle_id" value="{{ $selectedHairstyleId }}">
             <noscript>
                 <button type="submit" class="mt-3 rounded-[2px] border border-[#3c2c15] bg-[#251b0e] px-4 py-1.5 text-xs font-bold text-[#f2d788]">
                     Cập nhật giờ trống
@@ -73,26 +74,48 @@
             <input type="hidden" name="barber_id" value="{{ $selectedBarberId }}">
             <input type="hidden" name="booking_date" value="{{ $selectedDate }}">
 
-            <!-- BƯỚC 2: CHỌN DỊCH VỤ -->
+            <!-- BƯỚC 2: CHỌN DỊCH VỤ & KIỂU TÓC -->
             <div class="rounded-[2px] border border-[#3c2c15] bg-[#171008] p-5 shadow-xl">
                 <div class="flex items-center gap-2 mb-4">
                     <span class="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] font-['Bebas_Neue'] text-base font-bold text-[#0b0805]">
                         02
                     </span>
                     <h2 class="font-['Bebas_Neue'] text-xl tracking-wide text-[#f2d788] uppercase">
-                        Chọn dịch vụ
+                        Dịch vụ &amp; kiểu tóc
                     </h2>
                 </div>
 
-                <select name="service_id" required 
-                        class="w-full rounded-[2px] border border-[#3c2c15] bg-[#0b0805] px-3.5 py-2.5 text-xs text-[#f4ecd8] focus:border-[#8a641d] focus:outline-none focus:ring-1 focus:ring-[#8a641d]">
-                    <option value="">-- Vui lòng chọn dịch vụ --</option>
-                    @foreach ($services as $service)
-                        <option value="{{ $service->id }}" @selected((string) $selectedServiceId === (string) $service->id)>
-                            {{ $service->name }} - {{ number_format((float) $service->price, 0, ',', '.') }}đ ({{ $service->duration_minutes }} phút)
-                        </option>
-                    @endforeach
-                </select>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-[#6f6248] mb-1.5">
+                            Chọn dịch vụ
+                        </label>
+                        <select name="service_id" required
+                                class="w-full rounded-[2px] border border-[#3c2c15] bg-[#0b0805] px-3.5 py-2.5 text-xs text-[#f4ecd8] focus:border-[#8a641d] focus:outline-none focus:ring-1 focus:ring-[#8a641d]">
+                            <option value="">-- Vui lòng chọn dịch vụ --</option>
+                            @foreach ($services as $service)
+                                <option value="{{ $service->id }}" @selected((string) $selectedServiceId === (string) $service->id)>
+                                    {{ $service->name }} - {{ number_format((float) $service->price, 0, ',', '.') }}đ ({{ $service->duration_minutes }} phút)
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-[#6f6248] mb-1.5">
+                            Chọn kiểu tóc
+                        </label>
+                        <select name="hairstyle_id" required
+                                class="w-full rounded-[2px] border border-[#3c2c15] bg-[#0b0805] px-3.5 py-2.5 text-xs text-[#f4ecd8] focus:border-[#8a641d] focus:outline-none focus:ring-1 focus:ring-[#8a641d]">
+                            <option value="">-- Vui lòng chọn kiểu tóc --</option>
+                            @foreach ($hairstyles as $hairstyle)
+                                <option value="{{ $hairstyle->id }}" @selected((string) $selectedHairstyleId === (string) $hairstyle->id)>
+                                    {{ $hairstyle->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <!-- BƯỚC 3: XÁC NHẬN BARBER & NGÀY -->
@@ -103,7 +126,9 @@
                     </span>
                     <span class="font-bold text-[#6f6248] uppercase tracking-wider">Thông tin đã chọn:</span>
                 </div>
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-4 flex-wrap">
+                    <span>Kiểu tóc: <strong class="text-[#f2d788]">{{ optional($hairstyles->firstWhere('id', (int) $selectedHairstyleId))->name ?? 'Chưa chọn' }}</strong></span>
+                    <span class="text-[#3c2c15]">•</span>
                     <span>Barber: <strong class="text-[#f2d788]">{{ optional($barbers->firstWhere('id', (int) $selectedBarberId))->name ?? 'Chưa chọn (ở bước 1)' }}</strong></span>
                     <span class="text-[#3c2c15]">•</span>
                     <span>Ngày: <strong class="text-[#f2d788]">{{ $selectedDate ? \Carbon\Carbon::parse($selectedDate)->format('d/m/Y') : 'Chưa chọn' }}</strong></span>

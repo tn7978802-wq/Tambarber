@@ -56,6 +56,11 @@
             </div>
 
             <div class="flex justify-between items-center py-1 border-b border-[#3c2c15]/50">
+                <span class="text-[#6f6248] uppercase tracking-wider font-semibold">Kiểu tóc</span>
+                <span class="font-semibold text-[#f4ecd8]">{{ $booking->hairstyle?->name ?? 'Không chọn' }}</span>
+            </div>
+
+            <div class="flex justify-between items-center py-1 border-b border-[#3c2c15]/50">
                 <span class="text-[#6f6248] uppercase tracking-wider font-semibold">Thợ phụ trách (Barber)</span>
                 <span class="font-semibold text-[#f4ecd8] flex items-center gap-1.5">
                     <i class="fa-solid fa-scissors text-[10px] text-[#8a641d]"></i>

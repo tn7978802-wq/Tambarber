@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Barber;
 use App\Models\Booking;
+use App\Models\Hairstyle;
 use App\Models\Service;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
@@ -28,9 +29,11 @@ class BookingController extends Controller
     public function create(Request $request): View
     {
         $services = Service::active()->orderBy('name')->get();
+        $hairstyles = Hairstyle::orderBy('name')->get();
         $barbers = Barber::where('is_active', true)->orderBy('name')->get();
 
         $selectedServiceId = $request->query('service_id');
+        $selectedHairstyleId = $request->query('hairstyle_id');
         $selectedBarberId = $request->query('barber_id');
         $selectedDate = $request->query('date', now()->toDateString());
 
@@ -47,10 +50,12 @@ class BookingController extends Controller
 
         return view('booking.create', [
             'services' => $services,
+            'hairstyles' => $hairstyles,
             'barbers' => $barbers,
             'timeSlots' => self::TIME_SLOTS,
             'bookedSlots' => $bookedSlots,
             'selectedServiceId' => $selectedServiceId,
+            'selectedHairstyleId' => $selectedHairstyleId,
             'selectedBarberId' => $selectedBarberId,
             'selectedDate' => $selectedDate,
             // Điền sẵn thông tin nếu khách đã đăng nhập.
@@ -68,6 +73,7 @@ class BookingController extends Controller
             'customer_phone' => ['required', 'string', 'max:20'],
             'customer_email' => ['nullable', 'email', 'max:255'],
             'service_id' => ['required', Rule::exists('services', 'id')->where('is_active', true)],
+            'hairstyle_id' => ['required', Rule::exists('hairstyles', 'id')],
             'barber_id' => ['required', Rule::exists('barbers', 'id')->where('is_active', true)],
             'booking_date' => ['required', 'date', 'after_or_equal:today'],
             'booking_time' => ['required', 'string', Rule::in(self::TIME_SLOTS)],
@@ -76,6 +82,7 @@ class BookingController extends Controller
             'customer_name.required' => 'Vui lòng nhập họ tên.',
             'customer_phone.required' => 'Vui lòng nhập số điện thoại.',
             'service_id.required' => 'Vui lòng chọn dịch vụ.',
+            'hairstyle_id.required' => 'Vui lòng chọn kiểu tóc.',
             'barber_id.required' => 'Vui lòng chọn barber.',
             'booking_date.after_or_equal' => 'Ngày đặt lịch không được ở quá khứ.',
         ]);
@@ -125,6 +132,7 @@ class BookingController extends Controller
                     'customer_phone' => $data['customer_phone'],
                     'customer_email' => $data['customer_email'] ?? null,
                     'service_id' => $data['service_id'],
+                    'hairstyle_id' => $data['hairstyle_id'],
                     'barber_id' => $data['barber_id'],
                     'booking_date' => $data['booking_date'],
                     'booking_time' => $data['booking_time'],
@@ -146,7 +154,7 @@ class BookingController extends Controller
      */
     public function success(string $code): View
     {
-        $booking = Booking::with(['service', 'barber'])
+        $booking = Booking::with(['service', 'hairstyle', 'barber'])
             ->where('booking_code', $code)
             ->firstOrFail();
 

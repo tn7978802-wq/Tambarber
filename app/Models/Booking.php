@@ -14,6 +14,7 @@ class Booking extends Model
         'customer_phone',
         'customer_email',
         'service_id',
+        'hairstyle_id',
         'barber_id',
         'booking_date',
         'booking_time',
@@ -33,6 +34,11 @@ class Booking extends Model
     public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class);
+    }
+
+    public function hairstyle(): BelongsTo
+    {
+        return $this->belongsTo(Hairstyle::class);
     }
 
     public function barber(): BelongsTo
