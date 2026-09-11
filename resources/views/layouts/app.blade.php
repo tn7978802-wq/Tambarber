@@ -14,6 +14,34 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        .nav-item {
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .nav-dropdown {
+            position: absolute;
+            left: 0;
+            top: calc(100% - 2px);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(6px);
+            transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease;
+            pointer-events: none;
+            z-index: 60;
+        }
+
+        .nav-item.is-open > .nav-dropdown,
+        .nav-item:hover > .nav-dropdown,
+        .nav-item:focus-within > .nav-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+    </style>
 </head>
 <body class="min-h-screen bg-[#0b0805] text-[#f4ecd8] font-sans antialiased flex flex-col justify-between selection:bg-[#8a641d] selection:text-white">
 
@@ -44,17 +72,42 @@
             </button>
 
             <!-- NAVIGATION TOOLBAR (MÁY TÍNH - DESKTOP) -->
-            <nav class="hidden lg:flex items-center gap-5 text-xs font-bold uppercase tracking-wider">
-                <a href="{{ route('home') }}" class="transition-colors hover:text-[#f2d788] {{ request()->routeIs('home') ? 'text-[#f2d788] border-b-2 border-[#8a641d] pb-1' : 'text-[#f4ecd8]' }}">Trang chủ</a>
-                <a href="{{ route('about') }}" class="transition-colors hover:text-[#f2d788] {{ request()->routeIs('about') ? 'text-[#f2d788] border-b-2 border-[#8a641d] pb-1' : 'text-[#f4ecd8]' }}">Giới thiệu</a>
-                <a href="{{ route('hairstyles.index') }}" class="transition-colors hover:text-[#f2d788] {{ request()->routeIs('hairstyles.*') ? 'text-[#f2d788] border-b-2 border-[#8a641d] pb-1' : 'text-[#f4ecd8]' }}">Kiểu tóc</a>
-                <a href="{{ route('services.index') }}" class="transition-colors hover:text-[#f2d788] {{ request()->routeIs('services.*') ? 'text-[#f2d788] border-b-2 border-[#8a641d] pb-1' : 'text-[#f4ecd8]' }}">Dịch vụ</a>
-                <a href="{{ route('portfolio.index') }}" class="transition-colors hover:text-[#f2d788] {{ request()->routeIs('portfolio.*') ? 'text-[#f2d788] border-b-2 border-[#8a641d] pb-1' : 'text-[#f4ecd8]' }}">Portfolio</a>
-                <a href="{{ route('blog.index') }}" class="transition-colors hover:text-[#f2d788] {{ request()->routeIs('blog.*') ? 'text-[#f2d788] border-b-2 border-[#8a641d] pb-1' : 'text-[#f4ecd8]' }}">Blog</a>
-                <a href="{{ route('announcements.index') }}" class="transition-colors hover:text-[#f2d788] {{ request()->routeIs('announcements.*') ? 'text-[#f2d788] border-b-2 border-[#8a641d] pb-1' : 'text-[#f4ecd8]' }}">Sự kiện</a>
-                <a href="{{ route('contact.index') }}" class="transition-colors hover:text-[#f2d788] {{ request()->routeIs('contact.*') ? 'text-[#f2d788] border-b-2 border-[#8a641d] pb-1' : 'text-[#f4ecd8]' }}">Liên hệ</a>
+            <nav class="hidden lg:flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.22em]">
+                <ul class="flex items-center gap-1 list-none">
+                    <li class="nav-item group relative">
+                        <a href="{{ route('home') }}" class="flex items-center px-2 py-2 text-[#f4ecd8] transition-colors hover:text-[#f2d788] {{ request()->routeIs('home') ? 'text-[#f2d788]' : '' }}">
+                            Home
+                        </a>
+                        <ul class="nav-dropdown absolute left-0 top-full z-50 mt-2 min-w-[180px] rounded-[2px] border border-[#3c2c15] bg-[#171008] p-1 shadow-2xl">
+                            <li><a href="{{ route('home') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('home') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Trang chủ</a></li>
+                            <li><a href="{{ route('about') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('about') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Giới thiệu</a></li>
+                            <li><a href="{{ route('contact.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('contact.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Liên hệ</a></li>
+                        </ul>
+                    </li>
 
-                <a href="{{ route('booking.create') }}" class="rounded-[2px] border border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] px-3.5 py-1.5 text-[#0b0805] shadow transition-all hover:brightness-110">ĐẶT LỊCH NGAY</a>
+                    <li class="nav-item group relative">
+                        <a href="{{ route('hairstyles.index') }}" class="flex items-center px-2 py-2 text-[#f4ecd8] transition-colors hover:text-[#f2d788] {{ request()->routeIs('hairstyles.*') ? 'text-[#f2d788]' : '' }}">
+                            Styles
+                        </a>
+                        <ul class="nav-dropdown absolute left-0 top-full z-50 mt-2 min-w-[180px] rounded-[2px] border border-[#3c2c15] bg-[#171008] p-1 shadow-2xl">
+                            <li><a href="{{ route('hairstyles.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('hairstyles.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Kiểu tóc</a></li>
+                            <li><a href="{{ route('services.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('services.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Dịch vụ</a></li>
+                            <li><a href="{{ route('portfolio.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('portfolio.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Tác phẩm</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item group relative">
+                        <a href="{{ route('blog.index') }}" class="flex items-center px-2 py-2 text-[#f4ecd8] transition-colors hover:text-[#f2d788] {{ request()->routeIs('blog.*') ? 'text-[#f2d788]' : '' }}">
+                            Blog
+                        </a>
+                        <ul class="nav-dropdown absolute left-0 top-full z-50 mt-2 min-w-[180px] rounded-[2px] border border-[#3c2c15] bg-[#171008] p-1 shadow-2xl">
+                            <li><a href="{{ route('blog.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('blog.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Tin tức</a></li>
+                            <li><a href="{{ route('announcements.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('announcements.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Sự kiện</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <a href="{{ route('booking.create') }}" class="rounded-[2px] border border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] px-3.5 py-1.5 text-[#0b0805] shadow transition-all hover:brightness-110">Đặt lịch</a>
 
                 <div class="h-4 w-[1px] bg-[#3c2c15]"></div>
 
@@ -65,7 +118,7 @@
                             <img src="{{ auth()->user()->avatar ? (str_starts_with(auth()->user()->avatar, 'http') ? auth()->user()->avatar : asset('storage/' . auth()->user()->avatar)) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=251b0e&color=f2d788' }}" 
                                  alt="{{ auth()->user()->name }}" 
                                  class="h-7 w-7 rounded-full border border-[#8a641d] object-cover transition-transform group-hover:scale-105">
-                            
+                             
                             <span class="text-[#f2d788] group-hover:underline {{ request()->routeIs('account.index') ? 'font-black' : '' }}">
                                 {{ \Illuminate\Support\Str::limit(auth()->user()->fullname ?? auth()->user()->name, 12) }}
                             </span>
@@ -211,6 +264,59 @@
                 icon.classList.add('fa-bars');
             }
         }
+    </script>
+
+    <script>
+        (function () {
+            const items = document.querySelectorAll('.nav-item');
+
+            items.forEach((item) => {
+                const dropdown = item.querySelector('.nav-dropdown');
+                if (!dropdown) return;
+
+                let hideTimer = null;
+
+                const clearHide = () => {
+                    if (hideTimer) {
+                        clearTimeout(hideTimer);
+                        hideTimer = null;
+                    }
+                };
+
+                const closeOthers = () => {
+                    items.forEach((otherItem) => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('is-open');
+                        }
+                    });
+                };
+
+                item.addEventListener('mouseenter', () => {
+                    clearHide();
+                    closeOthers();
+                    item.classList.add('is-open');
+                });
+
+                item.addEventListener('mouseleave', () => {
+                    clearHide();
+                    hideTimer = setTimeout(() => {
+                        if (!item.matches(':hover') && !dropdown.matches(':hover')) {
+                            item.classList.remove('is-open');
+                        }
+                    }, 120);
+                });
+
+                dropdown.addEventListener('mouseenter', () => clearHide());
+                dropdown.addEventListener('mouseleave', () => {
+                    clearHide();
+                    hideTimer = setTimeout(() => {
+                        if (!item.matches(':hover') && !dropdown.matches(':hover')) {
+                            item.classList.remove('is-open');
+                        }
+                    }, 120);
+                });
+            });
+        })();
     </script>
 
     @yield('scripts')
