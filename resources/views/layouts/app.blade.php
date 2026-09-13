@@ -51,19 +51,13 @@
             
             <!-- LOGO -->
             <a href="{{ route('home') }}" class="flex items-center gap-3 shrink-0">
-                <div class="flex h-10 w-10 items-center justify-center rounded-[2px] border border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] text-[#0b0805]">
-                    <i class="fa-solid fa-scissors text-lg"></i>
+                <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-[2px] border border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] text-[#0b0805] shadow-[0_0_15px_rgba(207,159,63,0.3)]">
+                    <i class="fa-solid fa-scissors text-2xl"></i>
                 </div>
-                <div class="flex flex-col justify-center leading-none mt-1.5">
-        <!-- Dòng 1: Chữ TÂM -->
-        <span class="font-['Bebas_Neue'] text-xl tracking-wider text-[#f2d788] uppercase">
-            Tâm
-        </span>
-        <!-- Dòng 2: Chữ BARBERSHOP -->
-        <span class="font-['Bebas_Neue'] text-base tracking-widest text-[#f4ecd8] uppercase -mt-2">
-            Barbershop
-        </span>
-    </div>
+                <div class="leading-none">
+                    <div class="font-['Bebas_Neue'] text-[2.1rem] tracking-[0.12em] text-[#f2d788]">TÂM</div>
+                    <div class="mt-1 font-['Bebas_Neue'] text-[1.1rem] tracking-[0.18em] text-[#f4ecd8]">BARBERSHOP</div>
+                </div>
             </a>
 
             <!-- NÚT 3 GẠCH CHO ĐIỆN THOẠI (CHỈ HIỂN THỊ TRÊN MÀN HÌNH MÁY TÍNH BẢNG / ĐIỆN THOẠI) -->
@@ -107,7 +101,7 @@
                     </li>
                 </ul>
 
-                <a href="{{ route('booking.create') }}" class="rounded-[2px] border border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] px-3.5 py-1.5 text-[#0b0805] shadow transition-all hover:brightness-110">Đặt lịch</a>
+                <a href="{{ route('booking.create') }}" class="rounded-[2px] border border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] px-3.5 py-1.5 text-[#0b0805] shadow transition-all hover:brightness-110">ĐẶT LỊCH NGAY</a>
 
                 <div class="h-4 w-[1px] bg-[#3c2c15]"></div>
 
@@ -239,7 +233,7 @@
                 </div>
             </div>
         @endif
-
+    
         @yield('content')
     </main>
 
