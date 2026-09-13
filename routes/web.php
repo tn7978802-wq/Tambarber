@@ -104,6 +104,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/lien-he/{message}', [App\Http\Controllers\Admin\ContactMessageController::class, 'show'])->name('contact.show');
     Route::delete('/lien-he/{message}', [App\Http\Controllers\Admin\ContactMessageController::class, 'destroy'])->name('contact.destroy');
 
+    // Trang "Doanh thu khách vãng lai"
+    Route::get('quan-ly', [App\Http\Controllers\Admin\WalkinSessionController::class, 'index'])->name('walkin.index');
+    Route::post('quan-ly', [App\Http\Controllers\Admin\WalkinSessionController::class, 'store'])->name('walkin.store');
+    Route::post('quan-ly/{walkin}/hoan-thanh', [App\Http\Controllers\Admin\WalkinSessionController::class, 'complete'])->name('walkin.complete');
+    Route::post('quan-ly/{walkin}/huy', [App\Http\Controllers\Admin\WalkinSessionController::class, 'cancel'])->name('walkin.cancel');
+
+    // Trang / bảng "Doanh thu theo Barber" (đứng dưới Tổng quan)
+    Route::get('doanh-thu', [App\Http\Controllers\Admin\RevenueReportController::class, 'index'])->name('revenue.index');
+
     Route::middleware('system_owner')->group(function () {
         Route::get('/quan-ly-toi-cao', [App\Http\Controllers\Admin\SystemOwnerController::class, 'index'])->name('system-owner.index');
         Route::put('/quan-ly-toi-cao/nguoi-dung/{user}/quyen', [App\Http\Controllers\Admin\SystemOwnerController::class, 'updateRole'])->name('system-owner.update-role');

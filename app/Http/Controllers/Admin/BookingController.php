@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
+use App\Models\WalkinSession;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -49,6 +50,7 @@ class BookingController extends Controller
     public function complete(Booking $booking): RedirectResponse
     {
         $booking->update(['status' => 'completed']);
+        WalkinSession::createFromBooking($booking);
 
         return back()->with('success', "Đã hoàn thành lịch hẹn {$booking->booking_code}.");
     }

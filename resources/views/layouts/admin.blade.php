@@ -41,6 +41,12 @@
                     <a href="{{ route('admin.dashboard') }}" class="rounded-[2px] px-3 py-2.5 transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-[#251b0e] text-[#f2d788] border border-[#8a641d]' : 'text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788]' }}">
                         <i class="fa-solid fa-chart-line mr-2 text-[#8a641d]"></i> Dashboard
                     </a>
+                    <a href="{{ route('admin.walkin.index') }}" class="rounded-[2px] px-3 py-2.5 transition-colors {{ request()->routeIs('admin.walkin.*') ? 'bg-[#251b0e] text-[#f2d788] border border-[#8a641d]' : 'text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788]' }}">
+                        <i class="fa-solid fa-cash-register mr-2 text-[#8a641d]"></i> quản lý
+                    </a>
+                    <a href="{{ route('admin.revenue.index') }}" class="rounded-[2px] px-3 py-2.5 transition-colors {{ request()->routeIs('admin.revenue.*') ? 'bg-[#251b0e] text-[#f2d788] border border-[#8a641d]' : 'text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788]' }}">
+                        <i class="fa-solid fa-sack-dollar mr-2 text-[#8a641d]"></i> Doanh thu
+                    </a>
                     <a href="{{ route('admin.bookings.index') }}" class="rounded-[2px] px-3 py-2.5 transition-colors {{ request()->routeIs('admin.bookings.*') ? 'bg-[#251b0e] text-[#f2d788] border border-[#8a641d]' : 'text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788]' }}">
                         <i class="fa-solid fa-calendar-check mr-2 text-[#8a641d]"></i> Lịch hẹn
                     </a>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\WalkinSession;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -95,11 +96,23 @@ class DashboardController extends Controller
 
     private function bookingRevenue(Carbon $start, Carbon $end): float
     {
-        return (float) DB::table('bookings')
+        $completedBookingsRevenue = (float) DB::table('bookings')
             ->join('services', 'services.id', '=', 'bookings.service_id')
             ->where('bookings.status', 'completed')
+            ->whereNotExists(function ($query) {
+                $query->select(DB::raw(1))
+                    ->from('walkin_sessions')
+                    ->whereColumn('walkin_sessions.booking_id', 'bookings.id')
+                    ->where('walkin_sessions.source', 'online');
+            })
             ->whereBetween('bookings.booking_date', [$start->toDateString(), $end->toDateString()])
             ->sum('services.price');
+
+        $walkinRevenue = (float) WalkinSession::completed()
+            ->whereBetween('started_at', [$start->copy()->startOfDay(), $end->copy()->endOfDay()])
+            ->sum('total_price');
+
+        return $completedBookingsRevenue + $walkinRevenue;
     }
 
     private function bookingCount(Carbon $start, Carbon $end): int
