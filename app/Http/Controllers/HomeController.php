@@ -27,7 +27,13 @@ class HomeController extends Controller
         try {
             $featuredHairstyles = Hairstyle::query()->orderByDesc('id')->limit(6)->get();
             $services = Service::active()->orderBy('name')->limit(4)->get();
-            $reviews = Review::visible()->latest()->limit(6)->get();
+            // Lọc 3 đánh giá có điểm sao cao nhất (nếu bằng sao thì lấy bài mới hơn)
+            $reviews = Review::visible()
+                ->orderByDesc('rating')
+                ->latest()
+                ->limit(3)
+                ->get();
+
             $latestPosts = Post::published()->orderByDesc('publish_at')->limit(3)->get();
 
             // Khung "Trạng thái & Sự kiện" bên phải Trang chủ.

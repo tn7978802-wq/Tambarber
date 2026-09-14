@@ -60,12 +60,12 @@
                 </div>
             </a>
 
-            <!-- NÚT 3 GẠCH CHO ĐIỆN THOẠI (CHỈ HIỂN THỊ TRÊN MÀN HÌNH MÁY TÍNH BẢNG / ĐIỆN THOẠI) -->
+            <!-- NÚT 3 GẠCH CHO ĐIỆN THOẠI -->
             <button id="mobileMenuBtn" type="button" class="lg:hidden p-2 text-[#f2d788] hover:text-white focus:outline-none" onclick="toggleMobileMenu()">
                 <i id="mobileMenuIcon" class="fa-solid fa-bars text-2xl"></i>
             </button>
 
-            <!-- NAVIGATION TOOLBAR (MÁY TÍNH - DESKTOP) -->
+            <!-- NAVIGATION TOOLBAR (DESKTOP) -->
             <nav class="hidden lg:flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.22em]">
                 <ul class="flex items-center gap-1 list-none">
                     <li class="nav-item group relative">
@@ -80,13 +80,14 @@
                     </li>
 
                     <li class="nav-item group relative">
-                        <a href="{{ route('hairstyles.index') }}" class="flex items-center px-2 py-2 text-[#f4ecd8] transition-colors hover:text-[#f2d788] {{ request()->routeIs('hairstyles.*') ? 'text-[#f2d788]' : '' }}">
+                        <a href="{{ route('hairstyles.index') }}" class="flex items-center px-2 py-2 text-[#f4ecd8] transition-colors hover:text-[#f2d788] {{ request()->routeIs('hairstyles.*') || request()->routeIs('reviews.*') ? 'text-[#f2d788]' : '' }}">
                             Styles
                         </a>
                         <ul class="nav-dropdown absolute left-0 top-full z-50 mt-2 min-w-[180px] rounded-[2px] border border-[#3c2c15] bg-[#171008] p-1 shadow-2xl">
                             <li><a href="{{ route('hairstyles.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('hairstyles.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Kiểu tóc</a></li>
                             <li><a href="{{ route('services.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('services.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Dịch vụ</a></li>
                             <li><a href="{{ route('portfolio.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('portfolio.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Tác phẩm</a></li>
+                            <li><a href="{{ route('reviews.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('reviews.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Đánh giá</a></li>
                         </ul>
                     </li>
 
@@ -98,6 +99,13 @@
                             <li><a href="{{ route('blog.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('blog.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Góc chia sẻ</a></li>
                             <li><a href="{{ route('announcements.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('announcements.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Sự kiện</a></li>
                         </ul>
+                    </li>
+
+                    <!-- MENU ĐÁNH GIÁ TRỰC TIẾP -->
+                    <li>
+                        <a href="{{ route('reviews.index') }}" class="px-2 py-2 text-[#f4ecd8] transition-colors hover:text-[#f2d788] {{ request()->routeIs('reviews.*') ? 'text-[#f2d788]' : '' }}">
+                            Đánh giá
+                        </a>
                     </li>
                 </ul>
 
@@ -156,8 +164,9 @@
             <a href="{{ route('home') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('home') ? 'text-[#f2d788]' : '' }}">Trang chủ</a>
             <a href="{{ route('about') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('about') ? 'text-[#f2d788]' : '' }}">Giới thiệu</a>
             <a href="{{ route('hairstyles.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('hairstyles.*') ? 'text-[#f2d788]' : '' }}">Kiểu tóc</a>
-            <a href="{{ route('services.index') }}" class="block py-2 rounded bg-[#251b0e] px-3 py-2 text-[#f2d788] {{ request()->routeIs('services.*') ? 'text-[#f2d788]' : '' }}">Dịch vụ</a>
+            <a href="{{ route('services.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('services.*') ? 'text-[#f2d788]' : '' }}">Dịch vụ</a>
             <a href="{{ route('portfolio.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('portfolio.*') ? 'text-[#f2d788]' : '' }}">Góc chia sẻ</a>
+            <a href="{{ route('reviews.index') }}" class="block py-2 rounded bg-[#251b0e] px-3 py-2 text-[#f2d788] {{ request()->routeIs('reviews.*') ? 'text-[#f2d788]' : '' }}">Đánh giá</a>
             <a href="{{ route('blog.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('blog.*') ? 'text-[#f2d788]' : '' }}">Blog</a>
             <a href="{{ route('announcements.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('announcements.*') ? 'text-[#f2d788]' : '' }}">Sự kiện</a>
             <a href="{{ route('contact.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('contact.*') ? 'text-[#f2d788]' : '' }}">Liên hệ</a>

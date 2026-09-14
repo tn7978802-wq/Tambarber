@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->string('customer_name');
+            $table->string('email')->nullable(); // Thêm cột email đồng bộ với Model
             $table->unsignedTinyInteger('rating')->default(5);
             $table->text('comment')->nullable();
             $table->boolean('is_visible')->default(true);

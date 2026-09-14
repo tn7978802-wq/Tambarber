@@ -93,21 +93,6 @@ class DatabaseSeeder extends Seeder
                 ])
             );
         }
-
-        // ===================== REVIEWS =====================
-        $reviewsData = [
-            ['customer_name' => 'Minh Khang', 'rating' => 5, 'comment' => 'Cắt đẹp, thợ tư vấn nhiệt tình, không gian thoải mái.'],
-            ['customer_name' => 'Quốc Bảo', 'rating' => 5, 'comment' => 'Fade cực gọn, đúng ý mình, sẽ quay lại tiệm.'],
-            ['customer_name' => 'Thành Đạt', 'rating' => 4, 'comment' => 'Dịch vụ tốt, giá hợp lý, chỉ hơi đông vào cuối tuần.'],
-        ];
-
-        foreach ($reviewsData as $review) {
-            Review::updateOrCreate(
-                ['customer_name' => $review['customer_name'], 'comment' => $review['comment']],
-                array_merge($review, ['is_visible' => true])
-            );
-        }
-
         // ===================== SAMPLE BOOKING =====================
         $service = Service::first();
         if ($service) {

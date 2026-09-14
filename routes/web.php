@@ -11,9 +11,10 @@ use App\Http\Controllers\HairstyleController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OtpController;
 use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ServiceController;
 
 use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
-use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\Admin\SystemOwnerController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,10 @@ Route::get('/gioi-thieu', [AboutController::class, 'index'])->name('about');
 Route::get('/kieu-toc', [HairstyleController::class, 'index'])->name('hairstyles.index');
 Route::get('/kieu-toc/{slug}', [HairstyleController::class, 'show'])->name('hairstyles.show');
 Route::get('/dich-vu', [ServiceController::class, 'index'])->name('services.index');
+
+// Đánh giá & Phản hồi
+Route::get('/danh-gia', [ReviewController::class, 'index'])->name('reviews.index');
+Route::post('/danh-gia', [ReviewController::class, 'store'])->name('reviews.store');
 
 // Thư viện tác phẩm (Portfolio public)
 Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio.index');
@@ -91,9 +96,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('/barber/{barber}', [App\Http\Controllers\Admin\BarberController::class, 'update'])->name('barbers.update');
     Route::delete('/barber/{barber}', [App\Http\Controllers\Admin\BarberController::class, 'destroy'])->name('barbers.destroy');
 
-    // Đã sửa lại đúng AdminPortfolioController class:
-    Route::resource('portfolio', AdminPortfolioController::class)
-        ->except(['show']);
+    Route::resource('portfolio', AdminPortfolioController::class)->except(['show']);
     Route::get('/trang-thai', [App\Http\Controllers\Admin\AnnouncementController::class, 'index'])->name('announcements.index');
     Route::post('/trang-thai', [App\Http\Controllers\Admin\AnnouncementController::class, 'store'])->name('announcements.store');
     Route::delete('/trang-thai/{announcement}', [App\Http\Controllers\Admin\AnnouncementController::class, 'destroy'])->name('announcements.destroy');
@@ -101,8 +104,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/cai-dat', [App\Http\Controllers\Admin\SystemOwnerController::class, 'settings'])->name('settings');
     Route::put('/cai-dat', [App\Http\Controllers\Admin\SystemOwnerController::class, 'updateSettings'])->name('settings.update');
     
-    Route::resource('blog', App\Http\Controllers\Admin\PostController::class)
-        ->except(['show']);
+    Route::resource('blog', App\Http\Controllers\Admin\PostController::class)->except(['show']);
 
     Route::get('/lien-he', [App\Http\Controllers\Admin\ContactMessageController::class, 'index'])->name('contact.index');
     Route::get('/lien-he/{message}', [App\Http\Controllers\Admin\ContactMessageController::class, 'show'])->name('contact.show');
@@ -114,7 +116,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('quan-ly/{walkin}/hoan-thanh', [App\Http\Controllers\Admin\WalkinSessionController::class, 'complete'])->name('walkin.complete');
     Route::post('quan-ly/{walkin}/huy', [App\Http\Controllers\Admin\WalkinSessionController::class, 'cancel'])->name('walkin.cancel');
 
-    // Trang / bảng "Doanh thu theo Barber" (đứng dưới Tổng quan)
+    // Trang / bảng "Doanh thu theo Barber"
     Route::get('doanh-thu', [App\Http\Controllers\Admin\RevenueReportController::class, 'index'])->name('revenue.index');
     Route::get('doanh-thu/{walkin}/sua', [App\Http\Controllers\Admin\RevenueReportController::class, 'edit'])->name('revenue.edit');
     Route::put('doanh-thu/{walkin}', [App\Http\Controllers\Admin\RevenueReportController::class, 'update'])->name('revenue.update');

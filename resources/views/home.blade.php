@@ -129,34 +129,7 @@
         <!-- BARBER POLE LINE -->
         <div class="h-[2px] w-full bg-[repeating-linear-gradient(-45deg,#7c1f22_0_10px,#f4ecd8_10px_20px,#171008_20px_30px)]"></div>
 
-        {{-- 4. ĐÁNH GIÁ KHÁCH HÀNG --}}
-        <section class="space-y-4">
-            <div class="border-b border-[#3c2c15] pb-3">
-                <span class="text-[11px] font-bold uppercase tracking-widest text-[#6f6248]">Phản hồi thực tế</span>
-                <h2 class="font-['Bebas_Neue'] text-2xl tracking-wide text-[#f2d788] uppercase">Khách hàng nói gì về chúng tôi</h2>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                @forelse ($reviews as $review)
-                    <blockquote class="rounded-[2px] border border-[#3c2c15] bg-[#171008] p-4 text-xs text-[#f4ecd8]/90 italic flex flex-col justify-between">
-                        <p class="mb-3 leading-relaxed">"{{ $review->comment }}"</p>
-                        <div class="flex items-center justify-between not-italic pt-2 border-t border-[#3c2c15]/50">
-                            <span class="font-bold text-[#f2d788]">{{ $review->customer_name }}</span>
-                            <span class="text-[11px] text-[#8a641d] font-bold">
-                                <i class="fa-solid fa-star text-[10px] text-[#f2d788]"></i> {{ $review->rating }}/5
-                            </span>
-                        </div>
-                    </blockquote>
-                @empty
-                    <p class="text-xs text-[#6f6248]">Chưa có đánh giá nào.</p>
-                @endforelse
-            </div>
-        </section>
-
-        <!-- BARBER POLE LINE -->
-        <div class="h-[2px] w-full bg-[repeating-linear-gradient(-45deg,#7c1f22_0_10px,#f4ecd8_10px_20px,#171008_20px_30px)]"></div>
-
-        {{-- 5. BÀI VIẾT MỚI --}}
+        {{-- 4. BÀI VIẾT MỚI --}}
         <section class="space-y-4">
             <div class="flex items-center justify-between border-b border-[#3c2c15] pb-3">
                 <div>
@@ -187,60 +160,104 @@
 
     </div>
 
-    <!-- CỘT PHẢI - SIDEBAR SỰ KIỆN -->
-    <aside class="w-full lg:w-1/4 shrink-0 rounded-[2px] border border-[#3c2c15] bg-[#171008] p-5 shadow-2xl space-y-4 sticky top-24 z-10"
-           style="box-shadow: 0 0 0 1px rgba(138,100,29,.2), 0 10px 25px -10px rgba(0,0,0,.8);">
+    <!-- CỘT PHẢI - SIDEBAR SỰ KIỆN & ĐÁNH GIÁ KHÁCH HÀNG -->
+    <aside class="w-full lg:w-1/4 shrink-0 space-y-6 sticky top-24 z-10">
         
-        <div class="border-b border-[#3c2c15] pb-2.5 flex items-center justify-between">
-            <h2 class="font-['Bebas_Neue'] text-xl tracking-wider text-[#f2d788] uppercase">
-                Trạng thái &amp; Sự kiện
-            </h2>
-            <i class="fa-solid fa-bullhorn text-[#8a641d] text-sm"></i>
-        </div>
+        {{-- TRẠNG THÁI & SỰ KIỆN --}}
+        <div class="rounded-[2px] border border-[#3c2c15] bg-[#171008] p-5 shadow-2xl space-y-4"
+             style="box-shadow: 0 0 0 1px rgba(138,100,29,.2), 0 10px 25px -10px rgba(0,0,0,.8);">
+            
+            <div class="border-b border-[#3c2c15] pb-2.5 flex items-center justify-between">
+                <h2 class="font-['Bebas_Neue'] text-xl tracking-wider text-[#f2d788] uppercase">
+                    Trạng thái &amp; Sự kiện
+                </h2>
+                <i class="fa-solid fa-bullhorn text-[#8a641d] text-sm"></i>
+            </div>
 
-        <div class="divide-y divide-[#3c2c15] space-y-3">
-            @forelse ($announcements as $announcement)
-                <div class="pt-3 first:pt-0">
-                    @if ($announcement->is_pinned)
-                        <span class="inline-block rounded-[2px] bg-[#8a641d]/20 border border-[#8a641d] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[#f2d788] mb-1.5">
-                            📌 Ghim
-                        </span>
-                    @endif
-
-                    @if ($announcement->image)
-                        <a href="{{ route('announcements.show', $announcement) }}" class="block mb-2 overflow-hidden rounded-[2px] border border-[#3c2c15]">
-                            <img src="{{ $announcement->image }}" alt="" class="w-full h-28 object-cover transition-transform hover:scale-105">
-                        </a>
-                    @endif
-
-                    <a href="{{ route('announcements.show', $announcement) }}" class="block text-xs font-semibold text-[#f4ecd8] hover:text-[#f2d788] transition-colors leading-snug">
-                        {{ $announcement->title ?: \Illuminate\Support\Str::limit($announcement->content, 60) }}
-                    </a>
-
-                    <div class="mt-2 text-[10px] text-[#6f6248] space-y-0.5">
-                        @if ($announcement->event_at)
-                            <p class="text-[#f2d788] font-medium flex items-center gap-1">
-                                <i class="fa-regular fa-calendar text-[9px]"></i>
-                                {{ $announcement->event_at->format('H:i d/m/Y') }}
-                            </p>
+            <div class="divide-y divide-[#3c2c15] space-y-3">
+                @forelse ($announcements as $announcement)
+                    <div class="pt-3 first:pt-0">
+                        @if ($announcement->is_pinned)
+                            <span class="inline-block rounded-[2px] bg-[#8a641d]/20 border border-[#8a641d] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[#f2d788] mb-1.5">
+                                📌 Ghim
+                            </span>
                         @endif
-                        <p>
-                            {{ $announcement->created_at->diffForHumans() }} &middot; {{ $announcement->comments_count }} bình luận
-                        </p>
+
+                        @if ($announcement->image)
+                            <a href="{{ route('announcements.show', $announcement) }}" class="block mb-2 overflow-hidden rounded-[2px] border border-[#3c2c15]">
+                                <img src="{{ $announcement->image }}" alt="" class="w-full h-28 object-cover transition-transform hover:scale-105">
+                            </a>
+                        @endif
+
+                        <a href="{{ route('announcements.show', $announcement) }}" class="block text-xs font-semibold text-[#f4ecd8] hover:text-[#f2d788] transition-colors leading-snug">
+                            {{ $announcement->title ?: \Illuminate\Support\Str::limit($announcement->content, 60) }}
+                        </a>
+
+                        <div class="mt-2 text-[10px] text-[#6f6248] space-y-0.5">
+                            @if ($announcement->event_at)
+                                <p class="text-[#f2d788] font-medium flex items-center gap-1">
+                                    <i class="fa-regular fa-calendar text-[9px]"></i>
+                                    {{ $announcement->event_at->format('H:i d/m/Y') }}
+                                </p>
+                            @endif
+                            <p>
+                                {{ $announcement->created_at->diffForHumans() }} &middot; {{ $announcement->comments_count }} bình luận
+                            </p>
+                        </div>
                     </div>
-                </div>
-            @empty
-                <p class="text-xs text-[#6f6248] py-2">Chưa có trạng thái hoặc sự kiện nào.</p>
-            @endforelse
+                @empty
+                    <p class="text-xs text-[#6f6248] py-2">Chưa có trạng thái hoặc sự kiện nào.</p>
+                @endforelse
+            </div>
+
+            <div class="pt-3 border-t border-[#3c2c15]">
+                <a href="{{ route('announcements.index') }}" 
+                   class="inline-flex w-full items-center justify-center gap-1.5 rounded-[2px] border border-[#3c2c15] bg-[#251b0e] py-2 text-[11px] font-bold uppercase tracking-wider text-[#f2d788] transition-all hover:border-[#8a641d]">
+                    <span>Xem tất cả sự kiện</span>
+                    <i class="fa-solid fa-arrow-right text-[9px]"></i>
+                </a>
+            </div>
         </div>
 
-        <div class="pt-3 border-t border-[#3c2c15]">
-            <a href="{{ route('announcements.index') }}" 
-               class="inline-flex w-full items-center justify-center gap-1.5 rounded-[2px] border border-[#3c2c15] bg-[#251b0e] py-2 text-[11px] font-bold uppercase tracking-wider text-[#f2d788] transition-all hover:border-[#8a641d]">
-                <span>Xem tất cả sự kiện</span>
-                <i class="fa-solid fa-arrow-right text-[9px]"></i>
-            </a>
+        {{-- PHẢN HỒI THỰC TẾ (TOP 3 ĐÁNH GIÁ CAO NHẤT) --}}
+        <div class="rounded-[2px] border border-[#3c2c15] bg-[#171008] p-5 shadow-2xl space-y-4"
+             style="box-shadow: 0 0 0 1px rgba(138,100,29,.2), 0 10px 25px -10px rgba(0,0,0,.8);">
+            
+            <div class="border-b border-[#3c2c15] pb-2.5 flex items-center justify-between">
+                <div>
+                    <span class="text-[9px] font-bold uppercase tracking-widest text-[#6f6248]">Phản hồi thực tế</span>
+                    <h2 class="font-['Bebas_Neue'] text-xl tracking-wider text-[#f2d788] uppercase leading-none mt-0.5">
+                        Khách hàng nói gì
+                    </h2>
+                </div>
+                <i class="fa-solid fa-star text-[#8a641d] text-sm"></i>
+            </div>
+
+            <div class="space-y-3">
+                @forelse ($reviews as $review)
+                    <blockquote class="rounded-[2px] border border-[#3c2c15]/60 bg-[#0b0805] p-3 text-xs text-[#f4ecd8]/90 italic flex flex-col justify-between">
+                        <p class="mb-2.5 leading-relaxed text-[11px]">"{{ $review->comment }}"</p>
+                        <div class="flex items-center justify-between not-italic pt-2 border-t border-[#3c2c15]/50">
+                            <span class="font-bold text-[#f2d788] text-[11px] truncate max-w-[120px]">{{ $review->customer_name }}</span>
+                            <span class="text-[10px] text-[#8a641d] font-bold shrink-0 flex items-center gap-1">
+                                <i class="fa-solid fa-star text-[9px] text-[#f2d788]"></i> {{ $review->rating }}/5
+                            </span>
+                        </div>
+                    </blockquote>
+                @empty
+                    <p class="text-xs text-[#6f6248]">Chưa có đánh giá nào.</p>
+                @endforelse
+            </div>
+
+            <div class="pt-2 border-t border-[#3c2c15]">
+                <a href="{{ route('reviews.index') }}" 
+                   class="inline-flex w-full items-center justify-center gap-1.5 rounded-[2px] border border-[#3c2c15] bg-[#251b0e] py-2 text-[11px] font-bold uppercase tracking-wider text-[#f2d788] transition-all hover:border-[#8a641d]">
+                    <span>Viết đánh giá của bạn</span>
+                    <i class="fa-solid fa-pen-to-square text-[9px]"></i>
+                </a>
+            </div>
         </div>
+
     </aside>
 
 </div>
