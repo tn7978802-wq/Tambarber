@@ -9,13 +9,14 @@ use Illuminate\Database\QueryException;
 class BlogController extends Controller
 {
     /**
-     * Danh sách bài viết đã xuất bản (kiến thức về tóc, xu hướng, hướng dẫn học nghề...).
+     * Danh sách bài viết.
      */
     public function index(): View
     {
         $posts = collect();
 
         try {
+            // scopePublished đã tự động kiểm tra status = 'published' VÀ publish_at <= now()
             $posts = Post::published()
                 ->orderByDesc('publish_at')
                 ->paginate(9);

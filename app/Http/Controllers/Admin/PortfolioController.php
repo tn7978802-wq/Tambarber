@@ -7,6 +7,7 @@ use App\Models\Barber;
 use App\Models\PortfolioItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class PortfolioController extends Controller
 {
@@ -36,6 +37,17 @@ class PortfolioController extends Controller
     public function store(Request $request)
     {
         $data = $this->validated($request);
+
+        $duplicate = PortfolioItem::query()
+            ->whereRaw('LOWER(TRIM(title)) = ?', [mb_strtolower(trim($data['title']) )])
+            ->where('category', $data['category'])
+            ->exists();
+
+        if ($duplicate) {
+            return back()->withInput()->withErrors([
+                'title' => 'Tác phẩm này đã tồn tại trong danh mục đã chọn.',
+            ]);
+        }
 
         $data['image_after'] = $request->file('image_after')->store('portfolio', 'public');
 
@@ -102,7 +114,12 @@ class PortfolioController extends Controller
     private function validated(Request $request, bool $updating = false): array
     {
         return $request->validate([
-            'title' => ['required', 'string', 'max:255'],
+            'title' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('portfolio_items', 'title')->where(fn ($query) => $query->where('category', $request->input('category')))->ignore($updating ? $request->route('portfolio')?->id : null),
+            ],
             'description' => ['nullable', 'string', 'max:2000'],
             'category' => ['required', 'string', 'in:' . implode(',', array_keys(PortfolioItem::CATEGORIES))],
             'barber_id' => ['nullable', 'exists:barbers,id'],

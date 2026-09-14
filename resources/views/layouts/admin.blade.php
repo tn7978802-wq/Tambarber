@@ -62,6 +62,9 @@
                     <a href="{{ route('admin.portfolio.index') }}" class="rounded-[2px] px-3 py-2.5 transition-colors {{ request()->routeIs('admin.portfolio.*') ? 'bg-[#251b0e] text-[#f2d788] border border-[#8a641d]' : 'text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788]' }}">
                         <i class="fa-solid fa-images mr-2 text-[#8a641d]"></i> Thư viện
                     </a>
+                    <a href="{{ route('admin.blog.index') }}" class="rounded-[2px] px-3 py-2.5 transition-colors {{ request()->routeIs('admin.blog.*') ? 'bg-[#251b0e] text-[#f2d788] border border-[#8a641d]' : 'text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788]' }}">
+                        <i class="fa-solid fa-newspaper mr-2 text-[#8a641d]"></i> Góc chia sẻ
+                    </a>
                     <a href="{{ route('admin.announcements.index') }}" class="rounded-[2px] px-3 py-2.5 transition-colors {{ request()->routeIs('admin.announcements.*') ? 'bg-[#251b0e] text-[#f2d788] border border-[#8a641d]' : 'text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788]' }}">
                         <i class="fa-solid fa-bullhorn mr-2 text-[#8a641d]"></i> Sự kiện
                     </a>

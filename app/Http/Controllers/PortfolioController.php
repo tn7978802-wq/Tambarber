@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Portfolio;
+use App\Models\PortfolioItem;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -19,8 +19,8 @@ class PortfolioController extends Controller
         $category = $request->query('category');
 
         try {
-            $portfolios = Portfolio::query()
-                ->with(['hairstyle', 'barber'])
+            $portfolios = PortfolioItem::query()
+                ->with('barber')
                 ->when($category, fn ($query) => $query->where('category', $category))
                 ->orderByDesc('is_featured')
                 ->orderByDesc('id')
@@ -29,12 +29,28 @@ class PortfolioController extends Controller
             report($exception);
         }
 
-        $categories = ['fade', 'tao-kieu', 'cao-rau', 'tre-em'];
+        $categories = array_keys(PortfolioItem::CATEGORIES);
 
         return view('portfolio.index', [
             'portfolios' => $portfolios,
             'categories' => $categories,
             'selectedCategory' => $category,
+        ]);
+    }
+
+    public function show(PortfolioItem $portfolioItem): View
+    {
+        $portfolioItem->load('barber');
+
+        return view('portfolio.show', [
+            'portfolio' => $portfolioItem,
+            'related' => PortfolioItem::query()
+                ->where('category', $portfolioItem->category)
+                ->whereKeyNot($portfolioItem->id)
+                ->orderByDesc('is_featured')
+                ->orderByDesc('id')
+                ->limit(4)
+                ->get(),
         ]);
     }
 }

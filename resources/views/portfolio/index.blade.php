@@ -35,7 +35,7 @@
                 'border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] text-[#0b0805] shadow-md' => ($selectedCategory === $category),
                 'border-[#3c2c15] bg-[#171008] text-[#f4ecd8] hover:border-[#8a641d] hover:text-[#f2d788]' => ($selectedCategory !== $category),
             ])>
-                {{ $category }}
+                {{ App\Models\PortfolioItem::CATEGORIES[$category] ?? ucfirst(str_replace('-', ' ', $category)) }}
             </a>
         @endforeach
     </div>
@@ -43,46 +43,42 @@
     <!-- PORTFOLIO GRID -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         @forelse ($portfolios as $item)
-            <div class="group rounded-[2px] border border-[#3c2c15] bg-[#171008] overflow-hidden shadow-xl transition-all duration-300 hover:border-[#8a641d] flex flex-col justify-between"
-                 style="box-shadow: 0 0 0 1px rgba(138,100,29,.15), 0 10px 25px -10px rgba(0,0,0,.8);">
-                
-                <div>
-                    <!-- Image Card -->
-                    <div class="relative overflow-hidden aspect-square bg-[#0b0805]">
-                        <img src="{{ $item->image }}" alt="{{ $item->title }}" 
-                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#171008] via-transparent to-transparent opacity-80"></div>
+            <a href="{{ route('portfolio.show', $item) }}" class="group block rounded-[2px] border border-[#3c2c15] bg-[#171008] overflow-hidden shadow-xl transition-all duration-300 hover:border-[#8a641d]">
+                <div class="flex flex-col justify-between h-full">
+                    <div>
+                        <div class="relative overflow-hidden aspect-square bg-[#0b0805]">
+                            <img src="{{ $item->image_after ? asset('storage/' . $item->image_after) : ($item->image_before ? asset('storage/' . $item->image_before) : 'https://picsum.photos/800/800') }}" alt="{{ $item->title }}" 
+                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#171008] via-transparent to-transparent opacity-80"></div>
+                            <span class="absolute top-2 left-2 bg-[#0b0805]/80 text-[#f2d788] border border-[#3c2c15] px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">
+                                {{ App\Models\PortfolioItem::CATEGORIES[$item->category] ?? 'Khác' }}
+                            </span>
+                        </div>
+
+                        <div class="p-4 space-y-2">
+                            <h3 class="font-['Bebas_Neue'] text-xl tracking-wide text-[#f2d788] leading-tight group-hover:text-[#f4ecd8] transition-colors">
+                                {{ $item->title }}
+                            </h3>
+
+                            <div class="space-y-1 text-xs text-[#6f6248]">
+                                @if ($item->barber)
+                                    <p class="flex items-center gap-1.5 text-[#f4ecd8]/80">
+                                        <i class="fa-solid fa-user-check text-[10px] text-[#8a641d]"></i>
+                                        <span>Thực hiện bởi: <strong class="text-[#f2d788]">{{ $item->barber->name }}</strong></span>
+                                    </p>
+                                @endif
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Content Details -->
-                    <div class="p-4 space-y-2">
-                        <h3 class="font-['Bebas_Neue'] text-xl tracking-wide text-[#f2d788] leading-tight group-hover:text-[#f4ecd8] transition-colors">
-                            {{ $item->title }}
-                        </h3>
-
-                        <div class="space-y-1 text-xs text-[#6f6248]">
-                            @if ($item->hairstyle)
-                                <p class="flex items-center gap-1.5 text-[#f4ecd8]/80">
-                                    <i class="fa-solid fa-scissors text-[10px] text-[#8a641d]"></i>
-                                    <span>Kiểu tóc: <strong class="text-[#f4ecd8]">{{ $item->hairstyle->name }}</strong></span>
-                                </p>
-                            @endif
-
-                            @if ($item->barber)
-                                <p class="flex items-center gap-1.5 text-[#f4ecd8]/80">
-                                    <i class="fa-solid fa-user-check text-[10px] text-[#8a641d]"></i>
-                                    <span>Thực hiện bởi: <strong class="text-[#f2d788]">{{ $item->barber->name }}</strong></span>
-                                </p>
-                            @endif
+                    <div class="px-4 pb-3 pt-0">
+                        <div class="h-[1px] w-full bg-[#3c2c15]"></div>
+                        <div class="mt-3 text-[10px] font-bold uppercase tracking-[0.18em] text-[#f2d788]">
+                            Xem chi tiết
                         </div>
                     </div>
                 </div>
-
-                <!-- Card Footer Decor -->
-                <div class="px-4 pb-3">
-                    <div class="h-[1px] w-full bg-[#3c2c15]"></div>
-                </div>
-            </div>
+            </a>
         @empty
             <div class="col-span-full py-16 text-center text-[#6f6248] rounded-[2px] border border-[#3c2c15] bg-[#171008]">
                 <i class="fa-regular fa-images text-4xl mb-3 block text-[#3c2c15]"></i>

@@ -25,9 +25,10 @@ class Post extends Model
     public function scopePublished(Builder $query): Builder
     {
         return $query
-            ->where('status', 'published')
+            ->whereIn('status', ['published', 'scheduled'])
             ->where(function (Builder $builder) {
-                $builder->whereNull('publish_at')->orWhere('publish_at', '<=', now());
+                $builder->whereNull('publish_at')
+                       ->orWhere('publish_at', '<=', now());
             });
     }
 }

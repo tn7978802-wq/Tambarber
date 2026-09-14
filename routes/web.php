@@ -26,6 +26,7 @@ Route::get('/dich-vu', [ServiceController::class, 'index'])->name('services.inde
 
 // Thư viện tác phẩm (Portfolio public)
 Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio.index');
+Route::get('/portfolio/{portfolioItem}', [PortfolioController::class, 'show'])->name('portfolio.show');
 
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
@@ -100,11 +101,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/cai-dat', [App\Http\Controllers\Admin\SystemOwnerController::class, 'settings'])->name('settings');
     Route::put('/cai-dat', [App\Http\Controllers\Admin\SystemOwnerController::class, 'updateSettings'])->name('settings.update');
     
+    Route::resource('blog', App\Http\Controllers\Admin\PostController::class)
+        ->except(['show']);
+
     Route::get('/lien-he', [App\Http\Controllers\Admin\ContactMessageController::class, 'index'])->name('contact.index');
     Route::get('/lien-he/{message}', [App\Http\Controllers\Admin\ContactMessageController::class, 'show'])->name('contact.show');
     Route::delete('/lien-he/{message}', [App\Http\Controllers\Admin\ContactMessageController::class, 'destroy'])->name('contact.destroy');
 
-    // Trang "Doanh thu khách vãng lai"
+    // Trang "Doanh thu"
     Route::get('quan-ly', [App\Http\Controllers\Admin\WalkinSessionController::class, 'index'])->name('walkin.index');
     Route::post('quan-ly', [App\Http\Controllers\Admin\WalkinSessionController::class, 'store'])->name('walkin.store');
     Route::post('quan-ly/{walkin}/hoan-thanh', [App\Http\Controllers\Admin\WalkinSessionController::class, 'complete'])->name('walkin.complete');

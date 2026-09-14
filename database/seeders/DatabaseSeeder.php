@@ -78,43 +78,6 @@ class DatabaseSeeder extends Seeder
 
         // ===================== PORTFOLIO =====================
         $fadeHairstyle = Hairstyle::where('slug', 'fade')->first();
-
-        Portfolio::updateOrCreate(
-            ['title' => 'Fade gọn gàng cho khách nam'],
-            [
-                'title' => 'Fade gọn gàng cho khách nam',
-                'image' => '/images/fade-cut-closeup.jpg',
-                'category' => 'fade',
-                'hairstyle_id' => $fadeHairstyle?->id,
-                'barber_id' => $barberTam->id,
-                'is_featured' => true,
-            ]
-        );
-
-        Portfolio::updateOrCreate(
-            ['title' => 'Không gian tiệm và khách đang chờ'],
-            [
-                'title' => 'Không gian tiệm và khách đang chờ',
-                'image' => '/images/shop-interior.jpg',
-                'category' => 'tao-kieu',
-                'hairstyle_id' => null,
-                'barber_id' => null,
-                'is_featured' => true,
-            ]
-        );
-
-        Portfolio::updateOrCreate(
-            ['title' => 'Barber đang phục vụ khách'],
-            [
-                'title' => 'Barber đang phục vụ khách',
-                'image' => '/images/shop-working.jpg',
-                'category' => 'cao-rau',
-                'hairstyle_id' => null,
-                'barber_id' => $barberTam->id,
-                'is_featured' => false,
-            ]
-        );
-
         // ===================== BLOG POSTS =====================
         $postsData = [
         ];

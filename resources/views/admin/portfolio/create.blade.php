@@ -28,7 +28,7 @@
     <div class="rounded-[2px] border border-[#3c2c15] bg-[#171008] p-6 sm:p-8 shadow-2xl"
          style="box-shadow: 0 0 0 1px rgba(138,100,29,.15), 0 10px 25px -10px rgba(0,0,0,.8);">
 
-        <form action="{{ route('admin.portfolio.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+        <form action="{{ route('admin.portfolio.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6" id="portfolio-create-form">
             @csrf
 
             <!-- UPLOAD 2 CỘT ẢNH (BEFORE / AFTER) -->
@@ -142,8 +142,8 @@
 
             <!-- NÚT BẤM CÔNG CỤ -->
             <div class="flex items-center gap-3 pt-6 border-t border-[#3c2c15]">
-                <button type="submit" 
-                        class="rounded-[2px] border border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-[#0b0805] shadow-md hover:brightness-110 transition-all">
+                <button type="submit" id="portfolio-submit-btn"
+                        class="rounded-[2px] border border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-[#0b0805] shadow-md hover:brightness-110 transition-all disabled:opacity-70 disabled:cursor-not-allowed">
                     Lưu tác phẩm
                 </button>
                 <a href="{{ route('admin.portfolio.index') }}" 
@@ -165,6 +165,16 @@ function previewImage(input, previewId, placeholderId) {
         preview.classList.remove('hidden');
         placeholder.classList.add('hidden');
     }
+}
+
+const portfolioForm = document.getElementById('portfolio-create-form');
+const portfolioSubmitBtn = document.getElementById('portfolio-submit-btn');
+
+if (portfolioForm && portfolioSubmitBtn) {
+    portfolioForm.addEventListener('submit', function () {
+        portfolioSubmitBtn.disabled = true;
+        portfolioSubmitBtn.textContent = 'Đang lưu...';
+    });
 }
 </script>
 @endsection

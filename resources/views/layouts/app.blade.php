@@ -95,7 +95,7 @@
                             Blog
                         </a>
                         <ul class="nav-dropdown absolute left-0 top-full z-50 mt-2 min-w-[180px] rounded-[2px] border border-[#3c2c15] bg-[#171008] p-1 shadow-2xl">
-                            <li><a href="{{ route('blog.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('blog.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Tin tức</a></li>
+                            <li><a href="{{ route('blog.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('blog.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Góc chia sẻ</a></li>
                             <li><a href="{{ route('announcements.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('announcements.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Sự kiện</a></li>
                         </ul>
                     </li>
@@ -157,7 +157,7 @@
             <a href="{{ route('about') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('about') ? 'text-[#f2d788]' : '' }}">Giới thiệu</a>
             <a href="{{ route('hairstyles.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('hairstyles.*') ? 'text-[#f2d788]' : '' }}">Kiểu tóc</a>
             <a href="{{ route('services.index') }}" class="block py-2 rounded bg-[#251b0e] px-3 py-2 text-[#f2d788] {{ request()->routeIs('services.*') ? 'text-[#f2d788]' : '' }}">Dịch vụ</a>
-            <a href="{{ route('portfolio.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('portfolio.*') ? 'text-[#f2d788]' : '' }}">Portfolio</a>
+            <a href="{{ route('portfolio.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('portfolio.*') ? 'text-[#f2d788]' : '' }}">Góc chia sẻ</a>
             <a href="{{ route('blog.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('blog.*') ? 'text-[#f2d788]' : '' }}">Blog</a>
             <a href="{{ route('announcements.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('announcements.*') ? 'text-[#f2d788]' : '' }}">Sự kiện</a>
             <a href="{{ route('contact.index') }}" class="block py-2 text-[#f4ecd8] hover:text-[#f2d788] {{ request()->routeIs('contact.*') ? 'text-[#f2d788]' : '' }}">Liên hệ</a>
