@@ -1,11 +1,10 @@
 <?php
 
 return [
-
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => env('GOOGLE_REDIRECT_URI', env('APP_URL', 'http://localhost:8000') . '/auth/google/callback'),
+        'redirect' => env('GOOGLE_REDIRECT_URI', env('APP_URL', 'https://tambarbershop.up.railway.app') . '/auth/google/callback'),
     ],
 
     'postmark' => [
