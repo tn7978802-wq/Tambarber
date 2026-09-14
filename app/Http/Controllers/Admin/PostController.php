@@ -17,6 +17,8 @@ class PostController extends Controller
 
     public function index(): View
     {
+        Post::syncScheduledStatuses();
+
         $posts = Post::query()
             ->latest('publish_at')
             ->latest()

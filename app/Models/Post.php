@@ -22,6 +22,15 @@ class Post extends Model
         'publish_at',
     ];
 
+    public static function syncScheduledStatuses(): void
+    {
+        static::query()
+            ->where('status', 'scheduled')
+            ->whereNotNull('publish_at')
+            ->where('publish_at', '<=', now())
+            ->update(['status' => 'published']);
+    }
+
     public function scopePublished(Builder $query): Builder
     {
         return $query

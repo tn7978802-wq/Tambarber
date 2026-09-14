@@ -13,6 +13,8 @@ class BlogController extends Controller
      */
     public function index(): View
     {
+        Post::syncScheduledStatuses();
+
         $posts = collect();
 
         try {
@@ -34,6 +36,8 @@ class BlogController extends Controller
      */
     public function show(string $slug): View
     {
+        Post::syncScheduledStatuses();
+
         $post = Post::published()->where('slug', $slug)->firstOrFail();
 
         $related = Post::published()

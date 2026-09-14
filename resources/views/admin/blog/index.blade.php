@@ -79,11 +79,15 @@
 
                             <!-- TRẠNG THÁI -->
                             <td class="px-5 py-4 whitespace-nowrap">
-                                @if($post->status === 'published')
+                                @php
+                                    $effectiveStatus = ($post->status === 'scheduled' && $post->publish_at && $post->publish_at->lte(now())) ? 'published' : $post->status;
+                                @endphp
+
+                                @if($effectiveStatus === 'published')
                                     <span class="inline-flex items-center gap-1.5 rounded-[2px] border border-[#8a641d]/60 bg-[#251b0e] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#f2d788]">
                                         <span class="h-1.5 w-1.5 rounded-full bg-[#f2d788]"></span> Đã đăng
                                     </span>
-                                @elseif($post->status === 'scheduled')
+                                @elseif($effectiveStatus === 'scheduled')
                                     <span class="inline-flex items-center gap-1.5 rounded-[2px] border border-cyan-800/60 bg-cyan-950/40 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-cyan-300">
                                         <span class="h-1.5 w-1.5 rounded-full bg-cyan-400"></span> Chờ xuất bản
                                     </span>
