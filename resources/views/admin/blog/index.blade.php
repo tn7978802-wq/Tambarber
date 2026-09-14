@@ -3,7 +3,7 @@
 @section('title', 'Góc chia sẻ')
 
 @section('content')
-<div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+<div class="max-w-9xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
     <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#6f6248]">Quản trị nội dung</p>

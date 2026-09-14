@@ -3,7 +3,7 @@
 @section('title', 'Quản lý liên hệ')
 
 @section('content')
-<div class="mx-auto max-w-7xl space-y-6 py-4">
+<div class="mx-auto max-w-9xl space-y-6 py-4">
     <div class="rounded-[4px] border border-[#3c2c15] bg-[#110d07] p-6 shadow-[0_10px_30px_rgba(0,0,0,0.45)]">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>

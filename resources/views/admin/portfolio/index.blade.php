@@ -7,7 +7,7 @@
     // Ensure selected category variable exists (comes from query param 'danh-muc')
     $selectedCategory = request()->query('danh-muc') ?? null;
 @endphp
-<div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+<div class="max-w-9xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
 
     <!-- HEADER / TIÊU ĐỀ -->
     <div class="mb-10 text-center">

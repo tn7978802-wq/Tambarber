@@ -173,7 +173,7 @@
 
             <div class="h-[3px] bg-[repeating-linear-gradient(-45deg,#7c1f22_0_14px,#f4ecd8_14px_28px,#171008_28px_42px)]"></div>
 
-            <main class="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
+            <main class="mx-auto w-full max-w-9xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
                 @if ($errors->any())
                     <div class="mb-6 rounded-[2px] border border-rose-600/50 bg-rose-950/40 p-4 text-rose-300 text-sm shadow-lg">
                         <strong class="block mb-2 font-bold flex items-center gap-2">

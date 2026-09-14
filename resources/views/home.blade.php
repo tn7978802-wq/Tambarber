@@ -4,7 +4,7 @@
 
 @section('content')
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 items-start">
+<div class="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 items-start">
 
     <!-- CỘT TRÁI - NỘI DUNG CHÍNH -->
     <div class="w-full lg:w-3/4 space-y-10">

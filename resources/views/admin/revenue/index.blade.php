@@ -3,7 +3,7 @@
 @section('title', 'Doanh thu theo Barber - Tâm Barbershop Admin')
 
 @section('content')
-<div class="max-w-7xl mx-auto space-y-8 py-4">
+<div class="max-w-9xl mx-auto space-y-8 py-4">
 
     <!-- HEADER SECTION -->
     <div class="relative overflow-hidden rounded-[4px] border border-[#a8342f]/40 bg-[#110d07]/95 p-6 sm:p-8 shadow-[0_10px_30px_rgba(0,0,0,0.8)] backdrop-blur-md"
