@@ -26,4 +26,9 @@ class Barber extends Model
     {
         return $this->hasMany(Booking::class);
     }
+
+    public function walkinSessions(): HasMany
+    {
+        return $this->hasMany(WalkinSession::class);
+    }
 }

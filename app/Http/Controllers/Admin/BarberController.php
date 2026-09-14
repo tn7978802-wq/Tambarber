@@ -48,9 +48,11 @@ class BarberController extends Controller
 
     public function destroy(Barber $barber): RedirectResponse
     {
+        $barber->bookings()->delete();
+        $barber->walkinSessions()->delete();
         $barber->delete();
 
-        return back()->with('success', 'Đã xoá barber.');
+        return back()->with('success', 'Đã xoá barber và dữ liệu liên quan.');
     }
 
     private function validated(Request $request, ?Barber $barber = null): array
