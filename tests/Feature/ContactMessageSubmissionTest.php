@@ -44,6 +44,9 @@ class ContactMessageSubmissionTest extends TestCase
             'phone' => '0909090909',
         ]);
 
-        Mail::assertSent(ContactSubmittedMail::class);
+        Mail::assertSent(ContactSubmittedMail::class, function (ContactSubmittedMail $mail) use ($user) {
+            return $mail->hasTo(config('mail.from.address', env('MAIL_FROM_ADDRESS', 'tn7410311@gmail.com')))
+                && $mail->hasReplyTo($user->email);
+        });
     }
 }

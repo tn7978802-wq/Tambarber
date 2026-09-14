@@ -30,7 +30,7 @@
                 </tr>
                 <tr>
                     <td style="padding:8px 0; width:120px; font-weight:bold; color:#3a2d1f; vertical-align:top;">Nội dung</td>
-                    <td style="padding:8px 0; color:#20170f; line-height:1.7; white-space:pre-line;">{{ $message }}</td>
+                    <td style="padding:8px 0; color:#20170f; line-height:1.7; white-space:pre-line;">{{ $customer_message }}</td>
                 </tr>
             </table>
 

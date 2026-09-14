@@ -65,7 +65,7 @@ class ContactController extends Controller
                 $message
             );
 
-            $mail->replyTo($email);
+            $mail->replyTo($email, $name);
 
             Mail::to($mailRecipient)->send($mail);
         } catch (\Throwable $exception) {
