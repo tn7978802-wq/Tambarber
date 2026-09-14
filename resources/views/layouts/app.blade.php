@@ -87,10 +87,9 @@
                             <li><a href="{{ route('hairstyles.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('hairstyles.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Kiểu tóc</a></li>
                             <li><a href="{{ route('services.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('services.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Dịch vụ</a></li>
                             <li><a href="{{ route('portfolio.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('portfolio.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Tác phẩm</a></li>
-                            <li><a href="{{ route('reviews.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('reviews.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Đánh giá</a></li>
                         </ul>
                     </li>
-
+                    
                     <li class="nav-item group relative">
                         <a href="{{ route('blog.index') }}" class="flex items-center px-2 py-2 text-[#f4ecd8] transition-colors hover:text-[#f2d788] {{ request()->routeIs('blog.*') ? 'text-[#f2d788]' : '' }}">
                             Blog
@@ -98,15 +97,11 @@
                         <ul class="nav-dropdown absolute left-0 top-full z-50 mt-2 min-w-[180px] rounded-[2px] border border-[#3c2c15] bg-[#171008] p-1 shadow-2xl">
                             <li><a href="{{ route('blog.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('blog.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Góc chia sẻ</a></li>
                             <li><a href="{{ route('announcements.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('announcements.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Sự kiện</a></li>
+                            <li><a href="{{ route('reviews.index') }}" class="block rounded-[2px] px-3 py-2 text-[#f4ecd8] hover:bg-[#251b0e] hover:text-[#f2d788] {{ request()->routeIs('reviews.*') ? 'bg-[#251b0e] text-[#f2d788]' : '' }}">Đánh giá</a></li>
                         </ul>
                     </li>
 
                     <!-- MENU ĐÁNH GIÁ TRỰC TIẾP -->
-                    <li>
-                        <a href="{{ route('reviews.index') }}" class="px-2 py-2 text-[#f4ecd8] transition-colors hover:text-[#f2d788] {{ request()->routeIs('reviews.*') ? 'text-[#f2d788]' : '' }}">
-                            Đánh giá
-                        </a>
-                    </li>
                 </ul>
 
                 <a href="{{ route('booking.create') }}" class="rounded-[2px] border border-[#8a641d] bg-gradient-to-b from-[#f2d788] via-[#cf9f3f] to-[#8a641d] px-3.5 py-1.5 text-[#0b0805] shadow transition-all hover:brightness-110">ĐẶT LỊCH NGAY</a>
