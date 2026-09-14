@@ -112,6 +112,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Trang / bảng "Doanh thu theo Barber" (đứng dưới Tổng quan)
     Route::get('doanh-thu', [App\Http\Controllers\Admin\RevenueReportController::class, 'index'])->name('revenue.index');
+    Route::get('doanh-thu/{walkin}/sua', [App\Http\Controllers\Admin\RevenueReportController::class, 'edit'])->name('revenue.edit');
+    Route::put('doanh-thu/{walkin}', [App\Http\Controllers\Admin\RevenueReportController::class, 'update'])->name('revenue.update');
+    Route::delete('doanh-thu/{walkin}', [App\Http\Controllers\Admin\RevenueReportController::class, 'destroy'])->name('revenue.destroy');
 
     Route::middleware('system_owner')->group(function () {
         Route::get('/quan-ly-toi-cao', [App\Http\Controllers\Admin\SystemOwnerController::class, 'index'])->name('system-owner.index');
