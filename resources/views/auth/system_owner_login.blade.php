@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Đăng nhập Quản lý tối cao - Tâm Barbershop')
+@section('title', 'Đăng nhập quản trị hệ thống')
 
 @section('content')
 <div class="relative min-h-[calc(100vh-160px)] flex items-center justify-center px-4 py-12 overflow-hidden">
@@ -23,13 +23,12 @@
         <!-- HEADER -->
         <div class="pt-2 mb-8 text-center space-y-2">
             <h1 class="font-['Bebas_Neue'] text-4xl sm:text-5xl tracking-widest bg-gradient-to-r from-[#f2d788] via-[#fff5d6] to-[#cf9f3f] bg-clip-text text-transparent uppercase drop-shadow-md">
-                Chủ tiệm Đăng nhập
+                Quản trị viên đăng nhập
             </h1>
             <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#a8342f]">
                 Nơi quản lý APP  &middot; Quyền Hạn Cao Nhất
             </p>
 
-            <!-- BARBER POLE CRIMSON DIVIDER -->
             <div class="pt-2 flex items-center justify-center gap-3">
                 <div class="h-[1px] w-12 bg-gradient-to-r from-transparent to-[#a8342f]"></div>
                 <i class="fa-solid fa-shield-halved text-[10px] text-[#a8342f]"></i>
@@ -44,7 +43,7 @@
             <!-- EMAIL FIELD -->
             <div class="space-y-2">
                 <label for="email" class="text-[10px] font-bold uppercase tracking-[0.15em] text-[#f4ecd8]/90 flex items-center justify-between">
-                    <span>Email Chủ Tiệm</span>
+                    <span>Email quản trị</span>
                     <i class="fa-solid fa-user-shield text-[#a8342f]"></i>
                 </label>
                 <div class="relative">
@@ -55,16 +54,16 @@
                         value="{{ old('email') }}" 
                         required 
                         autofocus
-                        placeholder="master@barbershop.com"
+                        placeholder="admin@company.com"
                         class="w-full rounded-[2px] border border-[#3c2c15] bg-[#070503] px-4 py-3 text-xs text-[#f4ecd8] placeholder-[#4a3b22] shadow-inner transition-all duration-300 focus:border-[#a8342f] focus:ring-1 focus:ring-[#a8342f] focus:outline-none"
                     >
                 </div>
             </div>
 
-            <!-- MASTER PASSWORD FIELD -->
+            <!-- PASSWORD FIELD -->
             <div class="space-y-2">
                 <label for="password" class="text-[10px] font-bold uppercase tracking-[0.15em] text-[#f4ecd8]/90 flex items-center justify-between">
-                    <span>Master Password</span>
+                    <span>Mật khẩu</span>
                     <i class="fa-solid fa-key text-[#a8342f]"></i>
                 </label>
                 <div class="relative">
@@ -73,10 +72,11 @@
                         id="password"
                         name="password" 
                         required
-                        placeholder="••••••••••••"
+                        placeholder="Master Password hoặc mật khẩu tài khoản"
                         class="w-full rounded-[2px] border border-[#3c2c15] bg-[#070503] px-4 py-3 text-xs text-[#f4ecd8] placeholder-[#4a3b22] shadow-inner transition-all duration-300 focus:border-[#a8342f] focus:ring-1 focus:ring-[#a8342f] focus:outline-none"
                     >
                 </div>
+                <p class="text-[10px] text-[#8c806a]">Có thể dùng Master Password hoặc mật khẩu tài khoản quản trị đã đăng ký.</p>
             </div>
 
             <!-- SUBMIT BUTTON -->

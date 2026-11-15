@@ -26,7 +26,7 @@ class RegistrationNotificationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Có người dùng mới đăng ký - Tâm Barbershop',
+            subject: 'Có tài khoản mới đăng ký - Hệ thống quản lý kho',
         );
     }
 

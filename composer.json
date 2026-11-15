@@ -1,7 +1,7 @@
 {
-    "name": "barbershop/website",
+    "name": "inventory/network-cctv-warehouse",
     "type": "project",
-    "description": "Website barbershop: giới thiệu, kiểu tóc, dịch vụ, portfolio, blog, đặt lịch, liên hệ.",
+    "description": "Hệ thống quản lý kho vật tư hạ tầng mạng và CCTV.",
     "require": {
         "php": "^8.2",
         "cloudinary-labs/cloudinary-laravel": "^3.0",

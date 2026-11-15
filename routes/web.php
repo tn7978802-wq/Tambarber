@@ -1,66 +1,35 @@
 <?php
 
-use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AccountController;
-use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BlogController;
-use App\Http\Controllers\BookingController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\HairstyleController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Inventory\CategoryController;
+use App\Http\Controllers\Inventory\DashboardController;
+use App\Http\Controllers\Inventory\InventoryExportController;
+use App\Http\Controllers\Inventory\InventoryTransactionController;
+use App\Http\Controllers\Inventory\ProductController;
+use App\Http\Controllers\Inventory\ProjectController;
+use App\Http\Controllers\Inventory\SupplierController;
 use App\Http\Controllers\OtpController;
-use App\Http\Controllers\PortfolioController;
-use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\ServiceController;
-
-use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
-use App\Http\Controllers\Admin\SystemOwnerController;
 use Illuminate\Support\Facades\Route;
 
-// ===================== TRANG CÔNG KHAI =====================
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/gioi-thieu', [AboutController::class, 'index'])->name('about');
-Route::get('/kieu-toc', [HairstyleController::class, 'index'])->name('hairstyles.index');
-Route::get('/kieu-toc/{slug}', [HairstyleController::class, 'show'])->name('hairstyles.show');
-Route::get('/dich-vu', [ServiceController::class, 'index'])->name('services.index');
+Route::get('/', function () {
+    return auth()->check()
+        ? redirect()->route('account.index')
+        : redirect()->route('login');
+})->name('home');
 
-// Đánh giá & Phản hồi
-Route::get('/danh-gia', [ReviewController::class, 'index'])->name('reviews.index');
-Route::post('/danh-gia', [ReviewController::class, 'store'])->name('reviews.store');
-
-// Thư viện tác phẩm (Portfolio public)
-Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio.index');
-Route::get('/portfolio/{portfolioItem}', [PortfolioController::class, 'show'])->name('portfolio.show');
-
-Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
-Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
-Route::get('/dat-lich', [BookingController::class, 'create'])->name('booking.create');
-Route::post('/dat-lich', [BookingController::class, 'store'])->name('booking.store');
-Route::get('/dat-lich/thanh-cong/{code}', [BookingController::class, 'success'])->name('booking.success');
-Route::get('/lien-he', [ContactController::class, 'index'])->name('contact.index');
-Route::post('/lien-he', [ContactController::class, 'store'])->name('contact.store');
-Route::get('/trang-thai', [AnnouncementController::class, 'index'])->name('announcements.index');
-Route::get('/trang-thai/{announcement}', [AnnouncementController::class, 'show'])->name('announcements.show');
-Route::post('/trang-thai/{announcement}/binh-luan', [AnnouncementController::class, 'storeComment'])->name('announcements.comment');
-
-// ===================== XÁC THỰC & TÀI KHOẢN =====================
 Route::get('/dang-nhap', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/dang-nhap', [AuthController::class, 'login'])->name('login.post');
 Route::post('/dang-xuat', [AuthController::class, 'logout'])->name('logout');
 Route::get('/quan-ly-toi-cao/dang-nhap', [AuthController::class, 'showSystemOwnerLoginForm'])->name('system-owner.portal');
-Route::get('/dang-ky', function () {
-    return view('auth.register');
-})->name('register');
+Route::get('/dang-ky', fn () => view('auth.register'))->name('register');
 Route::post('/dang-ky', [AuthController::class, 'register'])->name('register.post');
-
 Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('google.callback');
 Route::get('/quen-mat-khau', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
 Route::post('/quen-mat-khau', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('/dat-lai-mat-khau/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
 Route::post('/dat-lai-mat-khau', [AuthController::class, 'resetPassword'])->name('password.update');
-
 Route::get('/otp/gui', [OtpController::class, 'sendOtp'])->name('otp.send');
 Route::get('/otp/xac-thuc', [OtpController::class, 'showVerifyForm'])->name('otp.form');
 Route::post('/otp/xac-thuc', [OtpController::class, 'verifyOtp'])->name('otp.verify');
@@ -69,64 +38,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/tai-khoan', [AccountController::class, 'index'])->name('account.index');
 });
 
-Route::get('/cai-dat', [SystemOwnerController::class, 'settings'])->name('settings');
-Route::put('/cai-dat', [SystemOwnerController::class, 'updateSettings'])->name('settings.update')->middleware('auth');
-
-// ===================== KHU VỰC QUẢN TRỊ (ADMIN) =====================
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/lich-hen', [App\Http\Controllers\Admin\BookingController::class, 'index'])->name('bookings.index');
-    Route::put('/lich-hen/{booking}/xac-nhan', [App\Http\Controllers\Admin\BookingController::class, 'confirm'])->name('bookings.confirm');
-    Route::put('/lich-hen/{booking}/hoan-thanh', [App\Http\Controllers\Admin\BookingController::class, 'complete'])->name('bookings.complete');
-    Route::put('/lich-hen/{booking}/huy', [App\Http\Controllers\Admin\BookingController::class, 'cancel'])->name('bookings.cancel');
+    Route::get('/exports/products.csv', [InventoryExportController::class, 'products'])->name('exports.products');
+    Route::get('/exports/transactions.csv', [InventoryExportController::class, 'transactions'])->name('exports.transactions');
 
-    Route::get('/dich-vu', [App\Http\Controllers\Admin\ServiceController::class, 'index'])->name('services.index');
-    Route::post('/dich-vu', [App\Http\Controllers\Admin\ServiceController::class, 'store'])->name('services.store');
-    Route::put('/dich-vu/{service}', [App\Http\Controllers\Admin\ServiceController::class, 'update'])->name('services.update');
-    Route::delete('/dich-vu/{service}', [App\Http\Controllers\Admin\ServiceController::class, 'destroy'])->name('services.destroy');
+    Route::get('/products/lookup', [ProductController::class, 'lookup'])->name('products.lookup');
+    Route::resource('products', ProductController::class);
+    Route::resource('categories', CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('suppliers', SupplierController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('projects', ProjectController::class)->only(['index', 'store', 'update', 'destroy']);
 
-    Route::get('/kieu-toc', [App\Http\Controllers\Admin\HairstyleController::class, 'index'])->name('hairstyles.index');
-    Route::post('/kieu-toc', [App\Http\Controllers\Admin\HairstyleController::class, 'store'])->name('hairstyles.store');
-    Route::put('/kieu-toc/{hairstyle}', [App\Http\Controllers\Admin\HairstyleController::class, 'update'])->name('hairstyles.update');
-    Route::delete('/kieu-toc/{hairstyle}', [App\Http\Controllers\Admin\HairstyleController::class, 'destroy'])->name('hairstyles.destroy');
+    Route::get('/transactions', [InventoryTransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/create/{type}', [InventoryTransactionController::class, 'create'])->name('transactions.create');
+    Route::post('/transactions', [InventoryTransactionController::class, 'store'])->name('transactions.store');
+    Route::get('/transactions/{transaction}/print', [InventoryTransactionController::class, 'print'])->name('transactions.print');
+    Route::get('/transactions/{transaction}', [InventoryTransactionController::class, 'show'])->name('transactions.show');
 
-    Route::get('/barber', [App\Http\Controllers\Admin\BarberController::class, 'index'])->name('barbers.index');
-    Route::post('/barber', [App\Http\Controllers\Admin\BarberController::class, 'store'])->name('barbers.store');
-    Route::put('/barber/{barber}', [App\Http\Controllers\Admin\BarberController::class, 'update'])->name('barbers.update');
-    Route::delete('/barber/{barber}', [App\Http\Controllers\Admin\BarberController::class, 'destroy'])->name('barbers.destroy');
-
-    Route::resource('portfolio', AdminPortfolioController::class)->except(['show']);
-    Route::get('/trang-thai', [App\Http\Controllers\Admin\AnnouncementController::class, 'index'])->name('announcements.index');
-    Route::post('/trang-thai', [App\Http\Controllers\Admin\AnnouncementController::class, 'store'])->name('announcements.store');
-    Route::delete('/trang-thai/{announcement}', [App\Http\Controllers\Admin\AnnouncementController::class, 'destroy'])->name('announcements.destroy');
-
-    Route::get('/cai-dat', [App\Http\Controllers\Admin\SystemOwnerController::class, 'settings'])->name('settings');
-    Route::put('/cai-dat', [App\Http\Controllers\Admin\SystemOwnerController::class, 'updateSettings'])->name('settings.update');
-    
-    Route::resource('blog', App\Http\Controllers\Admin\PostController::class)->except(['show']);
-
-    Route::get('/lien-he', [App\Http\Controllers\Admin\ContactMessageController::class, 'index'])->name('contact.index');
-    Route::get('/lien-he/{message}', [App\Http\Controllers\Admin\ContactMessageController::class, 'show'])->name('contact.show');
-    Route::delete('/lien-he/{message}', [App\Http\Controllers\Admin\ContactMessageController::class, 'destroy'])->name('contact.destroy');
-
-    // Trang "Doanh thu"
-    Route::get('quan-ly', [App\Http\Controllers\Admin\WalkinSessionController::class, 'index'])->name('walkin.index');
-    Route::post('quan-ly', [App\Http\Controllers\Admin\WalkinSessionController::class, 'store'])->name('walkin.store');
-    Route::post('quan-ly/{walkin}/hoan-thanh', [App\Http\Controllers\Admin\WalkinSessionController::class, 'complete'])->name('walkin.complete');
-    Route::post('quan-ly/{walkin}/huy', [App\Http\Controllers\Admin\WalkinSessionController::class, 'cancel'])->name('walkin.cancel');
-
-    // Trang / bảng "Doanh thu theo Barber"
-    Route::get('doanh-thu', [App\Http\Controllers\Admin\RevenueReportController::class, 'index'])->name('revenue.index');
-    Route::get('doanh-thu/{walkin}/sua', [App\Http\Controllers\Admin\RevenueReportController::class, 'edit'])->name('revenue.edit');
-    Route::put('doanh-thu/{walkin}', [App\Http\Controllers\Admin\RevenueReportController::class, 'update'])->name('revenue.update');
-    Route::delete('doanh-thu/{walkin}', [App\Http\Controllers\Admin\RevenueReportController::class, 'destroy'])->name('revenue.destroy');
-
-    Route::middleware('system_owner')->group(function () {
-        Route::get('/quan-ly-toi-cao', [App\Http\Controllers\Admin\SystemOwnerController::class, 'index'])->name('system-owner.index');
-        Route::put('/quan-ly-toi-cao/nguoi-dung/{user}/quyen', [App\Http\Controllers\Admin\SystemOwnerController::class, 'updateRole'])->name('system-owner.update-role');
-        Route::post('/quan-ly-toi-cao/co-van', [App\Http\Controllers\Admin\SystemOwnerController::class, 'addSubOwner'])->name('system-owner.sub-owners.store');
-        Route::delete('/quan-ly-toi-cao/co-van/{subOwner}', [App\Http\Controllers\Admin\SystemOwnerController::class, 'removeSubOwner'])->name('system-owner.sub-owners.destroy');
-        Route::delete('/quan-ly-toi-cao/nguoi-dung/{user}', [App\Http\Controllers\Admin\SystemOwnerController::class, 'destroyUser'])->name('system-owner.destroy-user');
-    });
 });

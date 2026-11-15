@@ -5,6 +5,7 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -52,12 +53,9 @@ class User extends Authenticatable
         );
     }
 
-    /**
-     * Danh sách lịch hẹn của khách hàng này (khi đặt lịch lúc đã đăng nhập).
-     */
-    public function bookings()
+    public function inventoryTransactions(): HasMany
     {
-        return $this->hasMany(Booking::class);
+        return $this->hasMany(InventoryTransaction::class);
     }
 
     public function isGuest(): bool
@@ -76,7 +74,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Nhân viên/barber được cấp quyền quản trị, hoặc là System Owner (luôn có toàn quyền).
+     * Nhân viên được cấp quyền quản trị, hoặc là System Owner (luôn có toàn quyền).
      */
     public function isAdmin(): bool
     {
@@ -95,7 +93,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Chủ tiệm gốc (Root Owner) được định nghĩa trong .env (SYSTEM_OWNER_EMAIL).
+     * Quản trị viên gốc (Root Owner) được định nghĩa trong .env (SYSTEM_OWNER_EMAIL).
      * Chỉ Root Owner mới có quyền thăng/giáng chức Sub-Owner.
      */
     public function isRootOwner(): bool

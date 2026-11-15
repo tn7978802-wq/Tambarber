@@ -12,7 +12,7 @@
         <tr>
             <td style="padding:32px 32px 24px 32px; background:linear-gradient(180deg, #241c13 0%, #181512 100%); text-align:center; border-bottom:1px solid #2e2317;">
                 <h1 style="margin:0 0 8px 0; color:#d4a359; font-size:20px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px;">
-                    TÂM BARBERSHOP
+                    HỆ THỐNG QUẢN LÝ KHO
                 </h1>
                 <div style="width:40px; height:2px; background-color:#d4a359; margin:0 auto 16px auto;"></div>
                 <h2 style="margin:0; color:#ffffff; font-size:18px; font-weight:600;">
@@ -64,8 +64,8 @@
         <tr>
             <td style="padding:20px 32px; background-color:#100e0c; border-top:1px solid #231b12; text-align:center;">
                 <p style="margin:0; color:#5c5245; font-size:12px; line-height:1.5;">
-                    Email này được gửi tự động từ hệ thống quản trị Tâm Barbershop Panel.<br>
-                    © {{ date('Y') }} Tâm Barbershop. All rights reserved.
+                    Email này được gửi tự động từ hệ thống quản lý kho vật tư.<br>
+                    © {{ date('Y') }} Hệ thống quản lý kho. All rights reserved.
                 </p>
             </td>
         </tr>

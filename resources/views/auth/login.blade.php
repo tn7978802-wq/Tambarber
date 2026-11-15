@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Đăng nhập - Barbershop')
+@section('title', 'Đăng nhập - Hệ thống quản lý kho')
 @section('content')
 <div class="flex min-h-[calc(100vh-160px)] items-center justify-center px-4 py-12">
     <div class="auth-shell w-full max-w-2xl rounded-[2px] border bg-[#171008] p-6 shadow-2xl sm:p-8" 
@@ -9,7 +9,6 @@
             <h1 class="font-['Bebas_Neue'] text-3xl tracking-wide text-[#f2d788]">Đăng nhập</h1>
             <p class="mt-1 text-xs text-[#6f6248]">Vui lòng nhập thông tin tài khoản của bạn</p>
         </div>
-        <!-- Barber Pole Separator -->
         <div class="my-4 h-[2px] bg-[repeating-linear-gradient(-45deg,#7c1f22_0_10px,#f4ecd8_10px_20px,#171008_20px_30px)]"></div>
         <!-- Form Login -->
         <form action="{{ route('login.post') }}" method="POST" class="space-y-4">

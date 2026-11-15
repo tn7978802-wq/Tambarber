@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Xác thực OTP - Barbershop')
+@section('title', 'Xác thực OTP - Hệ thống quản lý kho')
 
 @section('content')
 <div class="flex min-h-[calc(100vh-200px)] items-center justify-center px-4 py-12">
@@ -15,7 +15,6 @@
             </p>
         </div>
 
-        <!-- Barber Pole Separator -->
         <div class="my-4 h-[2px] bg-[repeating-linear-gradient(-45deg,#7c1f22_0_10px,#f4ecd8_10px_20px,#171008_20px_30px)]"></div>
 
         <!-- Session Flash Messages -->

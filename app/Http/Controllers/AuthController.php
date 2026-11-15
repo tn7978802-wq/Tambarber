@@ -30,8 +30,8 @@ class AuthController extends Controller
 
     /**
      * Đăng nhập bằng Email hoặc Số điện thoại. Nếu tài khoản trùng với danh sách
-     * SYSTEM_OWNER_EMAIL trong .env thì bắt buộc đăng nhập bằng Master Password
-     * ("chìa khoá vạn năng") thay vì mật khẩu thông thường trong DB.
+     * SYSTEM_OWNER_EMAIL trong .env có thể dùng Master Password hoặc mật khẩu
+     * tài khoản hiện có trong DB.
      */
     public function login(Request $request)
     {
@@ -58,30 +58,39 @@ class AuthController extends Controller
         $ownerEmails = array_map('trim', explode(',', strtolower($ownerEmailsStr)));
         $isRootEmail = in_array(strtolower($login), $ownerEmails);
 
-        $user = User::where('email', $login)->orWhere('phone', $login)->first();
+        $user = filter_var($login, FILTER_VALIDATE_EMAIL)
+            ? User::whereRaw('LOWER(email) = ?', [strtolower($login)])->first()
+            : User::where('phone', $login)->first();
 
-        // --- TRƯỜNG HỢP: CHỦ TIỆM GỐC (ROOT OWNER) ---
+        // --- TRƯỜNG HỢP: QUẢN TRỊ VIÊN GỐC (ROOT OWNER) ---
         if ($isRootEmail) {
+            $masterPasswordKey = str_replace(['@', '.'], '_', strtolower($login));
+            $masterPassword = config('app.master_passwords.'.$masterPasswordKey);
+            $masterPasswordValid = is_string($masterPassword)
+                && $masterPassword !== ''
+                && hash_equals($masterPassword, $request->password);
+            $accountPasswordValid = $user && Hash::check($request->password, $user->password);
+
+            if (! $masterPasswordValid && ! $accountPasswordValid) {
+                return back()->withErrors([
+                    'email' => 'Thông tin đăng nhập (email/số điện thoại hoặc mật khẩu) không chính xác.',
+                ])->onlyInput('email');
+            }
+
             if (! $user) {
                 $user = User::create([
-                    'fullname' => 'Tâm Barbershop(Chủ tiệm)',
+                    'fullname' => 'Quản trị hệ thống',
                     'email' => strtolower($login),
-                    'password' => Hash::make(Str::random(32)), // mật khẩu DB ngẫu nhiên, không dùng tới
+                    'password' => Hash::make(Str::random(32)),
                     'admin_role' => User::ROLE_SUPERADMIN,
                 ]);
             }
 
-            if ($user->checkMasterPassword($request->password)) {
-                Auth::login($user, $remember);
-                $request->session()->regenerate();
+            Auth::login($user, $remember);
+            $request->session()->regenerate();
 
-                return redirect()->to($this->redirectAfterLogin($user))
-                    ->with('success', 'Chào mừng Chủ Tiệm quay lại bằng Chìa Khoá Vạn Năng!');
-            }
-
-            return back()->withErrors([
-                'email' => 'Thông tin đăng nhập (email/số điện thoại hoặc mật khẩu) không chính xác.',
-            ])->onlyInput('email');
+            return redirect()->to($this->redirectAfterLogin($user))
+                ->with('success', 'Chào mừng quản trị viên quay lại!');
         }
 
         // --- TRƯỜNG HỢP: NGƯỜI DÙNG BÌNH THƯỜNG HOẶC SUB-OWNER ---
@@ -283,10 +292,6 @@ class AuthController extends Controller
 
     protected function redirectAfterLogin(User $user): string
     {
-        if ($user->isSystemOwner()) {
-            return route('admin.system-owner.index');
-        }
-
         return $user->isAdmin() ? route('admin.dashboard') : route('account.index');
     }
 }

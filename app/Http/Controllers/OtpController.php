@@ -118,7 +118,7 @@ class OtpController extends Controller
             Auth::login($user);
 
             return redirect()->to($user->isAdmin() ? route('admin.dashboard') : route('account.index'))
-                ->with('success', 'Đăng ký và xác thực thành công! Chào mừng bạn đến với TâmBarbershop.');
+                ->with('success', 'Tài khoản đã được xác thực thành công.');
         }
 
         return back()->with('error', 'Mã OTP không chính xác. Vui lòng kiểm tra lại.');

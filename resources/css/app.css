@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-   color-scheme: dark;
+   color-scheme: light;
 }
 
 html {
@@ -10,22 +10,22 @@ html {
 
 body {
    font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
-   background: #0b0805;
+   background: #f1f5f9;
 }
 
 @theme {
-   --color-ink: #0b0805;
-   --color-ink-2: #171008;
-   --color-panel: #504d47;
-   --color-panel-2: #251b0e;
-   --color-line: #3c2c15;
-   --color-gold: #cf9f3f;
-   --color-gold-bright: #f2d788;
-   --color-gold-deep: #8a641d;
-   --color-rosewood: #7c1f22;
-   --color-rosewood-br: #a8342f;
-   --color-cream: #f4ecd8;
-   --font-display: "Bebas Neue", "Arial Narrow", sans-serif;
+   --color-ink: #0f172a;
+   --color-ink-2: #1e293b;
+   --color-panel: #f8fafc;
+   --color-panel-2: #e2e8f0;
+   --color-line: #cbd5e1;
+   --color-gold: #2563eb;
+   --color-gold-bright: #1d4ed8;
+   --color-gold-deep: #1e40af;
+   --color-rosewood: #b91c1c;
+   --color-rosewood-br: #dc2626;
+   --color-cream: #f8fafc;
+   --font-display: "Plus Jakarta Sans", "Arial", sans-serif;
    --font-body: "Plus Jakarta Sans", "Jost", ui-sans-serif, system-ui, sans-serif;
 }
 

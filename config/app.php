@@ -2,7 +2,7 @@
 
 return [
 
-    'name' => env('APP_NAME', 'Barbershop'),
+    'name' => env('APP_NAME', 'Kho vật tư mạng & CCTV'),
 
     'env' => env('APP_ENV', 'production'),
 
@@ -12,9 +12,8 @@ return [
 
     'timezone' => 'Asia/Ho_Chi_Minh',
 
-    // Email của "Chủ Tiệm gốc" (Root Owner). Có thể liệt kê nhiều email, cách nhau dấu phẩy.
-    // Chỉ những email này mới được coi là Quản lý tối cao mặc định, không cần bảng sub_owners.
-    'system_owner_email' => $systemOwners = env('SYSTEM_OWNER_EMAIL', 'admin@gmail.com'),
+    // Email quản trị hệ thống mặc định. Có thể liệt kê nhiều email, cách nhau dấu phẩy.
+    'system_owner_email' => $systemOwners = env('SYSTEM_OWNER_EMAIL', 'tn7410311@gmail.com'),
 
     // Sinh sẵn danh sách "Chìa khoá vạn năng" (Master Password) cho từng Root Owner,
     // đọc từ biến env MASTER_PASS_<EMAIL_DA_CHUAN_HOA>.

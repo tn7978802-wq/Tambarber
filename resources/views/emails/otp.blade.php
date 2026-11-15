@@ -13,7 +13,7 @@
                     </tr>
                     <tr>
                         <td style="padding:32px 32px 8px;">
-                            <p style="margin:0 0 4px; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:#a89a7c;">Tâm Barbershop</p>
+                            <p style="margin:0 0 4px; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:#a89a7c;">Hệ thống quản lý kho</p>
                             <h2 style="margin:0 0 16px; color:#f2d788; font-family:Georgia, serif; letter-spacing:1px;">Xác thực tài khoản</h2>
                             <p style="margin:0 0 12px; color:#f4ecd8; font-size:15px;">Xin chào {{ $userName ?? '' }},</p>
                             <p style="margin:0 0 20px; color:#f4ecd8; font-size:15px;">Bạn vừa yêu cầu mã OTP để xác thực. Đây là mã của bạn:</p>
@@ -29,7 +29,7 @@
                     <tr>
                         <td style="padding:0 32px 28px;">
                             <p style="margin:0 0 4px; color:#a89a7c; font-size:13px;">Mã có hiệu lực trong 5 phút. Vui lòng không chia sẻ mã này với bất kỳ ai.</p>
-                            <p style="margin:16px 0 0; color:#a89a7c; font-size:13px;">Trân trọng,<br>Đội ngũ Barbershop</p>
+                            <p style="margin:16px 0 0; color:#a89a7c; font-size:13px;">Trân trọng,<br>Đội ngũ quản lý kho</p>
                         </td>
                     </tr>
                 </table>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Đặt lại mật khẩu - Barbershop')
+@section('title', 'Đặt lại mật khẩu - Hệ thống quản lý kho')
 
 @section('content')
 

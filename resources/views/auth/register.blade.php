@@ -1,13 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Đăng ký - Barbershop')
+@section('title', 'Đăng ký - Hệ thống quản lý kho')
 
 @section('content')
 
     <!-- Khung bọc Auth -->
     <div class="max-w-2xl mx-auto my-10 p-8 bg-[#171008] border border-[#3c2c15] rounded-sm shadow-[0_0_0_1px_rgba(207,159,63,0.35),0_18px_40px_-20px_rgba(0,0,0,0.8)]">
         
-        <!-- Thanh gạch Barber Pole Divider -->
         <div class="h-1 w-28 mx-auto mb-6 rounded-full bg-[repeating-linear-gradient(-45deg,#7c1f22_0_14px,#f4ecd8_14px_28px,#171008_28px_42px)] shadow-md"></div>
         
         <h1 class="text-3xl font-bold text-center text-[#f2d788] uppercase mb-6 tracking-wide">Đăng ký tài khoản</h1>
