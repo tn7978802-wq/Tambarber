@@ -4,8 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Category;
 use App\Models\InventoryTransaction;
-use App\Models\Product;
 use App\Models\Supplier;
+use Database\Seeders\InventorySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
@@ -47,16 +47,90 @@ class InventorySchemaTest extends TestCase
         $this->assertFalse(Schema::hasTable('barbers'));
     }
 
-    public function test_inventory_seeder_is_repeatable_without_resetting_existing_stock(): void
+    public function test_inventory_seeder_removes_only_demo_products_and_transactions(): void
     {
-        $this->seed();
-        Product::where('sku', 'SW-RG-001')->update(['stock_quantity' => 6]);
-        $this->seed();
+        $category = Category::create(['name' => 'Thiết bị mạng']);
+        $demoProduct = $category->products()->create([
+            'sku' => 'SW-RG-001',
+            'name' => 'Switch mẫu',
+            'unit' => 'Cái',
+        ]);
+        $realProduct = $category->products()->create([
+            'sku' => 'SW-REAL-001',
+            'name' => 'Switch thực tế',
+            'unit' => 'Cái',
+        ]);
 
-        $this->assertDatabaseCount('categories', 5);
-        $this->assertDatabaseCount('products', 10);
-        $this->assertDatabaseCount('inventory_transactions', 2);
-        $this->assertSame('6.000', Product::where('sku', 'SW-RG-001')->value('stock_quantity'));
-        $this->assertSame('450.000', Product::where('sku', 'CB-FO-001')->value('stock_quantity'));
+        foreach (['PN-DEMO0001', 'PX-DEMO0001'] as $code) {
+            $transaction = InventoryTransaction::create([
+                'transaction_code' => $code,
+                'type' => $code === 'PN-DEMO0001'
+                    ? InventoryTransaction::TYPE_IMPORT
+                    : InventoryTransaction::TYPE_EXPORT,
+                'project_or_supplier_name' => 'Dữ liệu mẫu',
+                'transaction_date' => now(),
+                'status' => 'completed',
+            ]);
+            $transaction->items()->create([
+                'product_id' => $demoProduct->id,
+                'quantity' => 1,
+            ]);
+        }
+
+        $realTransaction = InventoryTransaction::create([
+            'transaction_code' => 'PN-REAL0001',
+            'type' => InventoryTransaction::TYPE_IMPORT,
+            'project_or_supplier_name' => 'Nhà cung cấp thực tế',
+            'transaction_date' => now(),
+            'status' => 'completed',
+        ]);
+        $realTransaction->items()->create([
+            'product_id' => $realProduct->id,
+            'quantity' => 1,
+        ]);
+
+        app(InventorySeeder::class)->run();
+
+        $this->assertDatabaseMissing('products', ['sku' => 'SW-RG-001']);
+        $this->assertDatabaseHas('products', ['sku' => 'SW-REAL-001']);
+        $this->assertDatabaseMissing('inventory_transactions', ['transaction_code' => 'PN-DEMO0001']);
+        $this->assertDatabaseMissing('inventory_transactions', ['transaction_code' => 'PX-DEMO0001']);
+        $this->assertDatabaseHas('inventory_transactions', ['transaction_code' => 'PN-REAL0001']);
+    }
+
+    public function test_inventory_seeder_preserves_demo_products_used_by_real_transactions(): void
+    {
+        $product = Category::create(['name' => 'Thiết bị mạng'])->products()->create([
+            'sku' => 'SW-RG-001',
+            'name' => 'Switch mẫu',
+            'unit' => 'Cái',
+        ]);
+        $demoTransaction = InventoryTransaction::create([
+            'transaction_code' => 'PN-DEMO0001',
+            'type' => InventoryTransaction::TYPE_IMPORT,
+            'project_or_supplier_name' => 'Dữ liệu mẫu',
+            'transaction_date' => now(),
+            'status' => 'completed',
+        ]);
+        $demoTransaction->items()->create(['product_id' => $product->id, 'quantity' => 1]);
+        $realTransaction = InventoryTransaction::create([
+            'transaction_code' => 'PN-REAL0001',
+            'type' => InventoryTransaction::TYPE_IMPORT,
+            'project_or_supplier_name' => 'Nhà cung cấp thực tế',
+            'transaction_date' => now(),
+            'status' => 'completed',
+        ]);
+        $realTransaction->items()->create(['product_id' => $product->id, 'quantity' => 1]);
+
+        try {
+            app(InventorySeeder::class)->run();
+            $this->fail('Expected sample cleanup to preserve products referenced by real transactions.');
+        } catch (\RuntimeException $exception) {
+            $this->assertStringContainsString('phiếu giao dịch khác', $exception->getMessage());
+        }
+
+        $this->assertDatabaseHas('products', ['sku' => 'SW-RG-001']);
+        $this->assertDatabaseHas('inventory_transactions', ['transaction_code' => 'PN-DEMO0001']);
+        $this->assertDatabaseHas('inventory_transactions', ['transaction_code' => 'PN-REAL0001']);
     }
 }

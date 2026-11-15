@@ -4,9 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Category;
 use App\Models\InventoryTransaction;
-use App\Models\Product;
+use App\Models\Project;
 use App\Models\User;
-use Database\Seeders\InventorySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -25,7 +24,24 @@ class InventoryPagesTest extends TestCase
 
     public function test_inventory_pages_render_for_an_authorized_staff_user(): void
     {
-        $this->seed(InventorySeeder::class);
+        $category = Category::create(['name' => 'Thiết bị mạng']);
+        $product = $category->products()->create([
+            'sku' => 'SW-TEST001',
+            'name' => 'Switch kiểm thử',
+            'unit' => 'Cái',
+            'stock_quantity' => 2,
+            'min_stock_alert' => 1,
+        ]);
+        $transaction = InventoryTransaction::create([
+            'transaction_code' => 'PN-TEST0001',
+            'type' => InventoryTransaction::TYPE_IMPORT,
+            'project_or_supplier_name' => 'Nhà cung cấp kiểm thử',
+            'transaction_date' => now(),
+            'status' => 'completed',
+        ]);
+        $transaction->items()->create(['product_id' => $product->id, 'quantity' => 2]);
+        Project::create(['name' => 'Dự án kiểm thử', 'code' => 'PRJ-TEST001']);
+
         $this->actingAs(User::factory()->create(['admin_role' => User::ROLE_ADMIN]));
 
         foreach ([
@@ -43,23 +59,20 @@ class InventoryPagesTest extends TestCase
             $this->get($uri)->assertOk();
         }
 
-        $product = Product::firstOrFail();
-        $transaction = InventoryTransaction::firstOrFail();
         $this->get(route('admin.products.show', $product))->assertOk();
         $this->get(route('admin.transactions.show', $transaction))->assertOk();
         $this->get(route('admin.transactions.print', $transaction))->assertOk();
 
         $inventoryCsv = $this->get(route('admin.exports.products'));
         $inventoryCsv->assertOk()->assertDownload();
-        $this->assertStringContainsString('SW-RG-001', $inventoryCsv->streamedContent());
+        $this->assertStringContainsString('SW-TEST001', $inventoryCsv->streamedContent());
 
         $transactionsCsv = $this->get(route('admin.exports.transactions'));
         $transactionsCsv->assertOk()->assertDownload();
-        $this->assertStringContainsString('PN-DEMO0001', $transactionsCsv->streamedContent());
+        $this->assertStringContainsString('PN-TEST0001', $transactionsCsv->streamedContent());
 
-        $category = Category::firstOrFail();
         $this->post(route('admin.products.store'), [
-            'sku' => 'SW-RG-001',
+            'sku' => 'SW-TEST001',
             'name' => 'SKU trùng',
             'category_id' => $category->id,
             'unit' => 'Cái',
@@ -72,7 +85,7 @@ class InventoryPagesTest extends TestCase
 
         $this->post(route('admin.projects.store'), [
             'name' => 'Mã dự án trùng',
-            'code' => 'PRJ-DEMO',
+            'code' => 'PRJ-TEST001',
         ])->assertSessionHasErrors('code');
     }
 }

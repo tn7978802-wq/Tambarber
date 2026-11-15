@@ -26,7 +26,7 @@ npm run build
 - Tổng quan kho: `/admin`
 - Vật tư: `/admin/products`
 - Giao dịch: `/admin/transactions`
-- Dữ liệu mẫu: `php artisan db:seed`
+- Dọn phiếu/vật tư demo cũ: `php artisan db:seed --class=InventorySeeder`
 
 Các tuyến kho yêu cầu đăng nhập và quyền quản trị (`admin_role = 2`) hoặc tài khoản
 quản trị tối cao được cấu hình qua `SYSTEM_OWNER_EMAIL`. Tài khoản đăng ký mới có
@@ -39,9 +39,8 @@ quyền khách mặc định và không tự động được cấp quyền truy
 - `inventory_transactions`, `inventory_transaction_items`: phiếu và chi tiết phiếu.
 - `users`: nhân viên tạo phiếu; được giữ lại cùng các bảng xác thực.
 
-`InventorySeeder` tạo danh mục, nhà cung cấp/dự án và các mặt hàng mẫu. Phiếu nhập
-mẫu trừ phiếu xuất mẫu khớp với tồn đầu kỳ; chạy seeder lại không ghi đè tồn kho
-đã thay đổi hoặc nhân bản dữ liệu mẫu.
+`InventorySeeder` chỉ xóa các phiếu và SKU demo đã biết. Seeder sẽ dừng nếu vật tư
+demo đang được tham chiếu bởi phiếu khác để bảo toàn lịch sử giao dịch thực tế.
 
 ## Nghiệp vụ
 
