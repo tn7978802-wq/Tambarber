@@ -21,6 +21,9 @@
     <div class="grid gap-5 md:grid-cols-3">
         <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm md:col-span-2">
             <h2 class="font-semibold text-slate-900">Thông tin vật tư</h2>
+            @if ($product->image)
+                <img src="{{ '/storage/' . ltrim($product->image, '/') }}" alt="Ảnh {{ $product->name }}" class="mt-4 max-h-80 w-full rounded-lg border border-slate-200 bg-slate-50 object-contain">
+            @endif
             <dl class="mt-4 grid gap-4 sm:grid-cols-2">
                 @foreach (['Danh mục' => $product->category->name, 'Hãng' => $product->brand ?: '—', 'Đơn vị' => $product->unit, 'Vị trí' => $product->location ?: '—'] as $label => $value)
                     <div><dt class="text-xs font-medium uppercase tracking-wide text-slate-500">{{ $label }}</dt><dd class="mt-1 text-sm font-semibold text-slate-800">{{ $value }}</dd></div>

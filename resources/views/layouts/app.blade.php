@@ -18,6 +18,9 @@
                     <a href="{{ route('account.index') }}" class="text-slate-600 hover:text-slate-900">
                         {{ auth()->user()->fullname }}
                     </a>
+                    <a href="{{ route('admin.settings.index') }}" class="font-medium text-slate-600 hover:text-slate-900">
+                        Cài đặt
+                    </a>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button class="font-medium text-slate-600 hover:text-slate-900" type="submit">Đăng xuất</button>

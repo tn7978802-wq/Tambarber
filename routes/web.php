@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AccountSettingsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Inventory\CategoryController;
 use App\Http\Controllers\Inventory\DashboardController;
@@ -37,6 +38,8 @@ Route::post('/otp/xac-thuc', [OtpController::class, 'verifyOtp'])->name('otp.ver
 
 Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/tai-khoan', [AccountController::class, 'index'])->name('account.index');
+    Route::get('/admin/settings', [AccountSettingsController::class, 'edit'])->name('admin.settings.index');
+    Route::put('/admin/settings', [AccountSettingsController::class, 'update'])->name('admin.settings.update');
 });
 
 Route::middleware(['auth', 'active', 'admin'])->prefix('admin')->name('admin.')->group(function () {

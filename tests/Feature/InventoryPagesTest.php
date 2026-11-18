@@ -61,7 +61,12 @@ class InventoryPagesTest extends TestCase
 
         $this->get(route('admin.products.show', $product))->assertOk();
         $this->get(route('admin.transactions.show', $transaction))->assertOk();
-        $this->get(route('admin.transactions.print', $transaction))->assertOk();
+        $this->get(route('admin.transactions.print', $transaction))
+            ->assertOk()
+            ->assertSee('Chỉnh sửa nội dung phiếu')
+            ->assertSee('contenteditable', false)
+            ->assertSee('paper-a5')
+            ->assertSee('Người nhận');
 
         $inventoryCsv = $this->get(route('admin.exports.products'));
         $inventoryCsv->assertOk()->assertDownload();

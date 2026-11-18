@@ -27,6 +27,7 @@ npm run build
 - Vật tư: `/admin/products`
 - Giao dịch: `/admin/transactions`
 - Quản lý tài khoản: `/admin/accounts`
+- Cài đặt cá nhân: `/admin/settings`
 - Dọn phiếu/vật tư demo cũ: `php artisan db:seed --class=InventorySeeder`
 
 Các tuyến kho yêu cầu đăng nhập và quyền quản trị (`admin_role = 2`) hoặc tài khoản
@@ -38,12 +39,23 @@ mới cấp quyền nhân viên kho. Tài khoản System Owner được bảo v�
 sử phiếu chỉ có thể khóa thay vì xóa. Tài khoản bị khóa không thể đăng nhập và phiên
 đăng nhập hiện tại bị thu hồi ở lần truy cập được bảo vệ tiếp theo.
 
+Mọi tài khoản đang hoạt động có thể tự cập nhật tên, email và số điện thoại tại
+`/admin/settings`. Trên bản in giao dịch, nút **Chỉnh sửa nội dung phiếu** cho phép
+điều chỉnh nội dung tạm thời trên trình duyệt trước khi in; các thay đổi này không
+ghi vào dữ liệu kho.
+
 ## Mô hình dữ liệu
 
 - `categories`, `products`: danh mục, SKU/barcode, hãng, đơn vị, vị trí và định mức.
 - `suppliers`, `projects`: nguồn nhập và địa điểm/dự án nhận vật tư.
 - `inventory_transactions`, `inventory_transaction_items`: phiếu và chi tiết phiếu.
 - `users`: nhân viên tạo phiếu; được giữ lại cùng các bảng xác thực.
+
+Ảnh vật tư nhận JPG, JPEG, PNG hoặc WebP, tối đa 5 MB; có thể chọn file, kéo-thả
+hoặc dán ảnh từ clipboard. File lưu trên disk `public` tại
+`storage/app/public/products`. Cần tạo liên kết `public/storage` tới thư mục này
+bằng `php artisan storage:link` sau khi deploy. Giao diện dùng URL tương đối
+`/storage/...` để hoạt động đúng qua HTTPS/reverse proxy.
 
 `InventorySeeder` chỉ xóa các phiếu và SKU demo đã biết. Seeder sẽ dừng nếu vật tư
 demo đang được tham chiếu bởi phiếu khác để bảo toàn lịch sử giao dịch thực tế.
@@ -56,7 +68,7 @@ demo đang được tham chiếu bởi phiếu khác để bảo toàn lịch s�
 - Cảnh báo sắp hết hàng khi tồn hiện tại nhỏ hơn hoặc bằng định mức.
 - Giao dịch lưu danh sách serial/MAC dưới dạng JSON.
 - Xuất CSV tại `/admin/exports/products.csv` và `/admin/exports/transactions.csv`.
-- Phiếu giao dịch có bản in khổ A4/A5 tại nút **In phiếu**.
+- Phiếu giao dịch có bản in khổ A4/A5; nội dung có thể chỉnh tạm thời trước khi in.
 
 ## Lưu ý nâng cấp từ phiên bản barbershop
 

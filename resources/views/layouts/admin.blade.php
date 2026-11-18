@@ -12,8 +12,8 @@
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex min-h-16 items-center justify-between gap-6">
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 font-semibold tracking-tight text-slate-900">
-                    <span class="grid h-9 w-9 place-items-center rounded-lg bg-blue-900 text-sm font-bold text-white">K</span>
-                    <span class="hidden sm:inline">Kho vật tư <span class="text-slate-400">/</span> Mạng &amp; CCTV</span>
+                    <span class="grid h-9 w-9 place-items-center rounded-lg bg-blue-900 text-sm font-bold text-white">NT</span>
+                    <span class="hidden sm:inline">Kho vật tư <span class="text-slate-400">/</span> Nam Tiến</span>
                 </a>
                 <nav class="flex items-center gap-1 overflow-x-auto text-sm">
                     @foreach ([
@@ -24,6 +24,7 @@
                         ['admin.suppliers.index', 'Nhà cung cấp'],
                         ['admin.projects.index', 'Dự án'],
                         ['admin.accounts.index', 'Tài khoản'],
+                        ['admin.settings.index', 'Cài đặt'],
                     ] as [$routeName, $label])
                         <a href="{{ route($routeName) }}"
                            class="whitespace-nowrap rounded-lg px-3 py-2 font-medium {{ request()->routeIs($routeName) ? 'bg-blue-50 text-blue-800' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">

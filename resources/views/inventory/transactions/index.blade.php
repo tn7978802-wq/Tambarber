@@ -9,7 +9,9 @@
             <h1 class="mt-1 text-2xl font-bold text-slate-950">Lịch sử giao dịch</h1>
         </div>
         <div class="flex flex-wrap gap-2">
-            <a href="{{ route('admin.exports.transactions', request()->only('type')) }}" class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50">Xuất CSV</a>
+            <button type="submit" form="transaction-export-form" id="transaction-export-button" class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+                Xuất CSV <span id="selected-transaction-count" class="hidden"></span>
+            </button>
             <a href="{{ route('admin.transactions.create', 'import') }}" class="rounded-lg bg-blue-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800">＋ Tạo phiếu</a>
         </div>
     </div>
@@ -27,29 +29,82 @@
         <button class="rounded-lg bg-slate-800 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700">Lọc</button>
     </form>
 
-    <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-        <div class="overflow-x-auto">
-            <table class="w-full min-w-[800px] text-left text-sm">
-                <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500"><tr><th class="px-5 py-3">Mã phiếu</th><th class="px-5 py-3">Loại phiếu</th><th class="px-5 py-3">Ngày giao dịch</th><th class="px-5 py-3">Dự án / Nhà cung cấp</th><th class="px-5 py-3">Người thực hiện</th><th class="px-5 py-3">Trạng thái</th></tr></thead>
-                <tbody class="divide-y divide-slate-100">
-                    @forelse ($transactions as $transaction)
-                        <tr class="hover:bg-slate-50">
-                            <td class="px-5 py-4"><a href="{{ route('admin.transactions.show', $transaction) }}" class="font-mono text-xs font-semibold text-blue-800 hover:underline">{{ $transaction->transaction_code }}</a></td>
-                            <td class="px-5 py-4">
-                                @php($badge = ['import' => 'bg-emerald-100 text-emerald-800', 'export' => 'bg-blue-100 text-blue-800', 'adjustment' => 'bg-amber-100 text-amber-800'][$transaction->type])
-                                <span class="rounded-full px-2.5 py-1 text-xs font-semibold {{ $badge }}">{{ ['import' => 'Nhập kho', 'export' => 'Xuất kho', 'adjustment' => 'Kiểm kê'][$transaction->type] }}</span>
-                            </td>
-                            <td class="px-5 py-4 text-slate-600">{{ $transaction->transaction_date->format('d/m/Y H:i') }}</td>
-                            <td class="px-5 py-4 text-slate-700">{{ $transaction->project_or_supplier_name }}</td>
-                            <td class="px-5 py-4 text-slate-600">{{ $transaction->user?->fullname ?? '—' }}</td>
-                            <td class="px-5 py-4"><span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-800">{{ $transaction->status === 'completed' ? 'Hoàn tất' : $transaction->status }}</span></td>
+    <p class="mb-3 text-xs text-slate-500">Chọn các phiếu cần xuất; nếu không chọn phiếu nào, CSV sẽ gồm toàn bộ kết quả theo bộ lọc hiện tại.</p>
+    <form id="transaction-export-form" method="GET" action="{{ route('admin.exports.transactions') }}">
+        @foreach (['q', 'type', 'from', 'to'] as $filter)
+            @if (request()->filled($filter))
+                <input type="hidden" name="{{ $filter }}" value="{{ request($filter) }}">
+            @endif
+        @endforeach
+        <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[800px] text-left text-sm">
+                    <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+                        <tr>
+                            <th class="px-5 py-3"><input id="select-all-transactions" type="checkbox" aria-label="Chọn tất cả phiếu trên trang" class="rounded border-slate-300 text-blue-800 focus:ring-blue-700"></th>
+                            <th class="px-5 py-3">Mã phiếu</th>
+                            <th class="px-5 py-3">Loại phiếu</th>
+                            <th class="px-5 py-3">Ngày giao dịch</th>
+                            <th class="px-5 py-3">Dự án / Nhà cung cấp</th>
+                            <th class="px-5 py-3">Người thực hiện</th>
+                            <th class="px-5 py-3">Trạng thái</th>
                         </tr>
-                    @empty
-                        <tr><td colspan="6" class="px-5 py-12 text-center text-slate-500">Không có phiếu giao dịch phù hợp.</td></tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @forelse ($transactions as $transaction)
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-5 py-4"><input type="checkbox" name="transaction_ids[]" value="{{ $transaction->id }}" aria-label="Chọn phiếu {{ $transaction->transaction_code }}" class="transaction-checkbox rounded border-slate-300 text-blue-800 focus:ring-blue-700"></td>
+                                <td class="px-5 py-4"><a href="{{ route('admin.transactions.show', $transaction) }}" class="font-mono text-xs font-semibold text-blue-800 hover:underline">{{ $transaction->transaction_code }}</a></td>
+                                <td class="px-5 py-4">
+                                    @php($badge = ['import' => 'bg-emerald-100 text-emerald-800', 'export' => 'bg-blue-100 text-blue-800', 'adjustment' => 'bg-amber-100 text-amber-800'][$transaction->type])
+                                    <span class="rounded-full px-2.5 py-1 text-xs font-semibold {{ $badge }}">{{ ['import' => 'Nhập kho', 'export' => 'Xuất kho', 'adjustment' => 'Kiểm kê'][$transaction->type] }}</span>
+                                </td>
+                                <td class="px-5 py-4 text-slate-600">{{ $transaction->transaction_date->format('d/m/Y H:i') }}</td>
+                                <td class="px-5 py-4 text-slate-700">{{ $transaction->project_or_supplier_name }}</td>
+                                <td class="px-5 py-4 text-slate-600">{{ $transaction->user?->fullname ?? '—' }}</td>
+                                <td class="px-5 py-4"><span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-800">{{ $transaction->status === 'completed' ? 'Hoàn tất' : $transaction->status }}</span></td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="7" class="px-5 py-12 text-center text-slate-500">Không có phiếu giao dịch phù hợp.</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            @if ($transactions->hasPages())
+                <div class="border-t border-slate-200 px-5 py-4">{{ $transactions->links() }}</div>
+            @endif
         </div>
-        @if ($transactions->hasPages())<div class="border-t border-slate-200 px-5 py-4">{{ $transactions->links() }}</div>@endif
-    </div>
+    </form>
 @endsection
+
+@push('scripts')
+    <script>
+        (() => {
+            const checkboxes = Array.from(document.querySelectorAll('.transaction-checkbox'));
+            const selectAll = document.getElementById('select-all-transactions');
+            const selectedCount = document.getElementById('selected-transaction-count');
+            const exportButton = document.getElementById('transaction-export-button');
+
+            const updateSelection = () => {
+                const count = checkboxes.filter((checkbox) => checkbox.checked).length;
+                selectedCount.textContent = count > 0 ? `(${count} phiếu)` : '';
+                selectedCount.classList.toggle('hidden', count === 0);
+                exportButton.classList.toggle('border-blue-300', count > 0);
+                exportButton.classList.toggle('bg-blue-50', count > 0);
+                exportButton.classList.toggle('text-blue-800', count > 0);
+                selectAll.checked = checkboxes.length > 0 && count === checkboxes.length;
+                selectAll.indeterminate = count > 0 && count < checkboxes.length;
+            };
+
+            selectAll.addEventListener('change', () => {
+                checkboxes.forEach((checkbox) => {
+                    checkbox.checked = selectAll.checked;
+                });
+                updateSelection();
+            });
+
+            checkboxes.forEach((checkbox) => checkbox.addEventListener('change', updateSelection));
+            updateSelection();
+        })();
+    </script>
+@endpush

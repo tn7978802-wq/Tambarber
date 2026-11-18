@@ -30,7 +30,8 @@ class ProductRequest extends FormRequest
             'min_stock_alert' => ['required', 'decimal:0,3', 'min:0', 'max:99999999999.999'],
             'location' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:5000'],
-            'image' => ['nullable', 'image', 'max:4096'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:5120'],
+            'remove_image' => ['sometimes', 'boolean'],
         ];
     }
 }

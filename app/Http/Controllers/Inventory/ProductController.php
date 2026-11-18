@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -98,11 +99,18 @@ class ProductController extends Controller
     public function update(ProductRequest $request, Product $product): RedirectResponse
     {
         $data = $request->validated();
+        $previousImage = $product->image;
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('products', 'public');
+        } elseif ($request->boolean('remove_image')) {
+            $data['image'] = null;
         }
 
         $product->update($data);
+
+        if ($previousImage && $previousImage !== $product->image) {
+            $this->deleteProductImage($previousImage);
+        }
 
         return redirect()->route('admin.products.show', $product)
             ->with('success', 'Đã cập nhật thông tin vật tư.');
@@ -116,9 +124,21 @@ class ProductController extends Controller
             ]);
         }
 
+        $image = $product->image;
         $product->delete();
+
+        if ($image) {
+            $this->deleteProductImage($image);
+        }
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Đã xóa vật tư.');
+    }
+
+    private function deleteProductImage(string $path): void
+    {
+        if (str_starts_with($path, 'products/')) {
+            Storage::disk('public')->delete($path);
+        }
     }
 }

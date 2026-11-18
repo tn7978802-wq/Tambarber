@@ -10,7 +10,9 @@
             <p class="mt-1 text-sm text-slate-500">Tìm theo SKU, tên thiết bị hoặc hãng; tồn kho chỉ thay đổi qua phiếu giao dịch.</p>
         </div>
         <div class="flex gap-2">
-            <a href="{{ route('admin.exports.products') }}" class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50">Xuất CSV</a>
+            <button type="submit" form="product-export-form" id="product-export-button" class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+                Xuất CSV <span id="selected-product-count" class="hidden"></span>
+            </button>
             <a href="{{ route('admin.products.create') }}" class="rounded-lg bg-blue-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800">＋ Thêm vật tư</a>
         </div>
     </div>
@@ -27,16 +29,31 @@
         <a href="{{ route('admin.products.index') }}" class="rounded-lg border border-slate-300 px-4 py-2 text-center text-sm font-semibold text-slate-600 hover:bg-slate-50">Xóa lọc</a>
     </form>
 
+    <p class="mb-3 text-xs text-slate-500">Chọn vật tư cần xuất; nếu không chọn dòng nào, CSV sẽ gồm toàn bộ kết quả theo bộ lọc hiện tại.</p>
+    <form id="product-export-form" method="GET" action="{{ route('admin.exports.products') }}">
+        @foreach (['q', 'category_id', 'stock'] as $filter)
+            @if (request()->filled($filter))
+                <input type="hidden" name="{{ $filter }}" value="{{ request($filter) }}">
+            @endif
+        @endforeach
     <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
         <div class="overflow-x-auto">
-            <table class="w-full min-w-[900px] text-left text-sm">
+            <table class="w-full min-w-[980px] text-left text-sm">
                 <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
-                    <tr><th class="px-5 py-3">Mã SKU</th><th class="px-5 py-3">Vật tư</th><th class="px-5 py-3">Danh mục / Hãng</th><th class="px-5 py-3">Vị trí</th><th class="px-5 py-3 text-right">Tồn kho</th><th class="px-5 py-3">Trạng thái</th></tr>
+                    <tr><th class="px-5 py-3"><input id="select-all-products" type="checkbox" aria-label="Chọn tất cả vật tư trên trang" class="rounded border-slate-300 text-blue-800 focus:ring-blue-700"></th><th class="px-5 py-3">Ảnh</th><th class="px-5 py-3">Mã SKU</th><th class="px-5 py-3">Vật tư</th><th class="px-5 py-3">Danh mục / Hãng</th><th class="px-5 py-3">Vị trí</th><th class="px-5 py-3 text-right">Tồn kho</th><th class="px-5 py-3">Trạng thái</th></tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                     @forelse ($products as $product)
                         @php($lowStock = (float) $product->stock_quantity <= (float) $product->min_stock_alert)
                         <tr class="hover:bg-slate-50">
+                            <td class="px-5 py-4"><input type="checkbox" name="product_ids[]" value="{{ $product->id }}" aria-label="Chọn vật tư {{ $product->sku }}" class="product-checkbox rounded border-slate-300 text-blue-800 focus:ring-blue-700"></td>
+                            <td class="px-5 py-4">
+                                @if ($product->image)
+                                    <img src="{{ '/storage/' . ltrim($product->image, '/') }}" alt="Ảnh {{ $product->name }}" class="h-12 w-12 rounded-lg border border-slate-200 bg-white object-contain">
+                                @else
+                                    <span class="grid h-12 w-12 place-items-center rounded-lg bg-slate-100 text-xs text-slate-400" aria-label="Chưa có ảnh">—</span>
+                                @endif
+                            </td>
                             <td class="px-5 py-4 font-mono text-xs font-semibold text-slate-700">{{ $product->sku }}</td>
                             <td class="px-5 py-4">
                                 <a href="{{ route('admin.products.show', $product) }}" class="font-semibold text-blue-800 hover:underline">{{ $product->name }}</a>
@@ -54,7 +71,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="6" class="px-5 py-12 text-center text-slate-500">Không tìm thấy vật tư phù hợp.</td></tr>
+                        <tr><td colspan="8" class="px-5 py-12 text-center text-slate-500">Không tìm thấy vật tư phù hợp.</td></tr>
                     @endforelse
                 </tbody>
             </table>
@@ -63,4 +80,37 @@
             <div class="border-t border-slate-200 px-5 py-4">{{ $products->links() }}</div>
         @endif
     </div>
+    </form>
 @endsection
+
+@push('scripts')
+    <script>
+        (() => {
+            const checkboxes = Array.from(document.querySelectorAll('.product-checkbox'));
+            const selectAll = document.getElementById('select-all-products');
+            const selectedCount = document.getElementById('selected-product-count');
+            const exportButton = document.getElementById('product-export-button');
+
+            const updateSelection = () => {
+                const count = checkboxes.filter((checkbox) => checkbox.checked).length;
+                selectedCount.textContent = count > 0 ? `(${count} vật tư)` : '';
+                selectedCount.classList.toggle('hidden', count === 0);
+                exportButton.classList.toggle('border-blue-300', count > 0);
+                exportButton.classList.toggle('bg-blue-50', count > 0);
+                exportButton.classList.toggle('text-blue-800', count > 0);
+                selectAll.checked = checkboxes.length > 0 && count === checkboxes.length;
+                selectAll.indeterminate = count > 0 && count < checkboxes.length;
+            };
+
+            selectAll.addEventListener('change', () => {
+                checkboxes.forEach((checkbox) => {
+                    checkbox.checked = selectAll.checked;
+                });
+                updateSelection();
+            });
+
+            checkboxes.forEach((checkbox) => checkbox.addEventListener('change', updateSelection));
+            updateSelection();
+        })();
+    </script>
+@endpush
