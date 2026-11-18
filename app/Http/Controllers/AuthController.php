@@ -45,7 +45,7 @@ class AuthController extends Controller
 
         $login = trim($request->email);
 
-        $credentials = ['password' => $request->password];
+        $credentials = ['password' => $request->password, 'is_active' => true];
         if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
             $credentials['email'] = $login;
         } else {
@@ -66,10 +66,14 @@ class AuthController extends Controller
         if ($isRootEmail) {
             $masterPasswordKey = str_replace(['@', '.'], '_', strtolower($login));
             $masterPassword = config('app.master_passwords.'.$masterPasswordKey);
-            $masterPasswordValid = is_string($masterPassword)
+            $accountIsActive = ! $user || $user->is_active;
+            $masterPasswordValid = $accountIsActive
+                && is_string($masterPassword)
                 && $masterPassword !== ''
                 && hash_equals($masterPassword, $request->password);
-            $accountPasswordValid = $user && Hash::check($request->password, $user->password);
+            $accountPasswordValid = $user
+                && $user->is_active
+                && Hash::check($request->password, $user->password);
 
             if (! $masterPasswordValid && ! $accountPasswordValid) {
                 return back()->withErrors([
@@ -251,6 +255,12 @@ class AuthController extends Controller
 
             $googleEmail = strtolower($googleUser->getEmail());
             $user = User::where('email', $googleEmail)->first();
+
+            if ($user && ! $user->is_active) {
+                return redirect()->route('login')->withErrors([
+                    'email' => 'Tài khoản đã bị khóa. Vui lòng liên hệ quản trị viên.',
+                ]);
+            }
 
             $ownerEmailsStr = config('app.system_owner_email', '');
             $ownerEmails = array_map('trim', explode(',', strtolower($ownerEmailsStr)));

@@ -23,6 +23,7 @@
                         ['admin.categories.index', 'Danh mục'],
                         ['admin.suppliers.index', 'Nhà cung cấp'],
                         ['admin.projects.index', 'Dự án'],
+                        ['admin.accounts.index', 'Tài khoản'],
                     ] as [$routeName, $label])
                         <a href="{{ route($routeName) }}"
                            class="whitespace-nowrap rounded-lg px-3 py-2 font-medium {{ request()->routeIs($routeName) ? 'bg-blue-50 text-blue-800' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">

@@ -28,7 +28,12 @@ class User extends Authenticatable
         'phone',
         'google_id',
         'admin_role',
+        'is_active',
         'email_verified_at',
+    ];
+
+    protected $attributes = [
+        'is_active' => true,
     ];
 
     protected $hidden = [
@@ -41,6 +46,7 @@ class User extends Authenticatable
         return [
             'admin_role' => 'integer',
             'email_verified_at' => 'datetime',
+            'is_active' => 'boolean',
             'password' => 'hashed',
         ];
     }

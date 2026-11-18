@@ -26,11 +26,17 @@ npm run build
 - Tổng quan kho: `/admin`
 - Vật tư: `/admin/products`
 - Giao dịch: `/admin/transactions`
+- Quản lý tài khoản: `/admin/accounts`
 - Dọn phiếu/vật tư demo cũ: `php artisan db:seed --class=InventorySeeder`
 
 Các tuyến kho yêu cầu đăng nhập và quyền quản trị (`admin_role = 2`) hoặc tài khoản
 quản trị tối cao được cấu hình qua `SYSTEM_OWNER_EMAIL`. Tài khoản đăng ký mới có
 quyền khách mặc định và không tự động được cấp quyền truy cập kho.
+
+Trong `/admin/accounts`, Admin thường chỉ quản lý tài khoản thường; chỉ System Owner
+mới cấp quyền nhân viên kho. Tài khoản System Owner được bảo vệ, tài khoản có lịch
+sử phiếu chỉ có thể khóa thay vì xóa. Tài khoản bị khóa không thể đăng nhập và phiên
+đăng nhập hiện tại bị thu hồi ở lần truy cập được bảo vệ tiếp theo.
 
 ## Mô hình dữ liệu
 

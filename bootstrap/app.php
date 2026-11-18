@@ -11,9 +11,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Tin cậy proxy từ Cloudflare Tunnel để giữ đúng tên miền và HTTPS
+        $middleware->trustProxies(at: '*');
+
         // 'admin' middleware bảo vệ khu vực quản trị (/admin/*).
         // Có thể thay bằng middleware kiểm tra role thực tế của bạn.
         $middleware->alias([
+            'active' => \App\Http\Middleware\ActiveUserMiddleware::class,
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
             'system_owner' => \App\Http\Middleware\SystemOwnerMiddleware::class,
         ]);

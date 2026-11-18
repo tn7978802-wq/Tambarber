@@ -9,6 +9,7 @@ use App\Http\Controllers\Inventory\InventoryTransactionController;
 use App\Http\Controllers\Inventory\ProductController;
 use App\Http\Controllers\Inventory\ProjectController;
 use App\Http\Controllers\Inventory\SupplierController;
+use App\Http\Controllers\Inventory\AccountController as InventoryAccountController;
 use App\Http\Controllers\OtpController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,11 +35,11 @@ Route::get('/otp/gui', [OtpController::class, 'sendOtp'])->name('otp.send');
 Route::get('/otp/xac-thuc', [OtpController::class, 'showVerifyForm'])->name('otp.form');
 Route::post('/otp/xac-thuc', [OtpController::class, 'verifyOtp'])->name('otp.verify');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/tai-khoan', [AccountController::class, 'index'])->name('account.index');
 });
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'active', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/exports/products.csv', [InventoryExportController::class, 'products'])->name('exports.products');
@@ -49,6 +50,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('categories', CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('suppliers', SupplierController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('projects', ProjectController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::get('/accounts', [InventoryAccountController::class, 'index'])->name('accounts.index');
+    Route::post('/accounts', [InventoryAccountController::class, 'store'])->name('accounts.store');
+    Route::get('/accounts/{account}/edit', [InventoryAccountController::class, 'edit'])->name('accounts.edit');
+    Route::put('/accounts/{account}', [InventoryAccountController::class, 'update'])->name('accounts.update');
+    Route::delete('/accounts/{account}', [InventoryAccountController::class, 'destroy'])->name('accounts.destroy');
 
     Route::get('/transactions', [InventoryTransactionController::class, 'index'])->name('transactions.index');
     Route::get('/transactions/create/{type}', [InventoryTransactionController::class, 'create'])->name('transactions.create');
